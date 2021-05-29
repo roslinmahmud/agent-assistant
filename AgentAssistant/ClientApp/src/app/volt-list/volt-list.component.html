@@ -1,0 +1,23 @@
+<div class="container">
+  <table class="table table-striped">
+    <thead>
+      <tr>
+        <th scope="col">Date</th>
+        <th scope="col">Opening Liquid</th>
+        <th scope="col">Opening Cash</th>
+        <th scope="col">Closing Liquid</th>
+        <th scope="col">Closing Cash</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr *ngFor="let volt of volts">
+        <td>{{ volt.date | date }}</td>
+        <td>{{ volt.openingLiquidMoney }}</td>
+        <td>{{ volt.openingCashMoney }}</td>
+        <td>{{ volt.closingLiquidMoney }}</td>
+        <td>{{ volt.closingCashMoney }}</td>
+      </tr>
+    </tbody>
+  </table>
+</div>
+

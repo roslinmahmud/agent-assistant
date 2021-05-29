@@ -1,0 +1,12 @@
+<form class="container" [formGroup]="agentForm" (ngSubmit)="onSubmit()">
+    <div class="mb-3">
+        <label for="name" class="form-label"> Name </label>
+        <input type="text" id="name" class="form-control" formControlName="name">
+    </div>
+    
+    <div class="mb-3">
+        <label for="phone" class="form-label"> Phone Number </label>
+        <input type="tel" id="phone" class="form-control" formControlName="phoneNumber">
+    </div>
+    <button type="submit" [disabled]="!agentForm.valid" class="btn btn-primary">Submit</button>
+</form>
