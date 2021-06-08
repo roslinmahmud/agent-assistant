@@ -1,20 +1,18 @@
 ﻿using Entities.Enums;
+using Microsoft.AspNetCore.Identity;
 using System;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
 namespace Entities.Models
 {
-    public class Employee
+    public class Employee: ApplicationUser
     {
-        public int Id { get; set; }
-        public string Name { get; set; }
-        public string PhoneNumber { get; set; }
-        public EmployeeType Type { get; set; }
-
-        public int AgentId { get; set; }
+        [Required]
+        public string AgentId { get; set; }
         public Agent Agent { get; set; }
     }
 }

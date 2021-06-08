@@ -1,0 +1,43 @@
+<div class="card">
+    <div class="card-body">
+
+        <h3 class="card-title">Volt</h3>
+        <form [formGroup]="voltForm" (ngSubmit)="onSubmit()">
+            <div class="form-row">
+              <div class="form-group col-md-6">
+                <label for="openingLiquidMoney" class="form-label">Opening Liquid Money</label>
+                <input type="text" id="openingLiquidMoney" class="form-control" formControlName="openingLiquidMoney">
+              </div>
+
+              <div class="form-group col-md-6">
+                <label for="openingCashMoney" class="form-label">Opening Cash Money</label>
+                <input type="tel" id="openingCashMoney" class="form-control" formControlName="openingCashMoney">
+              </div>
+            </div>
+            <div class="form-row">
+              <div class="form-group col-md-6">
+                <label for="closingLiquidMoney" class="form-label">Closing Liquid Money</label>
+                <input type="text" id="closingLiquidMoney" class="form-control" formControlName="closingLiquidMoney">
+              </div>
+
+              <div class="form-group col-md-6">
+                <label for="closingCashMoney" class="form-label">Closing Cash Money</label>
+                <input type="tel" id="closingCashMoney" class="form-control" formControlName="closingCashMoney">
+              </div>
+            </div>
+
+            <div class="form-row">
+              <div class="form-group col-md-6">
+                <label for="date" class="form-label">Date</label>
+                <input type="date" id="date" class="form-control" formControlName="date">
+              </div>
+
+              <div class="form-group col-md-6">
+                <button type="submit" [disabled]="!voltForm.valid" class="btn btn-primary">Submit</button>
+              </div>
+            </div>
+            
+        </form>
+
+    </div>
+</div>

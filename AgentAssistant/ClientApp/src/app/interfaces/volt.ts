@@ -5,5 +5,5 @@ export interface Volt{
     openingCashMoney: number,
     closingLiquidMoney: number,
     closingCashMoney: number,
-    agentId: number
+    agentId: string
 }

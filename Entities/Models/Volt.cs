@@ -6,9 +6,8 @@ using System.Threading.Tasks;
 
 namespace Entities.Models
 {
-    public class Volt
+    public class Volt: Entity
     {
-        public int Id { get; set; }
         [Required]
         public DateTime Date { get; set; }
         public double OpeningLiquidMoney { get; set; }
@@ -16,7 +15,8 @@ namespace Entities.Models
         public double ClosingCashMoney { get; set; }
         public double ClosingLiquidMoney { get; set; }
 
-        public int AgentId { get; set; }
+        [Required]
+        public string AgentId { get; set; }
         public Agent Agent { get; set; }
     }
 }

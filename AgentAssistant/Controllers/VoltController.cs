@@ -1,5 +1,6 @@
 ﻿using Entities.Models;
 using Entities.Repository;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using System;
@@ -10,6 +11,7 @@ using System.Threading.Tasks;
 namespace AgentAssistant.Controllers
 {
     [Route("api/[controller]")]
+    [Authorize]
     [ApiController]
     public class VoltController : ControllerBase
     {
@@ -37,12 +39,14 @@ namespace AgentAssistant.Controllers
             
         }
 
-        [HttpGet("{id}")]
-        public IActionResult GetVolt(int id)
+        [HttpGet("{agentId}")]
+        public IActionResult GetVolt(string agentId)
         {
             try
             {
-                var volt = voltRepository.GetAllVolts().Where(v => v.Id == id);
+                var volt = voltRepository.GetAllVolts()
+                    .Where(v => v.AgentId == agentId && v.Date.Date == DateTime.Now.Date)
+                    .FirstOrDefault();
 
                 return Ok(volt);
             }
