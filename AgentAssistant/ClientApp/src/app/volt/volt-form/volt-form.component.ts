@@ -14,49 +14,81 @@ import { AuthenticationService } from '../../shared/services/authentication.serv
 })
 export class VoltFormComponent implements OnInit {
 
-  voltForm = this.fromBuilder.group({
-    date: ['', Validators.required],
-    openingLiquidMoney: ['', Validators.required],
-    openingCashMoney: ['', Validators.required],
-    closingLiquidMoney:[''],
-    closingCashMoney:['']
-  })
+  volt: Volt;
+  isSubmitted: boolean;
+  date: string = this.datePipe.transform(new Date(), "yyyy-MM-dd");;
 
-  isSubmitted: boolean = false;
+  voltForm = this.fromBuilder.group({
+    date: [this.date, Validators.required],
+    openingLiquidMoney: ['0', Validators.required],
+    openingCashMoney: ['0', Validators.required],
+    closingLiquidMoney:['0'],
+    closingCashMoney:['0']
+  })
 
   constructor(private fromBuilder: FormBuilder,
     private http: HttpClient,
-    @Inject('BASE_URL') private baseUrl: string,
     private datePipe: DatePipe,
     private repository: RepositoryService,
-    private authService: AuthenticationService  ) { }
+    private authService: AuthenticationService) {
+      this.isSubmitted = false;
+    }
 
   ngOnInit() {
-    this.loadVolt();
+    this.getVolt(this.date);
+  }
+
+  onChange(){
+    this.getVolt(this.voltForm.get('date').value);
+  }
+
+  private getVolt(date:string|Date) {
+    const apiUrl = "api/volt/" + this.authService.getAgentId() + "/"+this.datePipe.transform(date, "yyyy-MM-dd");
+
+    this.repository.get(apiUrl)
+      .subscribe(res => {
+        if(res == null)
+          return;
+        this.volt = res as Volt;
+        this.volt.date = this.datePipe.transform(this.volt.date, "yyyy-MM-dd")
+        this.voltForm.patchValue(this.volt);
+        this.isSubmitted = true;
+      },
+      (error)=>{
+        console.warn(error);
+      });
   }
 
   onSubmit() {
-    this.createVolt(this.voltForm.value);
+    if(this.isSubmitted){
+      this.updateVolt(Object.assign(this.volt, this.voltForm.value));
+    }
+    else{
+      this.createVolt(this.voltForm.value);
+    }
   }
 
   private createVolt(volt: Volt){
     const apiUrl = "api/volt";
     volt.agentId = this.authService.getAgentId();
+
     this.repository.create(apiUrl, volt)
       .subscribe(res => {
-        console.log("Volt submitted:", res);
+        this.volt = res as Volt;
         this.isSubmitted = true;
+      },
+      (error)=>{
+        console.error(error);
       });
   }
 
-  private loadVolt() {
-    const apiUrl = "api/volt/" + this.authService.getAgentId();
+  private updateVolt(volt: Volt){
+    const apiUrl = "api/volt/";
+    volt.agentId = this.authService.getAgentId();
 
-    this.repository.get(apiUrl)
+    this.repository.update(apiUrl, volt)
       .subscribe(res => {
-        const volt = res as Volt;
-        this.voltForm.patchValue(volt);
-        this.isSubmitted = true;
+        console.log("Volt updated:", res);
       });
   }
 }

@@ -27,5 +27,10 @@ namespace Entities.Repository
         {
             return SaveChangees();
         }
+
+        public void UpdateVolt(Volt volt)
+        {
+            Update(volt);
+        }
     }
 }

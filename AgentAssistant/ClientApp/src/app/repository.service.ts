@@ -12,7 +12,11 @@ export class RepositoryService {
   constructor(private http: HttpClient) { }
 
     public create = (route:string, body:Volt) => {
-      return this.http.post(this.baseURL + route, body, this.generateHeaders())
+      return this.http.post(this.baseURL + route, body, this.generateHeaders());
+    }
+
+    public update = (route:string, body:Volt) => {
+      return this.http.put(this.baseURL+route, body, this.generateHeaders());
     }
 
     public get = (route: string) => {

@@ -2,7 +2,7 @@ import { BrowserModule } from '@angular/platform-browser';
 import { NgModule } from '@angular/core';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { HttpClientModule, HTTP_INTERCEPTORS } from '@angular/common/http';
-import { RouterModule } from '@angular/router';
+import { PreloadAllModules, RouterModule } from '@angular/router';
 
 import { AppComponent } from './app.component';
 import { NavMenuComponent } from './nav-menu/nav-menu.component';
@@ -30,19 +30,21 @@ export function tokenGetter() {
     HttpClientModule,
     FormsModule,
     VoltModule,
-    RouterModule.forRoot([
-      { path: '', component: HomeComponent, pathMatch: 'full' },
-      { path: 'authentication', loadChildren: () => import('./authentication/authentication.module').then(m=>m.AuthenticationModule) },
-      { path: 'fetch-data', component: FetchDataComponent, canActivate: [AuthGuard] },
-    ]),
+    RouterModule.forRoot(
+      [
+        { path: '', component: HomeComponent, pathMatch: 'full', canActivate: [AuthGuard] },
+        { path: 'authentication', loadChildren: () => import('./authentication/authentication.module').then(m=>m.AuthenticationModule) },
+        { path: 'fetch-data', component: FetchDataComponent, canActivate: [AuthGuard] }
+      ],
+      {preloadingStrategy: PreloadAllModules}
+    ),
     JwtModule.forRoot({
       config:{
         tokenGetter: tokenGetter,
         whitelistedDomains: ["localhost:5001"],
         blacklistedRoutes:[]
       }
-    }),
-    ReactiveFormsModule
+    })
   ],
   providers: 
   [

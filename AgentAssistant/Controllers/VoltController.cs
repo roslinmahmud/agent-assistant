@@ -39,13 +39,13 @@ namespace AgentAssistant.Controllers
             
         }
 
-        [HttpGet("{agentId}")]
-        public IActionResult GetVolt(string agentId)
+        [HttpGet("{agentId}/{dateTime}")]
+        public IActionResult GetVolt(string agentId, DateTime dateTime)
         {
             try
             {
                 var volt = voltRepository.GetAllVolts()
-                    .Where(v => v.AgentId == agentId && v.Date.Date == DateTime.Now.Date)
+                    .Where(v => v.AgentId == agentId && v.Date.Date == dateTime.Date)
                     .FirstOrDefault();
 
                 return Ok(volt);
@@ -78,6 +78,42 @@ namespace AgentAssistant.Controllers
                 return StatusCode(500, "Internal server error");
             }
             
+        }
+
+        [HttpPut]
+        public IActionResult UpdateVolt([FromBody] Volt volt)
+        {
+            try
+            {
+                if (volt == null)
+                {
+                    return BadRequest("Volt object is null");
+                }
+
+                if (!ModelState.IsValid)
+                {
+                    return BadRequest("Invalid Volt object");
+                }
+
+                var voltEntity = voltRepository.GetAllVolts()
+                    .Where(v => v.Id == volt.Id)
+                    .FirstOrDefault();
+                if (voltEntity == null)
+                {
+                    return NotFound("Owner not found in server");
+                }
+
+                voltRepository.UpdateVolt(volt);
+                voltRepository.SaveChanges();
+
+                return NoContent();
+
+            }
+            catch (Exception ex)
+            {
+
+                return StatusCode(500, "Internal server error");
+            }
         }
     }
 }

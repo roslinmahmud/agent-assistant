@@ -7,6 +7,7 @@ namespace Entities.Repository
     {
         public void CreateVolt(Volt volt);
         public IEnumerable<Volt> GetAllVolts();
+        public void UpdateVolt(Volt volt);
         public int SaveChanges();
     }
 }
