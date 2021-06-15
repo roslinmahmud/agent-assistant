@@ -1,28 +1,27 @@
 <div class="card">
+    <div class="card-header ">Volt</div>
     <div class="card-body">
-
-        <h3 class="card-title">Volt</h3>
         <form [formGroup]="voltForm" (ngSubmit)="onSubmit()">
             <div class="form-row">
               <div class="form-group col-md-6">
                 <label for="openingLiquidMoney" class="form-label">Opening Liquid Money</label>
-                <input type="text" id="openingLiquidMoney" class="form-control" formControlName="openingLiquidMoney">
+                <input type="number" step="0.01" min="0" id="openingLiquidMoney" class="form-control" formControlName="openingLiquidMoney">
               </div>
 
               <div class="form-group col-md-6">
                 <label for="openingCashMoney" class="form-label">Opening Cash Money</label>
-                <input type="tel" id="openingCashMoney" class="form-control" formControlName="openingCashMoney">
+                <input type="number" step="0.01" min="0" id="openingCashMoney" class="form-control" formControlName="openingCashMoney">
               </div>
             </div>
             <div class="form-row">
               <div class="form-group col-md-6">
                 <label for="closingLiquidMoney" class="form-label">Closing Liquid Money</label>
-                <input type="text" id="closingLiquidMoney" class="form-control" formControlName="closingLiquidMoney">
+                <input type="number" step="0.01" min="0" id="closingLiquidMoney" class="form-control" formControlName="closingLiquidMoney">
               </div>
 
               <div class="form-group col-md-6">
                 <label for="closingCashMoney" class="form-label">Closing Cash Money</label>
-                <input type="tel" id="closingCashMoney" class="form-control" formControlName="closingCashMoney">
+                <input type="number" step="0.01" min="0" id="closingCashMoney" class="form-control" formControlName="closingCashMoney">
               </div>
             </div>
 
@@ -33,6 +32,7 @@
               </div>
 
               <div class="form-group col-md-6">
+                <br>
                 <button type="submit" [disabled]="!voltForm.valid" class="btn btn-primary">Submit</button>
               </div>
             </div>

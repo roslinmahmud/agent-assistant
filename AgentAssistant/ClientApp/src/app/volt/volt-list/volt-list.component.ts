@@ -2,6 +2,11 @@ import { Component, OnInit } from '@angular/core';
 import { Volt } from '../../interfaces/volt';
 import { RepositoryService } from '../../repository.service';
 
+import { registerLocaleData } from '@angular/common';
+import  localeBn from '@angular/common/locales/bn';
+
+registerLocaleData(localeBn, 'bn');
+
 @Component({
   selector: 'app-volt-list',
   templateUrl: './volt-list.component.html',

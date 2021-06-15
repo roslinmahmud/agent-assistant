@@ -2,6 +2,7 @@ import { DatePipe } from '@angular/common';
 import { HttpClient } from '@angular/common/http';
 import { Component, Inject, OnInit } from '@angular/core';
 import { FormBuilder, Validators } from '@angular/forms';
+import { ToastrService } from 'ngx-toastr';
 import { Volt } from '../../interfaces/volt';
 import { RepositoryService } from '../../repository.service';
 import { AuthenticationService } from '../../shared/services/authentication.service';
@@ -30,9 +31,8 @@ export class VoltFormComponent implements OnInit {
     private http: HttpClient,
     private datePipe: DatePipe,
     private repository: RepositoryService,
-    private authService: AuthenticationService) {
-      this.isSubmitted = false;
-    }
+    private authService: AuthenticationService,
+    private toastr: ToastrService) { }
 
   ngOnInit() {
     this.getVolt(this.date);
@@ -76,6 +76,7 @@ export class VoltFormComponent implements OnInit {
       .subscribe(res => {
         this.volt = res as Volt;
         this.isSubmitted = true;
+        this.toastr.success('Submit successful', '');
       },
       (error)=>{
         console.error(error);
@@ -88,7 +89,8 @@ export class VoltFormComponent implements OnInit {
 
     this.repository.update(apiUrl, volt)
       .subscribe(res => {
-        console.log("Volt updated:", res);
+        this.toastr.success('Update successful', 'Success');
+        console.log(res, "updated!");
       });
   }
 }
