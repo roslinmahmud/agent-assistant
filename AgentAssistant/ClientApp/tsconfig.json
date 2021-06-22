@@ -18,5 +18,8 @@
       "dom"
     ],
     "skipLibCheck": true
+  },
+  "angularCompilerOptions": {
+    "strictTemplates": true
   }
 }

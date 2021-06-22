@@ -1,6 +1,6 @@
 import { DatePipe } from '@angular/common';
 import { HttpClient } from '@angular/common/http';
-import { Component, Inject, OnInit } from '@angular/core';
+import { Component, OnInit, Output } from '@angular/core';
 import { FormBuilder, Validators } from '@angular/forms';
 import { ToastrService } from 'ngx-toastr';
 import { Volt } from '../../interfaces/volt';
@@ -17,8 +17,8 @@ export class VoltFormComponent implements OnInit {
 
   volt: Volt;
   isSubmitted: boolean;
-  date: string = this.datePipe.transform(new Date(), "yyyy-MM-dd");;
-
+  date: string = this.datePipe.transform(new Date(), "yyyy-MM-dd");
+  
   voltForm = this.fromBuilder.group({
     date: [this.date, Validators.required],
     openingLiquidMoney: ['0', Validators.required],
@@ -42,13 +42,19 @@ export class VoltFormComponent implements OnInit {
     this.getVolt(this.voltForm.get('date').value);
   }
 
-  private getVolt(date:string|Date) {
+  private getVolt(date:string) {
     const apiUrl = "api/volt/" + this.authService.getAgentId() + "/"+this.datePipe.transform(date, "yyyy-MM-dd");
 
     this.repository.get(apiUrl)
       .subscribe(res => {
-        if(res == null)
+        if(res == null){
+          this.voltForm.reset({date: date} as Volt);
+          this.isSubmitted = false;
+          if(date != this.date)
+            this.toastr.warning("Date: "+date, 'No data found')
           return;
+        }
+          
         this.volt = res as Volt;
         this.volt.date = this.datePipe.transform(this.volt.date, "yyyy-MM-dd")
         this.voltForm.patchValue(this.volt);
@@ -90,7 +96,10 @@ export class VoltFormComponent implements OnInit {
     this.repository.update(apiUrl, volt)
       .subscribe(res => {
         this.toastr.success('Update successful', 'Success');
-        console.log(res, "updated!");
-      });
+      },
+      (error => {
+        this.toastr.error("Update failed", error);
+      })
+    );
   }
 }

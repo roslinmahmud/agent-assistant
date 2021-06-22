@@ -1,6 +1,5 @@
 import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
-import { ToastrService } from 'ngx-toastr';
 import { AuthenticationService } from '../shared/services/authentication.service';
 
 @Component({
@@ -13,15 +12,13 @@ export class NavMenuComponent implements OnInit {
   public isUserAuthenticated: boolean;
 
   constructor(private authService: AuthenticationService,
-    private router: Router,
-    private toastrService: ToastrService){}
+    private router: Router){}
 
   ngOnInit(): void {
     this.authService.authChanged
     .subscribe(res => {
       this.isUserAuthenticated = res;
     })
-    this.toastrService.success('success', 'upon success');
     this.isUserAuthenticated = this.authService.isUserAuthenticated();
   }
 
