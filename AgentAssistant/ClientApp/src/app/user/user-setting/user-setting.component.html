@@ -1,0 +1,48 @@
+<div class="card ">
+    <div class="card-header">
+        <span class="font-weight-bold">Setting</span>
+      </div>
+    <div class="card-body">
+        <form [formGroup]="statementCategoryForm" (ngSubmit)="onSubmit()">
+            <div class="form-row">
+              <div class="form-group col-md-6">
+                <label for="categoryName" class="form-label">Category Name</label>
+                <div class="input-group mb-2">
+                  <input type="text" id="categoryName" class="form-control" [ngClass]="{'is-invalid': statementCategoryForm.pending && statementCategoryForm.controls.categoryName.errors?.required, 'is-valid': statementCategoryForm.controls.categoryName.valid }" formControlName="categoryName">
+                  <div class="invalid-feedback">
+                    Please enter a category name.
+                  </div>             
+                </div>
+              </div>
+            </div>
+            <div class="form-row">
+                <div class="form-group col-md-6">
+                  <div class="form-check align-middle">
+                      <input type="checkbox" class="form-check-input" id="isIncome" formControlName="isIncome">
+                      <label class="form-check-label" for="isIncome">Is Income</label>
+                  </div>
+                </div>
+                <div class="form-group col-md-6">
+                    <button type="submit" class="btn btn-primary">Submit</button>
+                </div>
+            </div>
+        </form>
+
+        <div class="table-responsive">
+          <table class="table">
+            <thead>
+              <tr>
+                <th scope="col">Category Name</th>
+                <th scope="col">Is Income</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr *ngFor="let statementCategory of statementCategories">
+                <td>{{ statementCategory.categoryName }}</td>
+                <td>{{ statementCategory.isIncome }}</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+    </div>
+</div>

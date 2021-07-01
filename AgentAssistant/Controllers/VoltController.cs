@@ -1,12 +1,9 @@
 ﻿using Entities.Models;
 using Entities.Repository;
 using Microsoft.AspNetCore.Authorization;
-using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using System;
-using System.Collections.Generic;
 using System.Linq;
-using System.Threading.Tasks;
 
 namespace AgentAssistant.Controllers
 {
@@ -22,23 +19,6 @@ namespace AgentAssistant.Controllers
             this.voltRepository = voltRepository;
         }
 
-        [HttpGet]
-        public IActionResult GetVolts()
-        {
-            try
-            {
-                var volts = voltRepository.GetAllVolts();
-
-                return Ok(volts);
-            }
-            catch (Exception e)
-            {
-
-                return StatusCode(500, "Internal server error");
-            }
-            
-        }
-
         [HttpGet("{agentId}/{dateTime}")]
         public IActionResult GetVolt(string agentId, DateTime dateTime)
         {
@@ -49,6 +29,24 @@ namespace AgentAssistant.Controllers
                     .FirstOrDefault();
 
                 return Ok(volt);
+            }
+            catch (Exception e)
+            {
+
+                return StatusCode(500, "Internal server error");
+            }
+
+        }
+
+        [HttpGet("list/{agentId}/{date}")]
+        public IActionResult GetVoltList(string agentId, DateTime date)
+        {
+            try
+            {
+                var volts = voltRepository.GetAllVolts().
+                    Where(v => v.AgentId == agentId && date.Month == v.Date.Month && v.Date.Year == date.Year);
+
+                return Ok(volts);
             }
             catch (Exception e)
             {

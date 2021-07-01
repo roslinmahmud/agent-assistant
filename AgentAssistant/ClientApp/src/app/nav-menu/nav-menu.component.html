@@ -1,5 +1,5 @@
 <header>
-  <nav class="navbar navbar-expand-sm navbar-toggleable-sm navbar-light bg-white border-bottom box-shadow mb-3">
+  <nav class="navbar navbar-expand-sm navbar-toggleable-sm navbar-dark bg-success border-bottom box-shadow mb-3">
     <div class="container">
       <a class="navbar-brand" [routerLink]="['/']">AgentAssistant</a>
       <button
@@ -12,32 +12,44 @@
         (click)="toggle()">
         <span class="navbar-toggler-icon"></span>
       </button>
-      <div class="navbar-collapse collapse d-sm-inline-flex justify-content-end" [ngClass]="{ show: isExpanded }">
-        <ul class="navbar-nav">
+      <div class="navbar-collapse collapse" [ngClass]="{ show: isExpanded }">
+        <ul class="navbar-nav mr-auto">
           <li
             class="nav-item"
-            [routerLinkActive]="['link-active']"
+            [routerLinkActive]="['active']"
             [routerLinkActiveOptions]="{ exact: true }">
-            <a class="nav-link text-dark" [routerLink]="['/']">Home</a>
+            <a class="nav-link" [routerLink]="['/']">Home</a>
           </li>
-          <li class="nav-item" [routerLinkActive]="['link-active']">
-            <a class="nav-link text-dark" [routerLink]="['/fetch-data']">Fetch data</a>
+          <li class="nav-item" [routerLinkActive]="['active']">
+            <a class="nav-link" [routerLink]="['/volt/list']">Volt</a>
           </li>
-        </ul>
-        <ul *ngIf="!isUserAuthenticated" class="navbar-nav flex-grow">
-          <li class="nav-item">
-            <a class="nav-link"[routerLink]="['/authentication/login']" routerLinkActive="active" 
-              [routerLinkActiveOptions]="{exact: true}">Login</a>
-          </li>
-          <li class="nav-item">
-            <a class="nav-link"[routerLink]="['/authentication/register']" routerLinkActive="active" 
-              [routerLinkActiveOptions]="{exact: true}">Register</a>
+          <li class="nav-item" [routerLinkActive]="['active']">
+            <a class="nav-link" [routerLink]="['/statement/form']">Statement</a>
           </li>
         </ul>
-        <ul *ngIf='isUserAuthenticated' class="navbar-nav flex-grow">
-          <li class="nav-item">
-            <button class="btn btn-link" style="color: #63464641;" (click)="logout()">Logout</button>
-          </li>
+        <ul class="navbar-nav flex-grow">
+          <ng-container *ngIf='!isUserAuthenticated'>
+            <li class="nav-item">
+              <a class="nav-link" [routerLink]="['/authentication/login']" routerLinkActive="active" 
+                [routerLinkActiveOptions]="{exact: true}">Login</a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link" [routerLink]="['/authentication/register']" routerLinkActive="active" 
+                [routerLinkActiveOptions]="{exact: true}">Register</a>
+            </li>
+          </ng-container>
+          <ng-container *ngIf='isUserAuthenticated'>
+            <div class="dropdown">
+              <button type="button" class="btn btn-info dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                Agent
+              </button>
+              <div class="dropdown-menu">
+                <a class="dropdown-item" [routerLink]="['/user/setting']">Setting</a>
+                <div class="dropdown-divider"></div>
+                <a class="dropdown-item" [routerLink]="" (click)="logout()">Logout</a>
+              </div>
+            </div>
+          </ng-container>
         </ul>
       </div>
     </div>

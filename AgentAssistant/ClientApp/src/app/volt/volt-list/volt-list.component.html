@@ -1,24 +1,32 @@
-<div class="card">
-  <div class="table-responsive">
-    <table class="table">
-      <thead>
-        <tr>
-          <th scope="col">Date</th>
-          <th scope="col">Opening Liquid</th>
-          <th scope="col">Opening Cash</th>
-          <th scope="col">Closing Liquid</th>
-          <th scope="col">Closing Cash</th>
-        </tr>
-      </thead>
-      <tbody>
-        <tr *ngFor="let volt of volts">
-          <td>{{ volt.date | date }}</td>
-          <td>{{ volt.openingLiquidMoney | currency: "BDT":"symbol": '': 'bn' }}</td>
-          <td>{{ volt.openingCashMoney | currency: "BDT":"symbol": '': 'bn' }}</td>
-          <td>{{ volt.closingLiquidMoney | currency: "BDT":"symbol": '': 'bn' }}</td>
-          <td>{{ volt.closingCashMoney | currency: "BDT":"symbol": '': 'bn' }}</td>
-        </tr>
-      </tbody>
-    </table>
+<div class="card bg-white">
+  <div class="card-header">
+    <div class="form-group col-md-6">
+      <label for="date" class="form-label">Date</label>
+      <input type="month" [value]="date | date:'yyyy-MM'" id="date" class="form-control" (change)="onChange($event)">
+    </div>
+  </div>
+  <div class="card-body">
+    <div class="table-responsive">
+      <table class="table">
+        <thead>
+          <tr>
+            <th scope="col">Date</th>
+            <th scope="col">Opening Liquid</th>
+            <th scope="col">Opening Cash</th>
+            <th scope="col">Closing Liquid</th>
+            <th scope="col">Closing Cash</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr *ngFor="let volt of volts">
+            <td>{{ volt.date | date }}</td>
+            <td>{{ volt.openingLiquidMoney | currency: "BDT":"symbol": '': 'bn' }}</td>
+            <td>{{ volt.openingCashMoney | currency: "BDT":"symbol": '': 'bn' }}</td>
+            <td>{{ volt.closingLiquidMoney | currency: "BDT":"symbol": '': 'bn' }}</td>
+            <td>{{ volt.closingCashMoney | currency: "BDT":"symbol": '': 'bn' }}</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
   </div>
 </div>

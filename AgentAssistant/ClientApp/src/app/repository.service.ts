@@ -11,7 +11,7 @@ export class RepositoryService {
 
   constructor(private http: HttpClient) { }
 
-    public create = (route:string, body:Volt) => {
+    public create<Type>(route:string, body:Type){
       return this.http.post(this.baseURL + route, body, this.generateHeaders());
     }
 

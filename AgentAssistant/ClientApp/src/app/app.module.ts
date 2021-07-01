@@ -7,7 +7,6 @@ import { PreloadAllModules, RouterModule } from '@angular/router';
 import { AppComponent } from './app.component';
 import { NavMenuComponent } from './nav-menu/nav-menu.component';
 import { HomeComponent } from './home/home.component';
-import { FetchDataComponent } from './fetch-data/fetch-data.component';
 import { DatePipe } from '@angular/common';
 import { ErrorHandlerService } from './shared/services/error-handler.service';
 import { JwtModule } from "@auth0/angular-jwt";
@@ -24,8 +23,7 @@ export function tokenGetter() {
   declarations: [
     AppComponent,
     NavMenuComponent,
-    HomeComponent,
-    FetchDataComponent
+    HomeComponent
   ],
   imports: [
     BrowserModule.withServerTransition({ appId: 'ng-cli-universal' }),
@@ -33,12 +31,14 @@ export function tokenGetter() {
     ToastrModule.forRoot(),
     HttpClientModule,
     FormsModule,
-    VoltModule,
+    VoltModule, 
     RouterModule.forRoot(
       [
         { path: '', component: HomeComponent, pathMatch: 'full', canActivate: [AuthGuard] },
-        { path: 'authentication', loadChildren: () => import('./authentication/authentication.module').then(m=>m.AuthenticationModule) },
-        { path: 'fetch-data', component: FetchDataComponent, canActivate: [AuthGuard] }
+        { path: 'authentication', loadChildren: () => import('./authentication/authentication.module').then(m => m.AuthenticationModule) },
+        { path: 'volt', loadChildren: () => import('./volt/volt.module').then(m => m.VoltModule) },
+        { path: 'statement', loadChildren: () => import('./statement/statement.module').then(m => m.StatementModule) },
+        {path: 'user', loadChildren: () => import('./user/user.module').then(m => m.UserModule)}
       ],
       {preloadingStrategy: PreloadAllModules}
     ),

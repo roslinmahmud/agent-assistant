@@ -1,9 +1,6 @@
 ﻿using Entities.Models;
-using System;
+using Microsoft.EntityFrameworkCore;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace Entities.Repository
 {
@@ -21,12 +18,9 @@ namespace Entities.Repository
 
         public IEnumerable<Agent> GetAllAgents()
         {
-            return FindAll();
+            return FindAll()
+                .Include(a=>a.StatementCategories);
         }
 
-        public int SaveChanges()
-        {
-            return SaveChangees();
-        }
     }
 }

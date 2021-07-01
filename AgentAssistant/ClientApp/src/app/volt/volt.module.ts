@@ -13,13 +13,13 @@ import { ReactiveFormsModule } from '@angular/forms';
     VoltListComponent
   ],
   exports: [
-    VoltFormComponent,
-    VoltListComponent
+    VoltFormComponent
   ],
   imports: [
     CommonModule,
     ReactiveFormsModule,
     RouterModule.forChild([
+      //{path: 'volt', redirectTo: 'volt/list'},
       {path: 'form', component: VoltFormComponent},
       {path: 'list', component: VoltListComponent}
     ])

@@ -36,7 +36,7 @@ namespace Entities.Repository
             return agentContext.Set<T>().Where(expression).AsNoTracking();
         }
 
-        public int SaveChangees()
+        public int SaveChanges()
         {
             return agentContext.SaveChanges();
         }

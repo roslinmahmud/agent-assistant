@@ -71,6 +71,8 @@ namespace AgentAssistant
 
             services.AddScoped<IAgentRepository, AgentRepository>();
             services.AddScoped<IVoltRepository, VoltRepository>();
+            services.AddScoped<IStatementRepository, StatementRepository>();
+            services.AddScoped<IStatementCategoryRepository, StatementCategoryRepository>();
             services.AddScoped(typeof(JwtHandler<>));
 
             services.AddAutoMapper(typeof(MappingProfile));

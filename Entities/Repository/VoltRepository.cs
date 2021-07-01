@@ -23,11 +23,6 @@ namespace Entities.Repository
             return FindAll();
         }
 
-        public int SaveChanges()
-        {
-            return SaveChangees();
-        }
-
         public void UpdateVolt(Volt volt)
         {
             Update(volt);
