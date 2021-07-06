@@ -2,23 +2,16 @@
   <nav class="navbar navbar-expand-sm navbar-toggleable-sm navbar-dark bg-success border-bottom box-shadow mb-3">
     <div class="container">
       <a class="navbar-brand" [routerLink]="['/']">AgentAssistant</a>
-      <button
-        class="navbar-toggler"
-        type="button"
-        data-toggle="collapse"
-        data-target=".navbar-collapse"
-        aria-label="Toggle navigation"
-        [attr.aria-expanded]="isExpanded"
-        (click)="toggle()">
+      <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNavDropdown" aria-controls="navbarNavDropdown" aria-expanded="false" aria-label="Toggle navigation">
         <span class="navbar-toggler-icon"></span>
       </button>
-      <div class="navbar-collapse collapse" [ngClass]="{ show: isExpanded }">
+      <div class="collapse navbar-collapse" id="navbarNavDropdown">
         <ul class="navbar-nav mr-auto">
           <li
             class="nav-item"
             [routerLinkActive]="['active']"
             [routerLinkActiveOptions]="{ exact: true }">
-            <a class="nav-link" [routerLink]="['/']">Home</a>
+            <a class="nav-link" [routerLink]="['/home']">Home</a>
           </li>
           <li class="nav-item" [routerLinkActive]="['active']">
             <a class="nav-link" [routerLink]="['/volt/list']">Volt</a>
@@ -39,16 +32,16 @@
             </li>
           </ng-container>
           <ng-container *ngIf='isUserAuthenticated'>
-            <div class="dropdown">
-              <button type="button" class="btn btn-info dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+            <li class="nav-item dropdown">
+              <a class="nav-link dropdown-toggle" href="#" id="navbarDropdownMenuLink" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                 Agent
-              </button>
-              <div class="dropdown-menu">
+              </a>
+              <div class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
                 <a class="dropdown-item" [routerLink]="['/user/setting']">Setting</a>
                 <div class="dropdown-divider"></div>
                 <a class="dropdown-item" [routerLink]="" (click)="logout()">Logout</a>
               </div>
-            </div>
+            </li>
           </ng-container>
         </ul>
       </div>

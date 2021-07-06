@@ -26,12 +26,4 @@ export class NavMenuComponent implements OnInit {
     this.authService.logout();
     this.router.navigate(["/"]);
   }
-
-  collapse() {
-    this.isExpanded = false;
-  }
-
-  toggle() {
-    this.isExpanded = !this.isExpanded;
-  }
 }
