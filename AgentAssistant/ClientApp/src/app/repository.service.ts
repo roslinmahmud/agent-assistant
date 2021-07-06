@@ -1,5 +1,6 @@
 import { HttpClient, HttpHeaders } from '@angular/common/http';
-import { Inject, Injectable } from '@angular/core';
+import { Inject, Injectable, isDevMode } from '@angular/core';
+import { environment } from '../environments/environment';
 import { Volt } from './interfaces/volt';
 
 @Injectable({
@@ -7,7 +8,7 @@ import { Volt } from './interfaces/volt';
 })
 export class RepositoryService {
 
-  baseURL:string = "https://localhost:5001/";
+  baseURL: string = environment.API_URL;
 
   constructor(private http: HttpClient) { }
 

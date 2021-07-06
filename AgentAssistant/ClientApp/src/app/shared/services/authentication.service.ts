@@ -7,13 +7,14 @@ import { AuthResponse } from 'src/app/interfaces/authResponse';
 import { RegistrationResponse } from 'src/app/interfaces/registrationResponse';
 import { UserForAuthentication } from 'src/app/interfaces/userForAuthentication';
 import { UserForRegistration } from 'src/app/interfaces/userForRegistration';
+import { environment } from 'src/environments/environment';
 
 @Injectable({
   providedIn: 'root'
 })
 export class AuthenticationService {
   
-  baseURL:string = "https://localhost:5001/";
+  baseURL:string = environment.API_URL;
 
   private authChangeSub = new Subject<boolean>();
   public authChanged = this.authChangeSub.asObservable();
