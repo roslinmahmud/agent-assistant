@@ -1,15 +1,18 @@
 import { HttpErrorResponse, HttpEvent, HttpHandler, HttpInterceptor, HttpRequest } from '@angular/common/http';
-import { Injectable } from '@angular/core';
+import { Injectable, Injector } from '@angular/core';
 import { Router } from '@angular/router';
 import { Observable, throwError } from 'rxjs';
 import { catchError } from 'rxjs/operators';
+import { AuthenticationService } from './authentication.service';
 
 @Injectable({
   providedIn: 'root'
 })
 export class ErrorHandlerService implements HttpInterceptor {
 
-  constructor(private router: Router) { }
+  constructor(private router: Router,
+    private injector: Injector) {
+     }
   intercept(req: HttpRequest<any>, next: HttpHandler): Observable<HttpEvent<any>> {
     return next.handle(req)
     .pipe(
@@ -53,12 +56,14 @@ export class ErrorHandlerService implements HttpInterceptor {
   }
 
   private handleUnauthorized = (error: HttpErrorResponse): string => {
+    const authService = this.injector.get(AuthenticationService);
     if(this.router.url.startsWith('/authentication/login')){
       let message = error.error.errorMessage;
       return message;
     }
     else{
       this.router.navigate(['/authentication/login'], {queryParams:{returnUrl: this.router.url} });
+      authService.sendAuthStateChangeNotification(false);
       return error.message;
     }
   }
