@@ -34,18 +34,19 @@ export function tokenGetter() {
     VoltModule, 
     RouterModule.forRoot(
       [
-        { path: '', component: HomeComponent, pathMatch: 'full', canActivate: [AuthGuard] },
+        { path: '', redirectTo: 'home', pathMatch: 'full' },
+        { path: 'home', component: HomeComponent,  canActivate: [AuthGuard] },
         { path: 'authentication', loadChildren: () => import('./authentication/authentication.module').then(m => m.AuthenticationModule) },
-        { path: 'volt', loadChildren: () => import('./volt/volt.module').then(m => m.VoltModule) },
-        { path: 'statement', loadChildren: () => import('./statement/statement.module').then(m => m.StatementModule) },
-        {path: 'user', loadChildren: () => import('./user/user.module').then(m => m.UserModule)}
+        { path: 'volt', loadChildren: () => import('./volt/volt.module').then(m => m.VoltModule), canActivate:[AuthGuard] },
+        { path: 'statement', loadChildren: () => import('./statement/statement.module').then(m => m.StatementModule), canActivate: [AuthGuard] },
+        { path: 'user', loadChildren: () => import('./user/user.module').then(m => m.UserModule), canActivate: [AuthGuard] }
       ],
       {preloadingStrategy: PreloadAllModules}
     ),
     JwtModule.forRoot({
       config:{
         tokenGetter: tokenGetter,
-        whitelistedDomains: ["localhost:5001"],
+        whitelistedDomains: ["localhost:5001", "ibbl.azurewebsites.net"],
         blacklistedRoutes:[]
       }
     })

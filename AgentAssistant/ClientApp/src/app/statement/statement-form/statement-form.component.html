@@ -1,7 +1,5 @@
 <div class="card ">
-    <div class="card-header">
-      <span class="font-weight-bold">Statement</span>
-      </div>
+    <h5 class="card-header">Statement</h5>
     <div class="card-body">
         <form [formGroup]="statementForm" (ngSubmit)="onSubmit()">
             <div class="form-row">
@@ -58,9 +56,9 @@
     </div>
 </div>
 <div class="card mt-2 mb-2">
-  <div class="card-body">
+  <div class="card-body pl-0 pr-0">
     <div class="form-group col-md-6">
-      <label for="date" class="form-label">Date</label>
+      <h6 class="card-title">Select Month</h6>
       <input type="month" [value]="date | date:'yyyy-MM'" id="date" class="form-control" (change)="onChange($event)">
     </div>
     <div class="table-responsive">
@@ -93,8 +91,8 @@
         </tbody>
       </table>
     </div>
-    <div class="row text-info font-weight-bold">
-      <div class="col-3">Net Income:</div><div class="col-3">{{ netIncome | currency: "BDT":"symbol": '': 'bn' }}</div>
+    <div class="row text-info font-weight-bold p-2">
+      <div class="col">Net Income:</div><div class="col">{{ netIncome | currency: "BDT":"symbol": '': 'bn' }}</div>
     </div>
     
   </div>

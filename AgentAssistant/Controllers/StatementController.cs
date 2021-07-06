@@ -8,7 +8,7 @@ using System.Linq;
 namespace AgentAssistant.Controllers
 {
     [Route("api/[controller]")]
-    //[Authorize]
+    [Authorize]
     [ApiController]
     public class StatementController : Controller
     {

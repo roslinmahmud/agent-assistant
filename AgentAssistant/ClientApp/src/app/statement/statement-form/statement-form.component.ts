@@ -47,7 +47,8 @@ export class StatementFormComponent implements OnInit {
   }
 
   onChange(date:any){
-    this.getStatements(date.target.value);
+    this.date = date.target.value;
+    this.getStatements(this.date);
   }
 
   private getStatements(date: string){
@@ -59,14 +60,8 @@ export class StatementFormComponent implements OnInit {
       res =>{ this.statements = res as Statement[]},
       (error) => {},
       () => {
-        this.statements.map(st => {
-          if(this.statementCategoryMap.get(st.categoryId).isIncome){
-            this.netIncome+=st.amount;
-          }
-          else{
-            this.netIncome-=st.amount;
-          }
-        })
+        this.netIncome = 0;
+        this.statements.map(st => this.statementCategoryMap.get(st.categoryId).isIncome ? this.netIncome+=st.amount : this.netIncome-=st.amount )
       }
     );
   }
@@ -87,13 +82,20 @@ export class StatementFormComponent implements OnInit {
 
     this.repository.create(apiUrl, Statement)
       .subscribe(
-        res => {
-          this.statements.push(res as Statement);
-          this.toastr.success('Submit successful', '');
+        (res: Statement) => {
+          let date = this.datePipe.transform(res.date);
+          if(date != this.date){
+              this.date = date;
+              this.getStatements(this.date);
+          }
+          this.statements.push(res);
+          this.statementForm.reset();
+          this.toastr.success('Statement created', 'Submit successful');
         },
         (error)=>{
           console.error(error);
-        }
+        },
+        ()=>{}
       );
   }
 

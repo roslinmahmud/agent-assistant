@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
+import { ToastrService } from 'ngx-toastr';
 import { AuthenticationService } from 'src/app/shared/services/authentication.service';
 
 @Component({
@@ -10,13 +11,12 @@ import { AuthenticationService } from 'src/app/shared/services/authentication.se
 })
 export class LoginComponent implements OnInit {
   public loginForm: FormGroup;
-  public errorMessage: string = '';
-  public showError: boolean;
   private returnUrl: string;
 
   constructor(private authService: AuthenticationService,
     private router: Router,
-    private route: ActivatedRoute) { }
+    private route: ActivatedRoute,
+    private toastr: ToastrService) { }
 
   ngOnInit() {
     this.loginForm = new FormGroup({
@@ -36,7 +36,11 @@ export class LoginComponent implements OnInit {
   }
 
   public loginUser = () => {
-    this.showError = false;
+    this.loginForm.markAsPending();
+    if(this.loginForm.invalid){
+      return;
+    }
+ 
     this.authService.loginUser('api/agent/login', this.loginForm.value)
     .subscribe(res => {
       localStorage.setItem("token", res.token);
@@ -44,8 +48,7 @@ export class LoginComponent implements OnInit {
       this.router.navigate([this.returnUrl]);
     },
     (error) => {
-      this.errorMessage = error;
-      this.showError = true;
+      this.toastr.error(error, "Signin failed");
     });
   }
 

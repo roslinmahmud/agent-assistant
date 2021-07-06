@@ -1,11 +1,10 @@
 <div class="card bg-white">
-  <div class="card-header">
+  <h5 class="card-header">Volt Reports</h5>
+  <div class="card-body pl-0 pr-0">
     <div class="form-group col-md-6">
-      <label for="date" class="form-label">Date</label>
+      <h6 class="card-title">Select Month</h6>
       <input type="month" [value]="date | date:'yyyy-MM'" id="date" class="form-control" (change)="onChange($event)">
     </div>
-  </div>
-  <div class="card-body">
     <div class="table-responsive">
       <table class="table">
         <thead>
