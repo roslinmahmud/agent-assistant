@@ -3,7 +3,6 @@ using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.HttpsPolicy;
 using Microsoft.AspNetCore.SpaServices.AngularCli;
-using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
@@ -15,24 +14,32 @@ using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.IdentityModel.Tokens;
 using System.Text;
 using AgentAssistant.JwtFeatures;
+using AgentAssistant.Extensions;
 
 namespace AgentAssistant
 {
     public class Startup
     {
-        public Startup(IConfiguration configuration)
+        public Startup(IConfiguration configuration, IWebHostEnvironment environment)
         {
             Configuration = configuration;
+            Environment = environment;
         }
 
         public IConfiguration Configuration { get; }
+        public IWebHostEnvironment Environment { get; }
 
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
-            services.AddDbContext<AgentContext>(opts =>
-                opts.UseSqlite(Configuration.GetConnectionString("SqliteConnection"),
-                    options => options.MigrationsAssembly("AgentAssistant")));
+            if (Environment.IsDevelopment())
+            {
+                services.ConfigureMySQLContext(Configuration);
+            }
+            else
+            {
+                services.ConfigureMySQLInAppContext(Configuration);
+            }
 
             services.AddIdentityCore<ApplicationUser>(opt => {
                 opt.User.RequireUniqueEmail = true;
