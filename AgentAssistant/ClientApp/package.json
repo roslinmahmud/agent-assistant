@@ -23,6 +23,8 @@
     "@angular/router": "9.1.13",
     "@auth0/angular-jwt": "^4.2.0",
     "@nguniversal/module-map-ngfactory-loader": "8.1.1",
+    "@ngx-loading-bar/core": "^5.1.2",
+    "@ngx-loading-bar/http-client": "^5.1.2",
     "bootstrap": "^4.6.0",
     "core-js": "^3.14.0",
     "jquery": "^3.6.0",

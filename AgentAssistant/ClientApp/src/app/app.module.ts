@@ -14,6 +14,7 @@ import { AuthGuard } from './shared/guards/auth.guard';
 import { VoltModule } from './volt/volt.module';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { ToastrModule } from 'ngx-toastr';
+import { LoadingBarHttpClientModule } from '@ngx-loading-bar/http-client';
 
 export function tokenGetter() {
   return localStorage.getItem("token");
@@ -49,7 +50,8 @@ export function tokenGetter() {
         whitelistedDomains: ["localhost:5001", "ibbl.azurewebsites.net"],
         blacklistedRoutes:[]
       }
-    })
+    }),
+    LoadingBarHttpClientModule
   ],
   providers: 
   [
