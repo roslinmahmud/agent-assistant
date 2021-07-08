@@ -104,7 +104,7 @@ namespace AgentAssistant.Controllers
 
             agentRepository.CreateAgent(agent);
 
-            agentRepository.SaveChanges();
+            agentRepository.SaveChangesAsync();
 
             return Created("api/Agent/",agent);
 

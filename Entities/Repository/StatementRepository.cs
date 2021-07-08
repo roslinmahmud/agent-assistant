@@ -15,7 +15,7 @@ namespace Entities.Repository
 
         }
         
-        public async Task<IEnumerable<Statement>> GetAllStatements(string agentId, DateTime dateTime)
+        public async Task<IEnumerable<Statement>> GetAllStatementsAsync(string agentId, DateTime dateTime)
         {
             return await FindByCondition(s => s.AgentId == agentId && s.Date.Month == dateTime.Month && s.Date.Year == dateTime.Year).
                 ToListAsync();

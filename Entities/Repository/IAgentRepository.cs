@@ -8,6 +8,6 @@ namespace Entities.Repository
     {
         public void CreateAgent(Agent agent);
         public Task<IEnumerable<Agent>> GetAllAgents();
-        public Task<int> SaveChanges();
+        public Task<int> SaveChangesAsync();
     }
 }
