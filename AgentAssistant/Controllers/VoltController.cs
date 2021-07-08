@@ -4,6 +4,7 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using System;
 using System.Linq;
+using System.Threading.Tasks;
 
 namespace AgentAssistant.Controllers
 {
@@ -19,98 +20,92 @@ namespace AgentAssistant.Controllers
             this.voltRepository = voltRepository;
         }
 
-        [HttpGet("{agentId}/{dateTime}")]
-        public IActionResult GetVolt(string agentId, DateTime dateTime)
+        [HttpGet("{agentId}/{date}")]
+        public async Task<IActionResult> GetVolt(string agentId, DateTime date)
         {
             try
             {
-                var volt = voltRepository.GetAllVolts()
-                    .Where(v => v.AgentId == agentId && v.Date.Date == dateTime.Date)
-                    .FirstOrDefault();
+                var volt = await voltRepository.GetVoltAsync(agentId, date);
 
                 return Ok(volt);
             }
             catch (Exception e)
             {
 
-                return StatusCode(500, "Internal server error");
+                return StatusCode(500, "Internal server error: " + e.Message);
             }
 
         }
 
         [HttpGet("list/{agentId}/{date}")]
-        public IActionResult GetVoltList(string agentId, DateTime date)
+        public async Task<IActionResult> GetVoltList(string agentId, DateTime date)
         {
             try
             {
-                var volts = voltRepository.GetAllVolts().
-                    Where(v => v.AgentId == agentId && date.Month == v.Date.Month && v.Date.Year == date.Year);
+                var volts = await voltRepository.GetVoltListAsync(agentId, date);
 
                 return Ok(volts);
             }
             catch (Exception e)
             {
 
-                return StatusCode(500, "Internal server error");
+                return StatusCode(500, "Internal server error: " + e.Message);
             }
             
         }
 
         [HttpPost]
-        public IActionResult CreateVolt([FromBody] Volt volt)
+        public async Task<IActionResult> CreateVolt([FromBody] Volt volt)
         {
             try
             {
-                voltRepository.CreateVolt(volt);
-
-                if (voltRepository.SaveChanges() > 0)
+                if (volt == null || !ModelState.IsValid)
                 {
-                    return CreatedAtAction("GetVolt", volt);
+                    return BadRequest("Invalid Volt object");
                 }
 
-                return BadRequest();
+                voltRepository.CreateVolt(volt);
+
+                await voltRepository.SaveChangesAsync();
+
+                return CreatedAtAction("GetVolt", volt);
             }
             catch (Exception e)
             {
 
-                return StatusCode(500, "Internal server error");
+                return StatusCode(500, "Internal server error: " + e.Message);
             }
             
         }
 
         [HttpPut]
-        public IActionResult UpdateVolt([FromBody] Volt volt)
+        public async Task<IActionResult> UpdateVolt([FromBody] Volt volt)
         {
             try
             {
-                if (volt == null)
-                {
-                    return BadRequest("Volt object is null");
-                }
-
-                if (!ModelState.IsValid)
+                if (volt == null || !ModelState.IsValid)
                 {
                     return BadRequest("Invalid Volt object");
                 }
 
-                var voltEntity = voltRepository.GetAllVolts()
-                    .Where(v => v.Id == volt.Id)
-                    .FirstOrDefault();
+                var voltEntity = await voltRepository.GetVoltByIdAsync(volt.Id);
+
                 if (voltEntity == null)
                 {
-                    return NotFound("Owner not found in server");
+                    return NotFound("Volt object not found in server");
                 }
 
                 voltRepository.UpdateVolt(volt);
-                voltRepository.SaveChanges();
+
+                await voltRepository.SaveChangesAsync();
 
                 return NoContent();
 
             }
-            catch (Exception ex)
+            catch (Exception e)
             {
 
-                return StatusCode(500, "Internal server error");
+                return StatusCode(500, "Internal server error: " + e.Message);
             }
         }
     }

@@ -1,6 +1,7 @@
 ﻿using Entities.Models;
 using Microsoft.EntityFrameworkCore;
 using System.Collections.Generic;
+using System.Threading.Tasks;
 
 namespace Entities.Repository
 {
@@ -16,10 +17,11 @@ namespace Entities.Repository
             Create(agent);
         }
 
-        public IEnumerable<Agent> GetAllAgents()
+        public async Task<IEnumerable<Agent>> GetAllAgents()
         {
-            return FindAll()
-                .Include(a=>a.StatementCategories);
+            return await FindAll()
+                .Include(a => a.StatementCategories)
+                .ToListAsync();
         }
 
     }

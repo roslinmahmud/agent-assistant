@@ -1,12 +1,13 @@
 ﻿using Entities.Models;
 using System.Collections.Generic;
+using System.Threading.Tasks;
 
 namespace Entities.Repository
 {
     public interface IAgentRepository
     {
         public void CreateAgent(Agent agent);
-        public IEnumerable<Agent> GetAllAgents();
-        public int SaveChanges();
+        public Task<IEnumerable<Agent>> GetAllAgents();
+        public Task<int> SaveChanges();
     }
 }

@@ -4,6 +4,7 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using System;
 using System.Linq;
+using System.Threading.Tasks;
 
 namespace AgentAssistant.Controllers
 {
@@ -23,81 +24,85 @@ namespace AgentAssistant.Controllers
         }
 
         [HttpGet("{agentId}/{dateTime}")]
-        public IActionResult GetStatements(string agentId, DateTime dateTime)
+        public async Task<IActionResult> GetStatements(string agentId, DateTime dateTime)
         {
             try
             {
-                var statements = statementRepository.GetAllStatements()
-                    .Where(s => s.AgentId == agentId && s.Date.Month == dateTime.Month && s.Date.Year == dateTime.Year);
-
+                var statements = await statementRepository.GetAllStatementsAsync(agentId, dateTime);
+                    
                 return Ok(statements);
             }
             catch (Exception e)
             {
 
-                return StatusCode(500, "Internal server error");
+                return StatusCode(500, "Internal server error: " + e.Message);
             }
 
         }
 
         [HttpPost]
-        public IActionResult CreateStatement([FromBody] Statement statement)
+        public async Task<IActionResult> CreateStatement([FromBody] Statement statement)
         {
             try
             {
-                statementRepository.CreateStatement(statement);
-
-                if (statementRepository.SaveChanges() > 0)
+                if (statement == null || !ModelState.IsValid)
                 {
-                    return CreatedAtAction("GetStatement", statement);
+                    return BadRequest("Invalid Statement object");
                 }
 
-                return BadRequest();
+                statementRepository.CreateStatement(statement);
+
+                await statementRepository.SaveChangesAsync();
+
+                return CreatedAtAction("GetStatement", statement);
             }
             catch (Exception e)
             {
 
-                return StatusCode(500, "Internal server error");
+                return StatusCode(500, "Internal server error: " + e.Message);
             }
             
         }
 
         [HttpGet("category/{agentId}")]
-        public IActionResult GetStatementCategories(string agentId)
+        public async Task<IActionResult> GetStatementCategories(string agentId)
         {
             try
             {
-                var statementcategories = statementCategoryRepository.GetAllStatementCategories()
-                    .Where(a => a.AgentId == agentId);
+                var statementCategories = await statementCategoryRepository.GetAllStatementCategoriesAsync(agentId);
 
-                return Ok(statementcategories);
+                return Ok(statementCategories);
             }
             catch (Exception e)
             {
 
-                return StatusCode(500, "Internal server error");
+                return StatusCode(500, "Internal server error: " + e.Message);
             }
 
         }
 
         [HttpPost("category")]
-        public IActionResult CreateStatementCategories(StatementCategory statementCategory)
+        public async Task<IActionResult> CreateStatementCategory(StatementCategory statementCategory)
         {
             try
             {
+                if (statementCategory == null || !ModelState.IsValid)
+                {
+                    return BadRequest("Invalid StatementCategory object");
+                }
+
                 statementCategoryRepository.CreateStatementCategory(statementCategory);
 
-                if (statementCategoryRepository.SaveChanges() > 0)
-                {
-                    return CreatedAtAction("CreateStatementCategories", statementCategory);
-                }
+                await statementCategoryRepository.SaveChangesAsync();
+
+                CreatedAtAction("CreateStatementCategory", statementCategory);
 
                 return BadRequest();
             }
             catch (Exception e)
             {
 
-                return StatusCode(500, "Internal server error");
+                return StatusCode(500, "Internal server error: " + e.Message);
             }
 
         }

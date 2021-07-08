@@ -36,14 +36,14 @@ namespace Entities.Repository
             return agentContext.Set<T>().Where(expression).AsNoTracking();
         }
 
-        public int SaveChanges()
-        {
-            return agentContext.SaveChanges();
-        }
-
         public void Update(T entity)
         {
             agentContext.Set<T>().Update(entity);
+        }
+
+        public async Task<int> SaveChangesAsync()
+        {
+            return await agentContext.SaveChangesAsync();
         }
     }
 }

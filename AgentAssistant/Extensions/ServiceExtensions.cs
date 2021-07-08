@@ -15,7 +15,7 @@ namespace AgentAssistant.Extensions
         {
             var connectionString = configuration.GetConnectionString("MySqlConnection");
             services.AddDbContext<AgentContext>(opts =>
-                opts.UseMySQL(connectionString, options => options.MigrationsAssembly("AgentAssistant")));
+                opts.UseMySql(connectionString, ServerVersion.AutoDetect(connectionString), options => options.MigrationsAssembly("AgentAssistant")));
         }
 
         public static void ConfigureSqliteContext(this IServiceCollection services, IConfiguration configuration)
@@ -29,7 +29,7 @@ namespace AgentAssistant.Extensions
         {
             var connectionString = configuration.GetConnectionString("localdb");
             services.AddDbContext<AgentContext>(opts =>
-                opts.UseMySQL(NormalizeAzureInAppConnectionString(connectionString), options => options.MigrationsAssembly("AgentAssistant")));
+                opts.UseMySql(NormalizeAzureInAppConnectionString(connectionString), ServerVersion.AutoDetect(connectionString), options => options.MigrationsAssembly("AgentAssistant")));
         }
 
         private static string NormalizeAzureInAppConnectionString(string raw)

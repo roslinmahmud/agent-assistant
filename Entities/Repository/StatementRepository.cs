@@ -1,4 +1,5 @@
 ﻿using Entities.Models;
+using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -13,14 +14,16 @@ namespace Entities.Repository
         {
 
         }
+        
+        public async Task<IEnumerable<Statement>> GetAllStatements(string agentId, DateTime dateTime)
+        {
+            return await FindByCondition(s => s.AgentId == agentId && s.Date.Month == dateTime.Month && s.Date.Year == dateTime.Year).
+                ToListAsync();
+        }
+
         public void CreateStatement(Statement statement)
         {
             Create(statement);
-        }
-
-        public IEnumerable<Statement> GetAllStatements()
-        {
-            return FindAll();
         }
 
         public void UpdateStatement(Statement statement)

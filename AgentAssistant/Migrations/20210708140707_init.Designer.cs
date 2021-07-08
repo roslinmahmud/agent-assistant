@@ -9,7 +9,7 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace AgentAssistant.Migrations
 {
     [DbContext(typeof(AgentContext))]
-    [Migration("20210707051240_init")]
+    [Migration("20210708140707_init")]
     partial class init
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -30,11 +30,11 @@ namespace AgentAssistant.Migrations
 
                     b.Property<string>("ConcurrencyStamp")
                         .IsConcurrencyToken()
-                        .HasColumnType("text");
+                        .HasColumnType("longtext");
 
                     b.Property<string>("Discriminator")
                         .IsRequired()
-                        .HasColumnType("text");
+                        .HasColumnType("longtext");
 
                     b.Property<string>("Email")
                         .HasMaxLength(256)
@@ -44,16 +44,16 @@ namespace AgentAssistant.Migrations
                         .HasColumnType("tinyint(1)");
 
                     b.Property<string>("FirstName")
-                        .HasColumnType("text");
+                        .HasColumnType("longtext");
 
                     b.Property<string>("LastName")
-                        .HasColumnType("text");
+                        .HasColumnType("longtext");
 
                     b.Property<bool>("LockoutEnabled")
                         .HasColumnType("tinyint(1)");
 
                     b.Property<DateTimeOffset?>("LockoutEnd")
-                        .HasColumnType("timestamp");
+                        .HasColumnType("datetime(6)");
 
                     b.Property<string>("NormalizedEmail")
                         .HasMaxLength(36)
@@ -64,16 +64,16 @@ namespace AgentAssistant.Migrations
                         .HasColumnType("varchar(36)");
 
                     b.Property<string>("PasswordHash")
-                        .HasColumnType("text");
+                        .HasColumnType("longtext");
 
                     b.Property<string>("PhoneNumber")
-                        .HasColumnType("text");
+                        .HasColumnType("longtext");
 
                     b.Property<bool>("PhoneNumberConfirmed")
                         .HasColumnType("tinyint(1)");
 
                     b.Property<string>("SecurityStamp")
-                        .HasColumnType("text");
+                        .HasColumnType("longtext");
 
                     b.Property<bool>("TwoFactorEnabled")
                         .HasColumnType("tinyint(1)");
@@ -113,10 +113,10 @@ namespace AgentAssistant.Migrations
                         .HasColumnType("int");
 
                     b.Property<DateTime>("Date")
-                        .HasColumnType("datetime");
+                        .HasColumnType("datetime(6)");
 
                     b.Property<string>("Description")
-                        .HasColumnType("text");
+                        .HasColumnType("longtext");
 
                     b.HasKey("Id");
 
@@ -139,7 +139,7 @@ namespace AgentAssistant.Migrations
 
                     b.Property<string>("CategoryName")
                         .IsRequired()
-                        .HasColumnType("text");
+                        .HasColumnType("longtext");
 
                     b.Property<bool>("IsIncome")
                         .HasColumnType("tinyint(1)");
@@ -168,7 +168,7 @@ namespace AgentAssistant.Migrations
                         .HasColumnType("double");
 
                     b.Property<DateTime>("Date")
-                        .HasColumnType("datetime");
+                        .HasColumnType("datetime(6)");
 
                     b.Property<double>("OpeningCashMoney")
                         .HasColumnType("double");
@@ -191,7 +191,7 @@ namespace AgentAssistant.Migrations
 
                     b.Property<string>("ConcurrencyStamp")
                         .IsConcurrencyToken()
-                        .HasColumnType("text");
+                        .HasColumnType("longtext");
 
                     b.Property<string>("Name")
                         .HasMaxLength(256)
@@ -212,22 +212,22 @@ namespace AgentAssistant.Migrations
                     b.HasData(
                         new
                         {
-                            Id = "a3bee678-8b1e-4fae-b847-e8dcf92d1f20",
-                            ConcurrencyStamp = "95ab77ae-598e-40ac-b0c1-eba280838111",
+                            Id = "eeb6638e-e4c7-467e-8edd-43887d2f7459",
+                            ConcurrencyStamp = "8c2a06c7-cb29-4876-a206-4dff823caed1",
                             Name = "Administrator",
                             NormalizedName = "ADMINISTRATOR"
                         },
                         new
                         {
-                            Id = "34d64a39-464c-4ca1-8271-f51310233dc9",
-                            ConcurrencyStamp = "5511c5ec-8f5e-40f0-8e21-c752478f5943",
+                            Id = "73260dfb-9c6b-4cc2-a421-8ae25bed29be",
+                            ConcurrencyStamp = "b99ad710-e310-4adc-8612-43439fac5fad",
                             Name = "Agent",
                             NormalizedName = "AGENT"
                         },
                         new
                         {
-                            Id = "5209da9d-ee69-443b-92e3-83db38b8ff69",
-                            ConcurrencyStamp = "8224bb5c-2c3b-4419-a0c8-0a1ce0abe76f",
+                            Id = "7fb38058-36a6-4c7d-91d7-a87c303b9c65",
+                            ConcurrencyStamp = "c47119e7-624b-4bb7-8fe7-01aa4243c2bc",
                             Name = "InCharge",
                             NormalizedName = "INCHARGE"
                         });
@@ -241,10 +241,10 @@ namespace AgentAssistant.Migrations
                         .HasColumnType("int");
 
                     b.Property<string>("ClaimType")
-                        .HasColumnType("text");
+                        .HasColumnType("longtext");
 
                     b.Property<string>("ClaimValue")
-                        .HasColumnType("text");
+                        .HasColumnType("longtext");
 
                     b.Property<string>("RoleId")
                         .IsRequired()
@@ -266,10 +266,10 @@ namespace AgentAssistant.Migrations
                         .HasColumnType("int");
 
                     b.Property<string>("ClaimType")
-                        .HasColumnType("text");
+                        .HasColumnType("longtext");
 
                     b.Property<string>("ClaimValue")
-                        .HasColumnType("text");
+                        .HasColumnType("longtext");
 
                     b.Property<string>("UserId")
                         .IsRequired()
@@ -294,7 +294,7 @@ namespace AgentAssistant.Migrations
                         .HasColumnType("varchar(36)");
 
                     b.Property<string>("ProviderDisplayName")
-                        .HasColumnType("text");
+                        .HasColumnType("longtext");
 
                     b.Property<string>("UserId")
                         .IsRequired()
@@ -340,7 +340,7 @@ namespace AgentAssistant.Migrations
                         .HasColumnType("varchar(36)");
 
                     b.Property<string>("Value")
-                        .HasColumnType("text");
+                        .HasColumnType("longtext");
 
                     b.HasKey("UserId", "LoginProvider", "Name");
 

@@ -1,5 +1,7 @@
 ﻿using Entities.Models;
+using Microsoft.EntityFrameworkCore;
 using System.Collections.Generic;
+using System.Threading.Tasks;
 
 namespace Entities.Repository
 {
@@ -9,14 +11,16 @@ namespace Entities.Repository
         {
 
         }
+
+        public async Task<IEnumerable<StatementCategory>> GetAllStatementCategoriesAsync(string agentId)
+        {
+            return await FindByCondition(a => a.AgentId == agentId).
+                ToListAsync();
+        }
+
         public void CreateStatementCategory(StatementCategory statementCategory)
         {
             Create(statementCategory);
-        }
-
-        public IEnumerable<StatementCategory> GetAllStatementCategories()
-        {
-            return FindAll();
         }
 
         public void UpdateStatemenCategory(StatementCategory statementCategory)
