@@ -6,7 +6,7 @@ namespace Entities.Repository
 {
     public interface IStatementCategoryRepository
     {
-        Task<IEnumerable<StatementCategory>> GetAllStatementCategoriesAsync(string agentId);
+        Task<IEnumerable<StatementCategory>> GetAllStatementCategoriesAsync(int agentId);
         void CreateStatementCategory(StatementCategory statementCategory);
         void UpdateStatemenCategory(StatementCategory statementCategory);
         Task<int> SaveChangesAsync();

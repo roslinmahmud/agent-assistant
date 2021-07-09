@@ -45,17 +45,10 @@ namespace AgentAssistant
                 opt.User.RequireUniqueEmail = true;
                 opt.Password.RequireNonAlphanumeric = false;
             })
-            .AddEntityFrameworkStores<AgentContext>()
-            .AddDefaultTokenProviders();
-
-            services.AddIdentityCore<Agent>(opt =>
-            {
-                opt.User.RequireUniqueEmail = true;
-                opt.Password.RequireNonAlphanumeric = false;
-            })
             .AddRoles<IdentityRole>()
             .AddEntityFrameworkStores<AgentContext>()
             .AddDefaultTokenProviders();
+
 
             services.AddAuthentication(opt =>
             {

@@ -14,7 +14,6 @@ namespace Entities
         }
 
         public DbSet<Agent> Agents { get; set; }
-        public DbSet<Employee> Employees { get; set; }
         public DbSet<Volt> Volts { get; set; }
         public DbSet<Statement> Statements { get; set; }
         public DbSet<StatementCategory> StatementCategories { get; set; }
@@ -25,7 +24,6 @@ namespace Entities
 
             modelBuilder.ApplyConfiguration(new VoltConfiguration());
             modelBuilder.ApplyConfiguration(new RoleConfiguration());
-            modelBuilder.ApplyConfiguration(new CategoryConfiguration());
 
             modelBuilder.Entity<ApplicationUser>(entity => entity.Property(m => m.Id).HasMaxLength(36));
             modelBuilder.Entity<ApplicationUser>(entity => entity.Property(m => m.NormalizedEmail).HasMaxLength(36));

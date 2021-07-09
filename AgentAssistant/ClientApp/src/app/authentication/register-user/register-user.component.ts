@@ -3,6 +3,7 @@ import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
 import { PasswordConfirmationValidatorsService } from 'src/app/shared/custom-validators/password-confirmation-validators.service';
 import { AuthenticationService } from 'src/app/shared/services/authentication.service';
+import { RepositoryService } from '../../repository.service';
 
 @Component({
   selector: 'app-register-user',
@@ -16,7 +17,8 @@ export class RegisterUserComponent implements OnInit {
 
   constructor(private authService: AuthenticationService,
     private passConfValidator: PasswordConfirmationValidatorsService,
-    private router: Router) { }
+    private router: Router,
+    private repository: RepositoryService) { }
 
   ngOnInit() {
     this.registerForm = new FormGroup({
@@ -40,15 +42,34 @@ export class RegisterUserComponent implements OnInit {
 
   public registerUser = () => {
     this.showError = false;
-    this.authService.registerUser('api/agent/registration', this.registerForm.value)
-    .subscribe(_ => {
-      this.router.navigate(["/authentication/login"]);
+    this.authService.registerUser('api/user/registration', this.registerForm.value)
+    .subscribe(res => {
+      if (res.isSuccessfulRegistration) {
+        this.registerAgent(res.userId);
+      }
+        
     },
     error => {
       console.log(error);
       this.errorMessage = error;
       this.showError = true;
     })
+  }
+
+  public registerAgent = (userId: string) => {
+
+    const apiUrl = "api/agent/" + userId;
+
+    this.repository.create(apiUrl, { Name: "IBBL Agent" })
+      .subscribe(
+        (res) => {
+          this.router.navigate(["/authentication/login"]);
+        },
+        (error) => {
+          console.error(error);
+        },
+        () => { }
+      );
   }
 
 }

@@ -9,7 +9,7 @@ namespace Entities.Models
         public bool IsIncome { get; set; }
 
         [Required]
-        public string AgentId { get; set; }
+        public int AgentId { get; set; }
         public Agent Agent { get; set; }
     }
 }

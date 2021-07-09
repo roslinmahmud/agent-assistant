@@ -12,7 +12,7 @@ using System.Threading.Tasks;
 
 namespace AgentAssistant.JwtFeatures
 {
-    public class JwtHandler<T> where T: IdentityUser
+    public class JwtHandler<T> where T: ApplicationUser
     {
         private readonly IConfiguration _configuration;
         private readonly UserManager<T> userManager;
@@ -36,7 +36,7 @@ namespace AgentAssistant.JwtFeatures
         {
             var claims = new List<Claim>
             {
-                new Claim(ClaimTypes.NameIdentifier, user.Id)
+                new Claim(ClaimTypes.NameIdentifier, user.AgentId.ToString())
             };
             var roles = await userManager.GetRolesAsync(user);
             foreach(var role in roles)

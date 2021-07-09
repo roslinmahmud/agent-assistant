@@ -20,7 +20,6 @@ namespace Entities.Repository
         public async Task<IEnumerable<Agent>> GetAllAgents()
         {
             return await FindAll()
-                .Include(a => a.StatementCategories)
                 .ToListAsync();
         }
 

@@ -4,11 +4,26 @@ using Microsoft.EntityFrameworkCore.Migrations;
 
 namespace AgentAssistant.Migrations
 {
-    public partial class init : Migration
+    public partial class Initial : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.AlterDatabase()
+                .Annotation("MySql:CharSet", "utf8mb4");
+
+            migrationBuilder.CreateTable(
+                name: "Agents",
+                columns: table => new
+                {
+                    Id = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("MySql:ValueGenerationStrategy", MySqlValueGenerationStrategy.IdentityColumn),
+                    Name = table.Column<string>(type: "longtext", nullable: true)
+                        .Annotation("MySql:CharSet", "utf8mb4")
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Agents", x => x.Id);
+                })
                 .Annotation("MySql:CharSet", "utf8mb4");
 
             migrationBuilder.CreateTable(
@@ -40,10 +55,7 @@ namespace AgentAssistant.Migrations
                         .Annotation("MySql:CharSet", "utf8mb4"),
                     LastName = table.Column<string>(type: "longtext", nullable: true)
                         .Annotation("MySql:CharSet", "utf8mb4"),
-                    Discriminator = table.Column<string>(type: "longtext", nullable: false)
-                        .Annotation("MySql:CharSet", "utf8mb4"),
-                    AgentId = table.Column<string>(type: "varchar(36)", nullable: true)
-                        .Annotation("MySql:CharSet", "utf8mb4"),
+                    AgentId = table.Column<int>(type: "int", nullable: false),
                     UserName = table.Column<string>(type: "varchar(256)", maxLength: 256, nullable: true)
                         .Annotation("MySql:CharSet", "utf8mb4"),
                     NormalizedUserName = table.Column<string>(type: "varchar(36)", maxLength: 36, nullable: true)
@@ -71,9 +83,58 @@ namespace AgentAssistant.Migrations
                 {
                     table.PrimaryKey("PK_AspNetUsers", x => x.Id);
                     table.ForeignKey(
-                        name: "FK_AspNetUsers_AspNetUsers_AgentId",
+                        name: "FK_AspNetUsers_Agents_AgentId",
                         column: x => x.AgentId,
-                        principalTable: "AspNetUsers",
+                        principalTable: "Agents",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                })
+                .Annotation("MySql:CharSet", "utf8mb4");
+
+            migrationBuilder.CreateTable(
+                name: "StatementCategories",
+                columns: table => new
+                {
+                    Id = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("MySql:ValueGenerationStrategy", MySqlValueGenerationStrategy.IdentityColumn),
+                    CategoryName = table.Column<string>(type: "longtext", nullable: false)
+                        .Annotation("MySql:CharSet", "utf8mb4"),
+                    IsIncome = table.Column<bool>(type: "tinyint(1)", nullable: false),
+                    AgentId = table.Column<int>(type: "int", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_StatementCategories", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_StatementCategories_Agents_AgentId",
+                        column: x => x.AgentId,
+                        principalTable: "Agents",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                })
+                .Annotation("MySql:CharSet", "utf8mb4");
+
+            migrationBuilder.CreateTable(
+                name: "Volts",
+                columns: table => new
+                {
+                    Id = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("MySql:ValueGenerationStrategy", MySqlValueGenerationStrategy.IdentityColumn),
+                    Date = table.Column<DateTime>(type: "datetime(6)", nullable: false),
+                    OpeningLiquidMoney = table.Column<double>(type: "double", nullable: false),
+                    OpeningCashMoney = table.Column<double>(type: "double", nullable: false),
+                    ClosingCashMoney = table.Column<double>(type: "double", nullable: false),
+                    ClosingLiquidMoney = table.Column<double>(type: "double", nullable: false),
+                    AgentId = table.Column<int>(type: "int", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Volts", x => x.Id);
+                    table.UniqueConstraint("AK_Volts_AgentId_Date", x => new { x.AgentId, x.Date });
+                    table.ForeignKey(
+                        name: "FK_Volts_Agents_AgentId",
+                        column: x => x.AgentId,
+                        principalTable: "Agents",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
                 })
@@ -207,57 +268,6 @@ namespace AgentAssistant.Migrations
                 .Annotation("MySql:CharSet", "utf8mb4");
 
             migrationBuilder.CreateTable(
-                name: "StatementCategories",
-                columns: table => new
-                {
-                    Id = table.Column<int>(type: "int", nullable: false)
-                        .Annotation("MySql:ValueGenerationStrategy", MySqlValueGenerationStrategy.IdentityColumn),
-                    CategoryName = table.Column<string>(type: "longtext", nullable: false)
-                        .Annotation("MySql:CharSet", "utf8mb4"),
-                    IsIncome = table.Column<bool>(type: "tinyint(1)", nullable: false),
-                    AgentId = table.Column<string>(type: "varchar(36)", nullable: false)
-                        .Annotation("MySql:CharSet", "utf8mb4")
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_StatementCategories", x => x.Id);
-                    table.ForeignKey(
-                        name: "FK_StatementCategories_AspNetUsers_AgentId",
-                        column: x => x.AgentId,
-                        principalTable: "AspNetUsers",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
-                })
-                .Annotation("MySql:CharSet", "utf8mb4");
-
-            migrationBuilder.CreateTable(
-                name: "Volts",
-                columns: table => new
-                {
-                    Id = table.Column<int>(type: "int", nullable: false)
-                        .Annotation("MySql:ValueGenerationStrategy", MySqlValueGenerationStrategy.IdentityColumn),
-                    Date = table.Column<DateTime>(type: "datetime(6)", nullable: false),
-                    OpeningLiquidMoney = table.Column<double>(type: "double", nullable: false),
-                    OpeningCashMoney = table.Column<double>(type: "double", nullable: false),
-                    ClosingCashMoney = table.Column<double>(type: "double", nullable: false),
-                    ClosingLiquidMoney = table.Column<double>(type: "double", nullable: false),
-                    AgentId = table.Column<string>(type: "varchar(36)", nullable: false)
-                        .Annotation("MySql:CharSet", "utf8mb4")
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_Volts", x => x.Id);
-                    table.UniqueConstraint("AK_Volts_AgentId_Date", x => new { x.AgentId, x.Date });
-                    table.ForeignKey(
-                        name: "FK_Volts_AspNetUsers_AgentId",
-                        column: x => x.AgentId,
-                        principalTable: "AspNetUsers",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
-                })
-                .Annotation("MySql:CharSet", "utf8mb4");
-
-            migrationBuilder.CreateTable(
                 name: "Statements",
                 columns: table => new
                 {
@@ -268,16 +278,15 @@ namespace AgentAssistant.Migrations
                     CategoryId = table.Column<int>(type: "int", nullable: false),
                     Description = table.Column<string>(type: "longtext", nullable: true)
                         .Annotation("MySql:CharSet", "utf8mb4"),
-                    AgentId = table.Column<string>(type: "varchar(36)", nullable: false)
-                        .Annotation("MySql:CharSet", "utf8mb4")
+                    AgentId = table.Column<int>(type: "int", nullable: false)
                 },
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_Statements", x => x.Id);
                     table.ForeignKey(
-                        name: "FK_Statements_AspNetUsers_AgentId",
+                        name: "FK_Statements_Agents_AgentId",
                         column: x => x.AgentId,
-                        principalTable: "AspNetUsers",
+                        principalTable: "Agents",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
                     table.ForeignKey(
@@ -292,17 +301,17 @@ namespace AgentAssistant.Migrations
             migrationBuilder.InsertData(
                 table: "AspNetRoles",
                 columns: new[] { "Id", "ConcurrencyStamp", "Name", "NormalizedName" },
-                values: new object[] { "eeb6638e-e4c7-467e-8edd-43887d2f7459", "8c2a06c7-cb29-4876-a206-4dff823caed1", "Administrator", "ADMINISTRATOR" });
+                values: new object[] { "308d2d2b-f6b7-43fd-bead-24719ada6d06", "8c7d807a-ca39-47a0-b6e8-bfefa86cbf71", "Administrator", "ADMINISTRATOR" });
 
             migrationBuilder.InsertData(
                 table: "AspNetRoles",
                 columns: new[] { "Id", "ConcurrencyStamp", "Name", "NormalizedName" },
-                values: new object[] { "73260dfb-9c6b-4cc2-a421-8ae25bed29be", "b99ad710-e310-4adc-8612-43439fac5fad", "Agent", "AGENT" });
+                values: new object[] { "a40cb78c-3f48-4641-9f24-75341e353cb6", "e1618e5a-0fc1-4594-83ba-59c6b717535b", "Agent", "AGENT" });
 
             migrationBuilder.InsertData(
                 table: "AspNetRoles",
                 columns: new[] { "Id", "ConcurrencyStamp", "Name", "NormalizedName" },
-                values: new object[] { "7fb38058-36a6-4c7d-91d7-a87c303b9c65", "c47119e7-624b-4bb7-8fe7-01aa4243c2bc", "InCharge", "INCHARGE" });
+                values: new object[] { "0fca26f1-0d32-4f8e-86b5-463eb7f7b8db", "25d96b28-c9f2-4fca-81ba-b1253f940e89", "InCharge", "INCHARGE" });
 
             migrationBuilder.CreateIndex(
                 name: "IX_AspNetRoleClaims_RoleId",
@@ -389,10 +398,13 @@ namespace AgentAssistant.Migrations
                 name: "AspNetRoles");
 
             migrationBuilder.DropTable(
+                name: "AspNetUsers");
+
+            migrationBuilder.DropTable(
                 name: "StatementCategories");
 
             migrationBuilder.DropTable(
-                name: "AspNetUsers");
+                name: "Agents");
         }
     }
 }

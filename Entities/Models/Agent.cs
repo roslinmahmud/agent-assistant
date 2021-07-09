@@ -8,11 +8,10 @@ using System.Threading.Tasks;
 
 namespace Entities.Models
 {
-    public class Agent: ApplicationUser
+    public class Agent: Entity
     {
-        public ICollection<Employee> Employees { get; set; }
-        public ICollection<Volt> Volts { get; set; }
-        public ICollection<Statement> Statements { get; set; }
-        public ICollection<StatementCategory> StatementCategories { get; set; }
+        public string Name { get; set; }
+
+        public IEnumerable<ApplicationUser> Users { get; set; }
     }
 }

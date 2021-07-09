@@ -9,8 +9,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace AgentAssistant.Migrations
 {
     [DbContext(typeof(AgentContext))]
-    [Migration("20210708140707_init")]
-    partial class init
+    [Migration("20210709063351_Initial")]
+    partial class Initial
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -18,6 +18,20 @@ namespace AgentAssistant.Migrations
             modelBuilder
                 .HasAnnotation("Relational:MaxIdentifierLength", 64)
                 .HasAnnotation("ProductVersion", "5.0.7");
+
+            modelBuilder.Entity("Entities.Models.Agent", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    b.Property<string>("Name")
+                        .HasColumnType("longtext");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("Agents");
+                });
 
             modelBuilder.Entity("Entities.Models.ApplicationUser", b =>
                 {
@@ -28,12 +42,11 @@ namespace AgentAssistant.Migrations
                     b.Property<int>("AccessFailedCount")
                         .HasColumnType("int");
 
+                    b.Property<int>("AgentId")
+                        .HasColumnType("int");
+
                     b.Property<string>("ConcurrencyStamp")
                         .IsConcurrencyToken()
-                        .HasColumnType("longtext");
-
-                    b.Property<string>("Discriminator")
-                        .IsRequired()
                         .HasColumnType("longtext");
 
                     b.Property<string>("Email")
@@ -84,6 +97,8 @@ namespace AgentAssistant.Migrations
 
                     b.HasKey("Id");
 
+                    b.HasIndex("AgentId");
+
                     b.HasIndex("NormalizedEmail")
                         .HasDatabaseName("EmailIndex");
 
@@ -92,8 +107,6 @@ namespace AgentAssistant.Migrations
                         .HasDatabaseName("UserNameIndex");
 
                     b.ToTable("AspNetUsers");
-
-                    b.HasDiscriminator<string>("Discriminator").HasValue("ApplicationUser");
                 });
 
             modelBuilder.Entity("Entities.Models.Statement", b =>
@@ -102,9 +115,8 @@ namespace AgentAssistant.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("int");
 
-                    b.Property<string>("AgentId")
-                        .IsRequired()
-                        .HasColumnType("varchar(36)");
+                    b.Property<int>("AgentId")
+                        .HasColumnType("int");
 
                     b.Property<double>("Amount")
                         .HasColumnType("double");
@@ -133,9 +145,8 @@ namespace AgentAssistant.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("int");
 
-                    b.Property<string>("AgentId")
-                        .IsRequired()
-                        .HasColumnType("varchar(36)");
+                    b.Property<int>("AgentId")
+                        .HasColumnType("int");
 
                     b.Property<string>("CategoryName")
                         .IsRequired()
@@ -157,9 +168,8 @@ namespace AgentAssistant.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("int");
 
-                    b.Property<string>("AgentId")
-                        .IsRequired()
-                        .HasColumnType("varchar(36)");
+                    b.Property<int>("AgentId")
+                        .HasColumnType("int");
 
                     b.Property<double>("ClosingCashMoney")
                         .HasColumnType("double");
@@ -212,22 +222,22 @@ namespace AgentAssistant.Migrations
                     b.HasData(
                         new
                         {
-                            Id = "eeb6638e-e4c7-467e-8edd-43887d2f7459",
-                            ConcurrencyStamp = "8c2a06c7-cb29-4876-a206-4dff823caed1",
+                            Id = "308d2d2b-f6b7-43fd-bead-24719ada6d06",
+                            ConcurrencyStamp = "8c7d807a-ca39-47a0-b6e8-bfefa86cbf71",
                             Name = "Administrator",
                             NormalizedName = "ADMINISTRATOR"
                         },
                         new
                         {
-                            Id = "73260dfb-9c6b-4cc2-a421-8ae25bed29be",
-                            ConcurrencyStamp = "b99ad710-e310-4adc-8612-43439fac5fad",
+                            Id = "a40cb78c-3f48-4641-9f24-75341e353cb6",
+                            ConcurrencyStamp = "e1618e5a-0fc1-4594-83ba-59c6b717535b",
                             Name = "Agent",
                             NormalizedName = "AGENT"
                         },
                         new
                         {
-                            Id = "7fb38058-36a6-4c7d-91d7-a87c303b9c65",
-                            ConcurrencyStamp = "c47119e7-624b-4bb7-8fe7-01aa4243c2bc",
+                            Id = "0fca26f1-0d32-4f8e-86b5-463eb7f7b8db",
+                            ConcurrencyStamp = "25d96b28-c9f2-4fca-81ba-b1253f940e89",
                             Name = "InCharge",
                             NormalizedName = "INCHARGE"
                         });
@@ -347,30 +357,21 @@ namespace AgentAssistant.Migrations
                     b.ToTable("AspNetUserTokens");
                 });
 
-            modelBuilder.Entity("Entities.Models.Agent", b =>
+            modelBuilder.Entity("Entities.Models.ApplicationUser", b =>
                 {
-                    b.HasBaseType("Entities.Models.ApplicationUser");
+                    b.HasOne("Entities.Models.Agent", "Agent")
+                        .WithMany()
+                        .HasForeignKey("AgentId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
 
-                    b.HasDiscriminator().HasValue("Agent");
-                });
-
-            modelBuilder.Entity("Entities.Models.Employee", b =>
-                {
-                    b.HasBaseType("Entities.Models.ApplicationUser");
-
-                    b.Property<string>("AgentId")
-                        .IsRequired()
-                        .HasColumnType("varchar(36)");
-
-                    b.HasIndex("AgentId");
-
-                    b.HasDiscriminator().HasValue("Employee");
+                    b.Navigation("Agent");
                 });
 
             modelBuilder.Entity("Entities.Models.Statement", b =>
                 {
                     b.HasOne("Entities.Models.Agent", "Agent")
-                        .WithMany("Statements")
+                        .WithMany()
                         .HasForeignKey("AgentId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
@@ -389,7 +390,7 @@ namespace AgentAssistant.Migrations
             modelBuilder.Entity("Entities.Models.StatementCategory", b =>
                 {
                     b.HasOne("Entities.Models.Agent", "Agent")
-                        .WithMany("StatementCategories")
+                        .WithMany()
                         .HasForeignKey("AgentId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
@@ -400,7 +401,7 @@ namespace AgentAssistant.Migrations
             modelBuilder.Entity("Entities.Models.Volt", b =>
                 {
                     b.HasOne("Entities.Models.Agent", "Agent")
-                        .WithMany("Volts")
+                        .WithMany()
                         .HasForeignKey("AgentId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
@@ -457,28 +458,6 @@ namespace AgentAssistant.Migrations
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
-                });
-
-            modelBuilder.Entity("Entities.Models.Employee", b =>
-                {
-                    b.HasOne("Entities.Models.Agent", "Agent")
-                        .WithMany("Employees")
-                        .HasForeignKey("AgentId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("Agent");
-                });
-
-            modelBuilder.Entity("Entities.Models.Agent", b =>
-                {
-                    b.Navigation("Employees");
-
-                    b.Navigation("StatementCategories");
-
-                    b.Navigation("Statements");
-
-                    b.Navigation("Volts");
                 });
 #pragma warning restore 612, 618
         }

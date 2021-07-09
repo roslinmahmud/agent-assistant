@@ -21,7 +21,7 @@ namespace AgentAssistant.Controllers
         }
 
         [HttpGet("{agentId}/{date}")]
-        public async Task<IActionResult> GetVolt(string agentId, DateTime date)
+        public async Task<IActionResult> GetVolt(int agentId, DateTime date)
         {
             try
             {
@@ -38,7 +38,7 @@ namespace AgentAssistant.Controllers
         }
 
         [HttpGet("list/{agentId}/{date}")]
-        public async Task<IActionResult> GetVoltList(string agentId, DateTime date)
+        public async Task<IActionResult> GetVoltList(int agentId, DateTime date)
         {
             try
             {

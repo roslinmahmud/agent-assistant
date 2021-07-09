@@ -46,7 +46,7 @@ export class LoginComponent implements OnInit {
 
   public loginUser = () => {
  
-    this.authService.loginUser('api/agent/login', this.loginForm.value)
+    this.authService.loginUser('api/user/login', this.loginForm.value)
     .subscribe(res => {
       localStorage.setItem("token", res.token);
       this.authService.sendAuthStateChangeNotification(res.isAuthSuccessful);

@@ -12,7 +12,7 @@ namespace Entities.Repository
 
         }
 
-        public async Task<IEnumerable<StatementCategory>> GetAllStatementCategoriesAsync(string agentId)
+        public async Task<IEnumerable<StatementCategory>> GetAllStatementCategoriesAsync(int agentId)
         {
             return await FindByCondition(a => a.AgentId == agentId).
                 ToListAsync();

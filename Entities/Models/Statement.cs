@@ -19,7 +19,7 @@ namespace Entities.Models
         public string Description { get; set; }
 
         [Required]
-        public string AgentId { get; set; }
+        public int AgentId { get; set; }
         public Agent Agent { get; set; }
     }
 }

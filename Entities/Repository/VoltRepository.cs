@@ -21,13 +21,13 @@ namespace Entities.Repository
                 FirstOrDefaultAsync();
         }
 
-        public async Task<Volt> GetVoltAsync(string agentId, DateTime date)
+        public async Task<Volt> GetVoltAsync(int agentId, DateTime date)
         {
             return await FindByCondition(v => v.AgentId == agentId && v.Date.Date == date.Date).
                 FirstOrDefaultAsync();
         }
 
-        public async Task<IEnumerable<Volt>> GetVoltListAsync(string agentId, DateTime date)
+        public async Task<IEnumerable<Volt>> GetVoltListAsync(int agentId, DateTime date)
         {
             return await FindByCondition(v => v.AgentId == agentId && date.Month == v.Date.Month && v.Date.Year == date.Year).
                 ToListAsync();

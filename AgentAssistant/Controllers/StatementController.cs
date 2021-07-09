@@ -24,7 +24,7 @@ namespace AgentAssistant.Controllers
         }
 
         [HttpGet("{agentId}/{dateTime}")]
-        public async Task<IActionResult> GetStatements(string agentId, DateTime dateTime)
+        public async Task<IActionResult> GetStatements(int agentId, DateTime dateTime)
         {
             try
             {
@@ -65,7 +65,7 @@ namespace AgentAssistant.Controllers
         }
 
         [HttpGet("category/{agentId}")]
-        public async Task<IActionResult> GetStatementCategories(string agentId)
+        public async Task<IActionResult> GetStatementCategories(int agentId)
         {
             try
             {
@@ -95,9 +95,8 @@ namespace AgentAssistant.Controllers
 
                 await statementCategoryRepository.SaveChangesAsync();
 
-                CreatedAtAction("CreateStatementCategory", statementCategory);
+                return CreatedAtAction("CreateStatementCategory", statementCategory);
 
-                return BadRequest();
             }
             catch (Exception e)
             {

@@ -15,9 +15,6 @@ namespace Entities
         {
             CreateMap<UserForRegistrationDto, ApplicationUser>()
                 .ForMember(u => u.UserName, opt=> opt.MapFrom(src => src.Email));
-
-            CreateMap<UserForRegistrationDto, Agent>()
-                .ForMember(u => u.UserName, opt => opt.MapFrom(src => src.Email));
         }
     }
 }
