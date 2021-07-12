@@ -34,7 +34,7 @@ namespace AgentAssistant.Controllers
             this.jwtHandler = jwtHandler;
         }
 
-        [HttpPost("Registration")]
+        [HttpPost("Register")]
         public async Task<IActionResult> RegisterUser([FromBody] UserForRegistrationDto userForRegistrationDto)
         {
             try

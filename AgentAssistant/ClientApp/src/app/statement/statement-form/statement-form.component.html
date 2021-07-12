@@ -73,18 +73,18 @@
         </thead>
         <tbody>
           <tr class="table-success" *ngFor="let statement of statements">
-            <ng-container *ngIf="statementCategoryMap.get(statement.categoryId).isIncome">
+            <ng-container *ngIf="statementCategoryMap.get(statement.categoryId)?.isIncome">
               <td>{{statement.date | date}}</td>
               <td>{{statement.amount | currency: "BDT":"symbol": '': 'bn'}}</td>
-              <td>{{statementCategoryMap.get(statement.categoryId).categoryName}}</td>
+              <td>{{statementCategoryMap.get(statement.categoryId)?.categoryName}}</td>
               <td>{{statement.description}}</td>
             </ng-container>
           </tr>
           <tr class="table-warning" *ngFor="let statement of statements">
-            <ng-container *ngIf="!statementCategoryMap.get(statement.categoryId).isIncome">
+            <ng-container *ngIf="!statementCategoryMap.get(statement.categoryId)?.isIncome">
               <td>{{statement.date | date}}</td>
               <td>{{statement.amount | currency: "BDT":"symbol": '': 'bn'}}</td>
-              <td>{{statementCategoryMap.get(statement.categoryId).categoryName}}</td>
+              <td>{{statementCategoryMap.get(statement.categoryId)?.categoryName}}</td>
               <td>{{statement.description}}</td>
             </ng-container>
           </tr>

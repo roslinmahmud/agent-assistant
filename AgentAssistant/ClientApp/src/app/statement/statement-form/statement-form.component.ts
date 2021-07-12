@@ -61,7 +61,7 @@ export class StatementFormComponent implements OnInit {
       (error) => {},
       () => {
         this.netIncome = 0;
-        this.statements.map(st => this.statementCategoryMap.get(st.categoryId).isIncome ? this.netIncome+=st.amount : this.netIncome-=st.amount )
+        this.statements.map(st => this.statementCategoryMap.get(st.categoryId)?.isIncome ? this.netIncome+=st.amount : this.netIncome-=st.amount )
       }
     );
   }

@@ -41,8 +41,8 @@ namespace AgentAssistant.Controllers
         {
             var user = await userManager.FindByIdAsync(userId);
 
-            if (agent == null || !ModelState.IsValid || user == null)
-                return BadRequest();
+            if(user == null)
+                return BadRequest("Object is null");
 
 
             agentRepository.CreateAgent(agent);

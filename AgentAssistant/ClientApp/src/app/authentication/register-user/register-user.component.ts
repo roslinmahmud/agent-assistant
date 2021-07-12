@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
+import { ToastrService } from 'ngx-toastr';
 import { PasswordConfirmationValidatorsService } from 'src/app/shared/custom-validators/password-confirmation-validators.service';
 import { AuthenticationService } from 'src/app/shared/services/authentication.service';
 import { RepositoryService } from '../../repository.service';
@@ -18,7 +19,8 @@ export class RegisterUserComponent implements OnInit {
   constructor(private authService: AuthenticationService,
     private passConfValidator: PasswordConfirmationValidatorsService,
     private router: Router,
-    private repository: RepositoryService) { }
+    private repository: RepositoryService,
+    private toastr: ToastrService) { }
 
   ngOnInit() {
     this.registerForm = new FormGroup({
@@ -40,9 +42,18 @@ export class RegisterUserComponent implements OnInit {
     return this.registerForm.controls[controlName].hasError(errorName);
   }
 
+  onSubmit(): void{
+    if(this.registerForm.valid){
+      this.registerUser();
+    }
+    else{
+      this.toastr.warning("Please enter valid information","Invalid Input");
+    }
+  }
+
   public registerUser = () => {
     this.showError = false;
-    this.authService.registerUser('api/user/registration', this.registerForm.value)
+    this.authService.registerUser('api/user/register', this.registerForm.value)
     .subscribe(res => {
       if (res.isSuccessfulRegistration) {
         this.registerAgent(res.userId);
@@ -57,7 +68,6 @@ export class RegisterUserComponent implements OnInit {
   }
 
   public registerAgent = (userId: string) => {
-
     const apiUrl = "api/agent/" + userId;
 
     this.repository.create(apiUrl, { Name: "IBBL Agent" })
