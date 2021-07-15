@@ -11,16 +11,14 @@ namespace Entities
         {
             using(var scope = host.Services.CreateScope())
             {
-                using(var agentContext = scope.ServiceProvider.GetRequiredService<AgentContext>())
+                using var agentContext = scope.ServiceProvider.GetRequiredService<AgentContext>();
+                try
                 {
-                    try
-                    {
-                        agentContext.Database.Migrate();
-                    }
-                    catch(Exception ex)
-                    {
-                        throw;
-                    }
+                    agentContext.Database.Migrate();
+                }
+                catch (Exception ex)
+                {
+                    throw;
                 }
             }
 

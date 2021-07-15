@@ -14,14 +14,15 @@ import { AuthenticationService } from 'src/app/shared/services/authentication.se
 })
 export class StatementFormComponent implements OnInit {
 
-  date: String|any = this.datePipe.transform(new Date(), "'yyyy-MM");
+  isSubmitted: boolean;
+  date: String|any = this.datePipe.transform(new Date(), "yyyy-MM");
   statements: Statement[] = [];
   statementCategories: StatementCategory[] = [];
   statementCategoryMap = new Map<number, StatementCategory>();
   netIncome:number = 0;
 
   statementForm = this.formBuilder.group({
-    date: [this.datePipe.transform(new Date(), "yyyy-MM-dd"), Validators.required],
+    date: ['', Validators.required],
     amount: ['', Validators.required],
     categoryId: ['', Validators.required],
     description: ['', Validators.required]
@@ -39,9 +40,9 @@ export class StatementFormComponent implements OnInit {
     this.getStatements(this.date);
   }
 
-  onSubmit(): void{
-    this.statementForm.markAsPending();
-    if(!this.statementForm.invalid){
+  onSubmit(): void {
+    this.isSubmitted = true;
+    if(this.statementForm.valid){
       this.createStatement(this.statementForm.value);
     }
   }
@@ -61,7 +62,7 @@ export class StatementFormComponent implements OnInit {
       (error) => {},
       () => {
         this.netIncome = 0;
-        this.statements.map(st => this.statementCategoryMap.get(st.categoryId)?.isIncome ? this.netIncome+=st.amount : this.netIncome-=st.amount )
+        this.statements.map(st => this.statementCategoryMap.get(st.categoryId).isIncome ? this.netIncome+=st.amount : this.netIncome-=st.amount )
       }
     );
   }
@@ -83,18 +84,20 @@ export class StatementFormComponent implements OnInit {
     this.repository.create(apiUrl, Statement)
       .subscribe(
         (res: Statement) => {
-          let date = this.datePipe.transform(res.date);
+          let date = this.datePipe.transform(res.date, "yyyy-MM");
           if(date != this.date){
               this.date = date;
               this.getStatements(this.date);
           }
-          this.statements.push(res);
+          else{
+            this.statements.push(res);
+            this.statementCategoryMap.get(res.categoryId).isIncome ? this.netIncome+=res.amount : this.netIncome-=res.amount;
+          }
           this.statementForm.reset();
           this.toastr.success('Statement created', 'Submit successful');
+          this.isSubmitted = false;
         },
-        (error)=>{
-          console.error(error);
-        },
+        (error)=>{},
         ()=>{}
       );
   }

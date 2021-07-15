@@ -16,6 +16,7 @@ namespace Entities.Models
         [Required]
         public int CategoryId { get; set; }
         public StatementCategory Category { get; set; }
+        [Required]
         public string Description { get; set; }
 
         [Required]

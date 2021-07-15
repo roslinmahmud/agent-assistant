@@ -6,7 +6,8 @@
               <div class="form-group col-md-6">
                 <label for="amount" class="form-label">Amount</label>
                 <div class="input-group mb-2">
-                  <input type="number" step="0.01" min="0" id="amount" class="form-control" [ngClass]="{'is-invalid': statementForm.pending && statementForm.controls.amount.errors?.required, 'is-valid': statementForm.controls.amount.valid }" formControlName="amount">
+                  <input type="number" step="0.01" min="0" id="amount" class="form-control" formControlName="amount"
+                    [ngClass]="{'is-invalid': isSubmitted && statementForm.controls.amount.errors?.required, 'is-valid': statementForm.controls.amount.valid }">
                   <div class="input-group-append">
                     <div class="input-group-text">৳</div>
                   </div>
@@ -18,7 +19,8 @@
               <div class="form-group col-md-6">
                 <label for="category" class="form-label">Category</label>
                 <div class="input-group mb-2">
-                    <select class="form-control" [ngClass]="{'is-invalid': statementForm.pending && statementForm.controls.categoryId.errors?.required, 'is-valid': statementForm.controls.categoryId.valid }" id="category" formControlName="categoryId">
+                    <select class="form-control" id="category" formControlName="categoryId"
+                      [ngClass]="{'is-invalid': isSubmitted && statementForm.controls.categoryId.errors?.required, 'is-valid': statementForm.controls.categoryId.valid }">
                       <ng-container *ngFor="let statementCategory of statementCategories">
                         <option value="{{ statementCategory.id }}">{{ statementCategory.categoryName }}</option>
                       </ng-container>
@@ -34,7 +36,9 @@
               <div class="form-group col-md-6">
                 <label for="description" class="form-label">Description</label>
                 <div class="input-group mb-2">
-                    <textarea id="description" class="form-control" [ngClass]="{'is-invalid': statementForm.pending && statementForm.controls.description.errors?.required, 'is-valid': statementForm.controls.description.valid }" rows="2" formControlName="description"></textarea>
+                    <textarea id="description" class="form-control"  rows="2" formControlName="description"
+                      [ngClass]="{'is-invalid': isSubmitted && statementForm.controls.description.errors?.required, 'is-valid': statementForm.controls.description.valid }">
+                    </textarea>
                     <div class="invalid-feedback">
                         Please write a description.
                     </div>      
@@ -42,7 +46,11 @@
               </div>
               <div class="form-group col-md-6">
                 <label for="date" class="form-label">Date</label>
-                <input type="date" [value]="date | date:'yyyy-MM-dd'" id="date" class="form-control" formControlName="date">
+                <input type="date"  id="date" class="form-control" formControlName="date"
+                  [ngClass]="{'is-invalid': isSubmitted && statementForm.controls.date.errors?.required, 'is-valid': statementForm.controls.date.valid }">
+                <div class="invalid-feedback">
+                  Please select a date.
+                </div>
               </div>
             </div>
 
@@ -55,7 +63,9 @@
         </form>
     </div>
 </div>
+
 <div class="card mt-2 mb-2">
+  <h5 class="card-header">Reports</h5>
   <div class="card-body pl-0 pr-0">
     <div class="form-group col-md-6">
       <h6 class="card-title">Select Month</h6>
@@ -94,6 +104,5 @@
     <div class="row text-info font-weight-bold p-2">
       <div class="col">Net Income:</div><div class="col">{{ netIncome | currency: "BDT":"symbol": '': 'bn' }}</div>
     </div>
-    
   </div>
 </div>
