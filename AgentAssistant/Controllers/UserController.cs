@@ -2,11 +2,8 @@
 using AutoMapper;
 using Entities.DTO;
 using Entities.Models;
-using Entities.Repository;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
-using System;
-using System.Collections.Generic;
 using System.IdentityModel.Tokens.Jwt;
 using System.Linq;
 using System.Threading.Tasks;
@@ -18,17 +15,14 @@ namespace AgentAssistant.Controllers
     [ApiController]
     public class UserController : ControllerBase
     {
-        private readonly IAgentRepository agentRepository;
         private readonly IMapper mapper;
         private readonly UserManager<ApplicationUser> userManager;
         private readonly JwtHandler<ApplicationUser> jwtHandler;
 
-        public UserController(IAgentRepository agentRepository,
-            IMapper mapper,
+        public UserController(IMapper mapper,
             UserManager<ApplicationUser> userManager,
             JwtHandler<ApplicationUser> jwtHandler)
         {
-            this.agentRepository = agentRepository;
             this.userManager = userManager;
             this.mapper = mapper;
             this.jwtHandler = jwtHandler;
@@ -37,32 +31,20 @@ namespace AgentAssistant.Controllers
         [HttpPost("Register")]
         public async Task<IActionResult> RegisterUser([FromBody] UserForRegistrationDto userForRegistrationDto)
         {
-            try
+            var user = mapper.Map<ApplicationUser>(userForRegistrationDto);
+
+            var result = await userManager.CreateAsync(user, userForRegistrationDto.Password);
+
+            if (!result.Succeeded)
             {
-                if (userForRegistrationDto == null)
-                    return BadRequest();
+                var errors = result.Errors.Select(e => e.Description);
 
-                var user = mapper.Map<ApplicationUser>(userForRegistrationDto);
-
-                var result = await userManager.CreateAsync(user, userForRegistrationDto.Password);
-
-                if (!result.Succeeded)
-                {
-                    var errors = result.Errors.Select(e => e.Description);
-
-                    return BadRequest(new RegistrationResponseDto { Errors = errors });
-                }
-
-                await userManager.AddToRoleAsync(user, "Agent");
-
-                return Ok(new RegistrationResponseDto { IsSuccessfulRegistration = true, UserId = user.Id });
-            }
-            catch (Exception e)
-            {
-
-                return StatusCode(500, "Internal server error");
+                return BadRequest(new RegistrationResponseDto { Errors = errors });
             }
 
+            await userManager.AddToRoleAsync(user, "Agent");
+
+            return Ok(new RegistrationResponseDto { IsSuccessfulRegistration = true, UserId = user.Id });
         }
 
         [HttpPost("Login")]
@@ -70,7 +52,7 @@ namespace AgentAssistant.Controllers
         {
             var user = await userManager.FindByEmailAsync(userForAuthenticationDto.Email);
 
-            if (user == null || !await userManager.CheckPasswordAsync(user, userForAuthenticationDto.Password))
+            if (user is null || !await userManager.CheckPasswordAsync(user, userForAuthenticationDto.Password))
                 return Unauthorized(new AuthResponseDto { ErrorMessage = "Authentication failed. Wrong Username or Password" });
 
 

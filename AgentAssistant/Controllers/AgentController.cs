@@ -1,16 +1,14 @@
 ﻿using Entities.Models;
 using Entities.Repository;
-using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
-using System;
-using System.Collections.Generic;
-using System.Linq;
 using System.Threading.Tasks;
 
 namespace AgentAssistant.Controllers
 {
     [Route("api/[controller]")]
+    [Authorize]
     [ApiController]
     public class AgentController : ControllerBase
     {
@@ -23,6 +21,7 @@ namespace AgentAssistant.Controllers
             this.agentRepository = agentRepository;
             this.userManager = userManager;
         }
+
         [HttpGet]
         public async Task<IActionResult> GetAgents()
         {

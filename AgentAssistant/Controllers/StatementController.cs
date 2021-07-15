@@ -3,7 +3,6 @@ using Entities.Repository;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using System;
-using System.Linq;
 using System.Threading.Tasks;
 
 namespace AgentAssistant.Controllers
@@ -26,84 +25,35 @@ namespace AgentAssistant.Controllers
         [HttpGet("{agentId}/{dateTime}")]
         public async Task<IActionResult> GetStatements(int agentId, DateTime dateTime)
         {
-            try
-            {
-                var statements = await statementRepository.GetAllStatementsAsync(agentId, dateTime);
-                    
-                return Ok(statements);
-            }
-            catch (Exception e)
-            {
+            var statements = await statementRepository.GetAllStatementsAsync(agentId, dateTime);
 
-                return StatusCode(500, "Internal server error: " + e.Message);
-            }
-
+            return Ok(statements);
         }
 
         [HttpPost]
         public async Task<IActionResult> CreateStatement([FromBody] Statement statement)
         {
-            try
-            {
-                if (statement == null || !ModelState.IsValid)
-                {
-                    return BadRequest("Invalid Statement object");
-                }
+            statementRepository.CreateStatement(statement);
+            await statementRepository.SaveChangesAsync();
 
-                statementRepository.CreateStatement(statement);
-
-                await statementRepository.SaveChangesAsync();
-
-                return CreatedAtAction("GetStatement", statement);
-            }
-            catch (Exception e)
-            {
-
-                return StatusCode(500, "Internal server error: " + e.Message);
-            }
-            
+            return CreatedAtAction("CreateStatement", statement);
         }
 
         [HttpGet("category/{agentId}")]
         public async Task<IActionResult> GetStatementCategories(int agentId)
         {
-            try
-            {
-                var statementCategories = await statementCategoryRepository.GetAllStatementCategoriesAsync(agentId);
+            var statementCategories = await statementCategoryRepository.GetAllStatementCategoriesAsync(agentId);
 
-                return Ok(statementCategories);
-            }
-            catch (Exception e)
-            {
-
-                return StatusCode(500, "Internal server error: " + e.Message);
-            }
-
+            return Ok(statementCategories);
         }
 
         [HttpPost("category")]
         public async Task<IActionResult> CreateStatementCategory(StatementCategory statementCategory)
         {
-            try
-            {
-                if (statementCategory == null || !ModelState.IsValid)
-                {
-                    return BadRequest("Invalid StatementCategory object");
-                }
+            statementCategoryRepository.CreateStatementCategory(statementCategory);
+            await statementCategoryRepository.SaveChangesAsync();
 
-                statementCategoryRepository.CreateStatementCategory(statementCategory);
-
-                await statementCategoryRepository.SaveChangesAsync();
-
-                return CreatedAtAction("CreateStatementCategory", statementCategory);
-
-            }
-            catch (Exception e)
-            {
-
-                return StatusCode(500, "Internal server error: " + e.Message);
-            }
-
+            return CreatedAtAction("CreateStatementCategory", statementCategory);
         }
     }
 }

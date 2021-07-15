@@ -3,7 +3,6 @@ using Entities.Repository;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using System;
-using System.Linq;
 using System.Threading.Tasks;
 
 namespace AgentAssistant.Controllers
@@ -23,90 +22,42 @@ namespace AgentAssistant.Controllers
         [HttpGet("{agentId}/{date}")]
         public async Task<IActionResult> GetVolt(int agentId, DateTime date)
         {
-            try
-            {
-                var volt = await voltRepository.GetVoltAsync(agentId, date);
+            var volt = await voltRepository.GetVoltAsync(agentId, date);
 
-                return Ok(volt);
-            }
-            catch (Exception e)
-            {
-
-                return StatusCode(500, "Internal server error: " + e.Message);
-            }
-
+            return Ok(volt);
         }
 
         [HttpGet("list/{agentId}/{date}")]
         public async Task<IActionResult> GetVoltList(int agentId, DateTime date)
         {
-            try
-            {
-                var volts = await voltRepository.GetVoltListAsync(agentId, date);
+            var volts = await voltRepository.GetVoltListAsync(agentId, date);
 
-                return Ok(volts);
-            }
-            catch (Exception e)
-            {
-
-                return StatusCode(500, "Internal server error: " + e.Message);
-            }
-            
+            return Ok(volts);
         }
 
         [HttpPost]
         public async Task<IActionResult> CreateVolt([FromBody] Volt volt)
         {
-            try
-            {
-                if (volt == null || !ModelState.IsValid)
-                {
-                    return BadRequest("Invalid Volt object");
-                }
+            voltRepository.CreateVolt(volt);
+            await voltRepository.SaveChangesAsync();
 
-                voltRepository.CreateVolt(volt);
-
-                await voltRepository.SaveChangesAsync();
-
-                return CreatedAtAction("GetVolt", volt);
-            }
-            catch (Exception e)
-            {
-
-                return StatusCode(500, "Internal server error: " + e.Message);
-            }
-            
+            return CreatedAtAction("CreateVolt", volt);
         }
 
         [HttpPut]
         public async Task<IActionResult> UpdateVolt([FromBody] Volt volt)
         {
-            try
+            var voltEntity = await voltRepository.GetVoltByIdAsync(volt.Id);
+
+            if (voltEntity == null)
             {
-                if (volt == null || !ModelState.IsValid)
-                {
-                    return BadRequest("Invalid Volt object");
-                }
-
-                var voltEntity = await voltRepository.GetVoltByIdAsync(volt.Id);
-
-                if (voltEntity == null)
-                {
-                    return NotFound("Volt object not found in server");
-                }
-
-                voltRepository.UpdateVolt(volt);
-
-                await voltRepository.SaveChangesAsync();
-
-                return NoContent();
-
+                return NotFound("Volt object not found in server");
             }
-            catch (Exception e)
-            {
 
-                return StatusCode(500, "Internal server error: " + e.Message);
-            }
+            voltRepository.UpdateVolt(volt);
+            await voltRepository.SaveChangesAsync();
+
+            return NoContent();
         }
     }
 }

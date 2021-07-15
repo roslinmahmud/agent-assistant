@@ -34,7 +34,7 @@ namespace AgentAssistant.Extensions
 
         private static string NormalizeAzureInAppConnectionString(string raw)
         {
-            string conn = string.Empty;
+            string connection = string.Empty;
             try
             {
                 var dict = raw.Split(';')
@@ -44,13 +44,13 @@ namespace AgentAssistant.Extensions
 
                 var ds = dict["Data Source"];
                 var dsa = ds.Split(":");
-                conn = $"Server={dsa[0]};Port={dsa[1]};Database={dict["Database"]};Uid={dict["User Id"]};Pwd={dict["Password"]};";
+                connection = $"Server={dsa[0]};Port={dsa[1]};Database={dict["Database"]};Uid={dict["User Id"]};Pwd={dict["Password"]};";
             }
             catch(Exception e)
             {
                 throw new Exception("Exception: "+ e.Message);
             }
-            return conn;
+            return connection;
         }
     }
 }
