@@ -2,12 +2,12 @@
   <nav class="navbar navbar-expand-sm navbar-toggleable-sm navbar-dark bg-success mb-2">
     <div class="container">
       <a class="navbar-brand" [routerLink]="['/']">AgentAssistant</a>
-      <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNavDropdown" aria-controls="navbarNavDropdown" aria-expanded="false" aria-label="Toggle navigation">
+      <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNavDropdown" aria-controls="navbarNavDropdown" aria-expanded="false" aria-label="Toggle navigation">
         <span class="navbar-toggler-icon"></span>
       </button>
       <div class="collapse navbar-collapse" id="navbarNavDropdown">
         <ng-container *ngIf='isUserAuthenticated'>
-          <ul class="navbar-nav mr-auto">
+          <ul class="navbar-nav me-auto">
             <li class="nav-item" [routerLinkActive]="['active']"
               [routerLinkActiveOptions]="{ exact: true }">
               <a class="nav-link" [routerLink]="['/home']">Home</a>
@@ -21,7 +21,7 @@
           </ul>
         </ng-container>
         
-        <ul class="navbar-nav ml-auto">
+        <ul class="navbar-nav ms-auto">
           <ng-container *ngIf='!isUserAuthenticated'>
             <li class="nav-item">
               <a class="nav-link" [routerLink]="['/authentication/login']" routerLinkActive="active" 
@@ -34,14 +34,14 @@
           </ng-container>
           <ng-container *ngIf='isUserAuthenticated'>
             <li class="nav-item dropdown">
-              <a class="nav-link dropdown-toggle" href="#" id="navbarDropdownMenuLink" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+              <a class="nav-link dropdown-toggle" href="#" id="navbarDropdownMenuLink" role="button" data-bs-toggle="dropdown" aria-expanded="false">
                 Agent
               </a>
-              <div class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
-                <a class="dropdown-item" [routerLink]="['/user/setting']">Setting</a>
-                <div class="dropdown-divider"></div>
-                <a class="dropdown-item" [routerLink]="" (click)="logout()">Logout</a>
-              </div>
+              <ul class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
+                <li><a class="dropdown-item" [routerLink]="['/user/setting']">Setting</a></li>
+                <li><div class="dropdown-divider"></div></li>
+                <li><a class="dropdown-item" [routerLink]="" (click)="logout()">Logout</a></li>
+              </ul>
             </li>
           </ng-container>
         </ul>

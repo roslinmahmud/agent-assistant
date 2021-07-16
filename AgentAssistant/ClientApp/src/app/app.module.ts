@@ -47,8 +47,8 @@ export function tokenGetter() {
     JwtModule.forRoot({
       config:{
         tokenGetter: tokenGetter,
-        whitelistedDomains: ["localhost:5001", "ibbl.azurewebsites.net"],
-        blacklistedRoutes:[]
+        allowedDomains: ["localhost:5001", "ibbl.azurewebsites.net"],
+        disallowedRoutes:[]
       }
     }),
     LoadingBarHttpClientModule
