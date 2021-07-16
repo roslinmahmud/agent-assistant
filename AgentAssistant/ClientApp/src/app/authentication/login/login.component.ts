@@ -11,6 +11,7 @@ import { AuthenticationService } from 'src/app/shared/services/authentication.se
 })
 export class LoginComponent implements OnInit {
   private returnUrl: string;
+  isSubmitted: boolean = false;
 
   loginForm = this.formBuilder.group({
     email: ['', [Validators.required, Validators.email]],
@@ -28,7 +29,7 @@ export class LoginComponent implements OnInit {
   }
 
   public validateControl = (controlName: string) => {
-    return this.loginForm.controls[controlName].invalid && this.loginForm.controls[controlName].touched
+    return this.loginForm.controls[controlName].valid;
   }
 
   public hasError = (controlName: string, errorName: string) => {
@@ -36,6 +37,7 @@ export class LoginComponent implements OnInit {
   }
 
   onSubmit(): void{
+    this.isSubmitted = true;
     if(this.loginForm.valid){
       this.loginUser();
     }
@@ -50,6 +52,7 @@ export class LoginComponent implements OnInit {
     .subscribe(res => {
       localStorage.setItem("token", res.token);
       this.authService.sendAuthStateChangeNotification(res.isAuthSuccessful);
+      this.isSubmitted = false;
       this.router.navigate([this.returnUrl]);
     },
     (error) => {
