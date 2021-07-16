@@ -1,4 +1,4 @@
-import { async, ComponentFixture, TestBed } from '@angular/core/testing';
+import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
 
 import { VoltListComponent } from './volt-list.component';
 
@@ -6,7 +6,7 @@ describe('VoltListComponent', () => {
   let component: VoltListComponent;
   let fixture: ComponentFixture<VoltListComponent>;
 
-  beforeEach(async(() => {
+  beforeEach(waitForAsync(() => {
     TestBed.configureTestingModule({
       declarations: [ VoltListComponent ]
     })

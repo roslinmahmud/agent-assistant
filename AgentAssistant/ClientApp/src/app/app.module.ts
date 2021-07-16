@@ -42,7 +42,7 @@ export function tokenGetter() {
         { path: 'statement', loadChildren: () => import('./statement/statement.module').then(m => m.StatementModule), canActivate: [AuthGuard] },
         { path: 'user', loadChildren: () => import('./user/user.module').then(m => m.UserModule), canActivate: [AuthGuard] }
       ],
-      {preloadingStrategy: PreloadAllModules}
+      { preloadingStrategy: PreloadAllModules, relativeLinkResolution: 'legacy' }
     ),
     JwtModule.forRoot({
       config:{
