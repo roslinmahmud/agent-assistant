@@ -15,6 +15,8 @@ export class RegisterUserComponent implements OnInit {
   public registerForm: FormGroup
   public errorMessage: string = '';
   public showError: boolean;
+  public isSubmitted: boolean;
+
 
   constructor(private authService: AuthenticationService,
     private passConfValidator: PasswordConfirmationValidatorsService,
@@ -35,7 +37,7 @@ export class RegisterUserComponent implements OnInit {
   }
 
   public validateControl = (controlName: string) => {
-    return this.registerForm.controls[controlName].invalid && this.registerForm.controls[controlName].touched
+    return this.registerForm.controls[controlName].valid;
   }
 
   public hasError = (controlName: string, errorName: string) => {
@@ -43,6 +45,7 @@ export class RegisterUserComponent implements OnInit {
   }
 
   onSubmit(): void{
+    this.isSubmitted = true;
     if(this.registerForm.valid){
       this.registerUser();
     }
@@ -56,6 +59,7 @@ export class RegisterUserComponent implements OnInit {
     this.authService.registerUser('api/user/register', this.registerForm.value)
     .subscribe(res => {
       if (res.isSuccessfulRegistration) {
+        this.isSubmitted = false;
         this.registerAgent(res.userId);
       }
         

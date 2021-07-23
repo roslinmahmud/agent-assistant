@@ -1,4 +1,4 @@
-<div class="container text-center">
+<div class="container text-center col-md-4">
     <h1 class="h3 mb-3 font-weight-normal">Sign up</h1>
 
         <div *ngIf="showError" class="alert alert-danger" role="alert">
@@ -6,48 +6,42 @@
         </div>
 
         <form [formGroup]="registerForm" autocomplete="off" novalidate (ngSubmit)="onSubmit()">
-            <div class="form-group row d-flex justify-content-center">
-                <label for="firstName" class="col-form-label col-sm-2">First Name:</label>
-                <div class="col-md-4">
-                    <input type="text" id="firstName" formControlName="firstName" class="form-control" />
+            <div class="form-floating mb-1">
+                <input type="text" id="firstName" formControlName="firstName" class="form-control" placeholder="First Name"/>
+                <label for="firstName">First name</label>
+            </div>
+            <div class="form-floating mb-1">
+                <input type="text" id="lastName" formControlName="lastName" class="form-control" placeholder="Last Name"/>
+                <label for="lastName">Last name</label>
+            </div>
+            <div class="form-floating mb-1">
+                <input type="email" formControlName="email" class="form-control " id="email" placeholder="name@example.com" 
+                    [ngClass]="{'is-valid': isSubmitted && validateControl('email'), 'is-invalid': isSubmitted && !validateControl('email') }">
+                <label for="email">Email address</label>
+                <div class="invalid-feedback">
+                    Please enter a email.
+                </div> 
+            </div>
+            <div class="form-floating mb-1">
+                <input type="password" formControlName="password" class="form-control" id="password" placeholder="Password" 
+                    [ngClass]="{'is-valid': isSubmitted && validateControl('password'), 'is-invalid': isSubmitted && !validateControl('password') }">
+                <label for="password">Password</label>
+                <div class="invalid-feedback">
+                    Password is required.
                 </div>
             </div>
-            <div class="form-group row d-flex justify-content-center">
-                <label for="lastName" class="col-form-label col-sm-2">Last Name:</label>
-                <div class="col-md-4">
-                    <input type="text" id="lastName" formControlName="lastName" class="form-control" />
+            <div class="form-floating mb-2">
+                <input type="password" id="confirmPassword" formControlName="confirmPassword" class="form-control" placeholder="Confirm Password" 
+                    [ngClass]="{'is-valid': isSubmitted && validateControl('confirmPassword'), 'is-invalid': isSubmitted && !validateControl('confirmPassword') }">
+                    <label for="confirmPassword">Confirm Password</label>
+                <div class="invalid-feedback">
+                    Password must match
                 </div>
             </div>
-            <div class="form-group row d-flex justify-content-center">
-                <label for="email" class="col-form-label col-sm-2">Email:</label>
-                <div class="col-md-4">
-                    <input type="email" id="email" formControlName="email" class="form-control" />
-                    <em *ngIf="validateControl('email') && hasError('email', 'email')">Please provide a valid email</em>
-                    <em *ngIf="validateControl('email') && hasError('email', 'required')">Email is required</em>
-                </div>
-            </div>
-            <div class="form-group row d-flex justify-content-center">
-                <label for="password" class="col-form-label col-sm-2">Password:</label>
-                <div class="col-md-4">
-                    <input type="password" id="password" formControlName="password" class="form-control" />
-                    <em *ngIf="validateControl('password') && hasError('password', 'required')">Password is required</em>
-                </div>
-            </div>
-            <div class="form-group row d-flex justify-content-center">
-                <label for="confirmPassword" class="col-form-label col-sm-2">Confirm Password:</label>
-                <div class="col-md-4">
-                    <input type="password" id="confirmPassword" formControlName="confirmPassword" class="form-control" />
-                    <em *ngIf="validateControl('confirmPassword') && hasError('confirmPassword', 'required')">Confirm Password is required</em>
-                    <em *ngIf="hasError('confirmPassword', 'mustMatch')">Password must match</em>
-                </div>
-            </div>
-            <br>
             
-            <div class="form-group row">
-                <div class="col">          
-                    <button type="submit" class="btn btn-info">Register</button>
-                </div>
+            <div class="d-grid mb-3">
+                <button type="submit" class="btn btn-lg btn-primary">Register</button>
             </div>
         </form>
-        <a class="text-decoration-none" [routerLink]="['/authentication/login']">Already have an account? Sign in</a>
+        <a class="link-primary text-decoration-none" [routerLink]="['/authentication/login']">Already have an account? Sign in</a>
 </div>
