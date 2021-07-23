@@ -1,11 +1,14 @@
 import { DatePipe } from '@angular/common';
 import { HttpClient } from '@angular/common/http';
-import { Component, OnInit } from '@angular/core';
+import { Component, ElementRef, OnInit, ViewChild } from '@angular/core';
 import { FormBuilder, Validators } from '@angular/forms';
+import html2canvas from 'html2canvas';
+import jsPDF from 'jspdf';
 import { ToastrService } from 'ngx-toastr';
 import { Statement, StatementCategory } from 'src/app/interfaces/statement';
 import { RepositoryService } from 'src/app/repository.service';
 import { AuthenticationService } from 'src/app/shared/services/authentication.service';
+
 
 @Component({
   selector: 'app-statement-form',
@@ -38,6 +41,23 @@ export class StatementFormComponent implements OnInit {
   ngOnInit(): void {
     this.getStatementCategories();
     this.getStatements(this.date);
+  }
+
+  public openPDF():void {
+    let DATA = document.getElementById('statementData');
+      
+    html2canvas(DATA).then(canvas => {
+        
+        let fileWidth = 208;
+        let fileHeight = canvas.height * fileWidth / canvas.width;
+        
+        const FILEURI = canvas.toDataURL('image/png')
+        let PDF = new jsPDF('p', 'mm', 'a4');
+        let position = 0;
+        PDF.addImage(FILEURI, 'PNG', 0, position, fileWidth, fileHeight)
+        
+        PDF.save('angular-demo.pdf');
+    });     
   }
 
   onSubmit(): void {

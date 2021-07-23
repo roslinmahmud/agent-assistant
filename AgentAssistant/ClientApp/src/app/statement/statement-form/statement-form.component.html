@@ -67,34 +67,42 @@
 <div class="card mt-2 mb-2">
   <h5 class="card-header">Reports</h5>
   <div class="card-body pl-0 pr-0">
-    <div class="form-group col-md-6">
-      <h6 class="card-title">Select Month</h6>
-      <input type="month" [value]="date | date:'yyyy-MM'" id="date" class="form-control" (change)="onChange($event)">
+    <div class="row">
+      <div class="form-group col-md-6">
+        <h6 class="card-title">Select Month</h6>
+        <input type="month" [value]="date | date:'yyyy-MM'" id="date" class="form-control" (change)="onChange($event)">
+      </div>
+      <div class="col-md-6 text-right">
+        <button class="btn btn-success btn-block" (click)="openPDF()">Download Report</button>
+      </div>
     </div>
-    <div class="table-responsive">
-      <table class="table">
-        <thead>
-          <tr>
-            <th scope="col">Date</th>
-            <th scope="col">Amount</th>
-            <th scope="col">Category</th>
-            <th scope="col">Description</th>
-          </tr>
-        </thead>
-        <tbody>
-          <ng-container *ngFor="let statement of statements">
-            <tr [ngClass]="{'table-success': statementCategoryMap.get(statement.categoryId)?.isIncome, 'table-warning': !statementCategoryMap.get(statement.categoryId)?.isIncome }">
-              <td>{{statement.date | date}}</td>
-              <td>{{statement.amount | currency: "BDT":"symbol": '': 'bn'}}</td>
-              <td>{{statementCategoryMap.get(statement.categoryId)?.categoryName}}</td>
-              <td>{{statement.description}}</td>
+    
+    <div id="statementData">
+      <div class="table-responsive">
+        <table class="table">
+          <thead>
+            <tr>
+              <th scope="col">Date</th>
+              <th scope="col">Amount</th>
+              <th scope="col">Category</th>
+              <th scope="col">Description</th>
             </tr>
-          </ng-container>
-        </tbody>
-      </table>
-    </div>
-    <div class="row text-info font-weight-bold p-2">
-      <div class="col">Net Income:</div><div class="col">{{ netIncome | currency: "BDT":"symbol": '': 'bn' }}</div>
+          </thead>
+          <tbody>
+            <ng-container *ngFor="let statement of statements">
+              <tr [ngClass]="{'table-success': statementCategoryMap.get(statement.categoryId)?.isIncome, 'table-warning': !statementCategoryMap.get(statement.categoryId)?.isIncome }">
+                <td>{{statement.date | date}}</td>
+                <td>{{statement.amount | currency: "BDT":"symbol": '': 'bn'}}</td>
+                <td>{{statementCategoryMap.get(statement.categoryId)?.categoryName}}</td>
+                <td>{{statement.description}}</td>
+              </tr>
+            </ng-container>
+          </tbody>
+        </table>
+      </div>
+      <div class="row text-info font-weight-bold p-2">
+        <div class="col">Net Income:</div><div class="col">{{ netIncome | currency: "BDT":"symbol": '': 'bn' }}</div>
+      </div>
     </div>
   </div>
 </div>
