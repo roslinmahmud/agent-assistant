@@ -9,9 +9,9 @@ using System.Threading.Tasks;
 
 namespace Entities.Configuration
 {
-    public class VoltConfiguration : IEntityTypeConfiguration<Volt>
+    public class VaultConfiguration : IEntityTypeConfiguration<Vault>
     {
-        public void Configure(EntityTypeBuilder<Volt> builder)
+        public void Configure(EntityTypeBuilder<Vault> builder)
         {
             builder.HasAlternateKey(v => new { v.AgentId, v.Date });
         }

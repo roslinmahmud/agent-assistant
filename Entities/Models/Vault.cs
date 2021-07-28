@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace Entities.Models
 {
-    public class Volt: Entity
+    public class Vault: Entity
     {
         [Required]
         public DateTime Date { get; set; }

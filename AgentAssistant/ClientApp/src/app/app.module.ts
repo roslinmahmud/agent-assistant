@@ -11,7 +11,7 @@ import { DatePipe } from '@angular/common';
 import { ErrorHandlerService } from './shared/services/error-handler.service';
 import { JwtModule } from "@auth0/angular-jwt";
 import { AuthGuard } from './shared/guards/auth.guard';
-import { VoltModule } from './volt/volt.module';
+import { VaultModule } from './vault/vault.module';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { ToastrModule } from 'ngx-toastr';
 import { LoadingBarHttpClientModule } from '@ngx-loading-bar/http-client';
@@ -32,13 +32,13 @@ export function tokenGetter() {
     ToastrModule.forRoot(),
     HttpClientModule,
     FormsModule,
-    VoltModule, 
+    VaultModule, 
     RouterModule.forRoot(
       [
         { path: '', redirectTo: 'home', pathMatch: 'full' },
         { path: 'home', component: HomeComponent,  canActivate: [AuthGuard] },
         { path: 'authentication', loadChildren: () => import('./authentication/authentication.module').then(m => m.AuthenticationModule) },
-        { path: 'volt', loadChildren: () => import('./volt/volt.module').then(m => m.VoltModule), canActivate:[AuthGuard] },
+        { path: 'vault', loadChildren: () => import('./vault/vault.module').then(m => m.VaultModule), canActivate:[AuthGuard] },
         { path: 'statement', loadChildren: () => import('./statement/statement.module').then(m => m.StatementModule), canActivate: [AuthGuard] },
         { path: 'user', loadChildren: () => import('./user/user.module').then(m => m.UserModule), canActivate: [AuthGuard] }
       ],

@@ -1,7 +1,7 @@
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Inject, Injectable, isDevMode } from '@angular/core';
 import { environment } from '../environments/environment';
-import { Volt } from './interfaces/volt';
+import { Vault } from './interfaces/vault';
 
 @Injectable({
   providedIn: 'root'
@@ -16,7 +16,7 @@ export class RepositoryService {
       return this.http.post(this.baseURL + route, body, this.generateHeaders());
     }
 
-    public update = (route:string, body:Volt) => {
+    public update = (route:string, body:Vault) => {
       return this.http.put(this.baseURL+route, body, this.generateHeaders());
     }
 

@@ -1,20 +1,20 @@
 import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
 
-import { VoltFormComponent } from './volt-form.component';
+import { VaultListComponent } from './vault-list.component';
 
-describe('VoltFormComponent', () => {
-  let component: VoltFormComponent;
-  let fixture: ComponentFixture<VoltFormComponent>;
+describe('VaultListComponent', () => {
+  let component: VaultListComponent;
+  let fixture: ComponentFixture<VaultListComponent>;
 
   beforeEach(waitForAsync(() => {
     TestBed.configureTestingModule({
-      declarations: [ VoltFormComponent ]
+      declarations: [ VaultListComponent ]
     })
     .compileComponents();
   }));
 
   beforeEach(() => {
-    fixture = TestBed.createComponent(VoltFormComponent);
+    fixture = TestBed.createComponent(VaultListComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
   });

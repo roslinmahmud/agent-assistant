@@ -1,4 +1,4 @@
-export interface Volt{
+export interface Vault{
     id: number,
     date: string,
     openingLiquidMoney: number,

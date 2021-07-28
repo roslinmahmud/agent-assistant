@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { Volt } from '../../interfaces/volt';
+import { Vault } from '../../interfaces/vault';
 import { RepositoryService } from '../../repository.service';
 
 import { DatePipe, registerLocaleData } from '@angular/common';
@@ -9,13 +9,13 @@ import { AuthenticationService } from 'src/app/shared/services/authentication.se
 registerLocaleData(localeBn, 'bn');
 
 @Component({
-  selector: 'app-volt-list',
-  templateUrl: './volt-list.component.html',
-  styleUrls: ['./volt-list.component.css']
+  selector: 'app-vault-list',
+  templateUrl: './vault-list.component.html',
+  styleUrls: ['./vault-list.component.css']
 })
-export class VoltListComponent implements OnInit {
+export class VaultListComponent implements OnInit {
 
-  volts: Volt[];
+  vaults: Vault[];
   date: string|any = this.datePipe.transform(new Date(), "'yyyy-MM");
   
   constructor(private repository: RepositoryService,
@@ -23,18 +23,18 @@ export class VoltListComponent implements OnInit {
     private authService: AuthenticationService) { }
 
   ngOnInit() {
-    this.getVolts(this.date);
+    this.getVaults(this.date);
   }
 
   onChange(date:any){
-    this.getVolts(date.target.value);
+    this.getVaults(date.target.value);
   }
 
-  private getVolts(date: string){
+  private getVaults(date: string){
     let agentId:string = this.authService.getAgentId();
-    this.repository.get('api/volt/list/'+agentId+'/'+date)
+    this.repository.get('api/vault/list/'+agentId+'/'+date)
     .subscribe(res =>
-      this.volts = res as Volt[]);
+      this.vaults = res as Vault[]);
   }
 
 }

@@ -19,12 +19,12 @@
           </tr>
         </thead>
         <tbody>
-          <tr *ngFor="let volt of volts">
-            <td>{{ volt.date | date }}</td>
-            <td>{{ volt.openingLiquidMoney | currency: "BDT":"symbol": '': 'bn' }}</td>
-            <td>{{ volt.openingCashMoney | currency: "BDT":"symbol": '': 'bn' }}</td>
-            <td>{{ volt.closingLiquidMoney | currency: "BDT":"symbol": '': 'bn' }}</td>
-            <td>{{ volt.closingCashMoney | currency: "BDT":"symbol": '': 'bn' }}</td>
+          <tr *ngFor="let vault of vaults">
+            <td>{{ vault.date | date }}</td>
+            <td>{{ vault.openingLiquidMoney | currency: "BDT":"symbol": '': 'bn' }}</td>
+            <td>{{ vault.openingCashMoney | currency: "BDT":"symbol": '': 'bn' }}</td>
+            <td>{{ vault.closingLiquidMoney | currency: "BDT":"symbol": '': 'bn' }}</td>
+            <td>{{ vault.closingCashMoney | currency: "BDT":"symbol": '': 'bn' }}</td>
           </tr>
         </tbody>
       </table>

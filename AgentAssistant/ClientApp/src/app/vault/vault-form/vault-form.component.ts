@@ -3,23 +3,23 @@ import { HttpClient } from '@angular/common/http';
 import { Component, OnInit, Output } from '@angular/core';
 import { FormBuilder, Validators } from '@angular/forms';
 import { ToastrService } from 'ngx-toastr';
-import { Volt } from '../../interfaces/volt';
+import { Vault } from '../../interfaces/vault';
 import { RepositoryService } from '../../repository.service';
 import { AuthenticationService } from '../../shared/services/authentication.service';
 
 
 @Component({
-  selector: 'app-volt-form',
-  templateUrl: './volt-form.component.html',
-  styleUrls: ['./volt-form.component.css']
+  selector: 'app-vault-form',
+  templateUrl: './vault-form.component.html',
+  styleUrls: ['./vault-form.component.css']
 })
-export class VoltFormComponent implements OnInit {
+export class VaultFormComponent implements OnInit {
 
-  volt: Volt;
+  vault: Vault;
   isSubmitted: boolean;
   date: string = this.datePipe.transform(new Date(), "yyyy-MM-dd");
   
-  voltForm = this.fromBuilder.group({
+  vaultForm = this.fromBuilder.group({
     date: [this.date, Validators.required],
     openingLiquidMoney: ['0', Validators.required],
     openingCashMoney: ['0', Validators.required],
@@ -35,29 +35,29 @@ export class VoltFormComponent implements OnInit {
     private toastr: ToastrService) { }
 
   ngOnInit() {
-    this.getVolt(this.date);
+    this.getVault(this.date);
   }
 
   onChange(){
-    this.getVolt(this.voltForm.get('date').value);
+    this.getVault(this.vaultForm.get('date').value);
   }
 
-  private getVolt(date:string) {
-    const apiUrl = "api/volt/" + this.authService.getAgentId() + "/"+this.datePipe.transform(date, "yyyy-MM-dd");
+  private getVault(date:string) {
+    const apiUrl = "api/vault/" + this.authService.getAgentId() + "/"+this.datePipe.transform(date, "yyyy-MM-dd");
 
     this.repository.get(apiUrl)
       .subscribe(res => {
         if(res == null){
-          this.voltForm.reset({date: date} as Volt);
+          this.vaultForm.reset({date: date} as Vault);
           this.isSubmitted = false;
           if(date != this.date)
             this.toastr.warning("Date: "+date, 'No data found')
           return;
         }
           
-        this.volt = res as Volt;
-        this.volt.date = this.datePipe.transform(this.volt.date, "yyyy-MM-dd")
-        this.voltForm.patchValue(this.volt);
+        this.vault = res as Vault;
+        this.vault.date = this.datePipe.transform(this.vault.date, "yyyy-MM-dd")
+        this.vaultForm.patchValue(this.vault);
         this.isSubmitted = true;
       },
       (error)=>{
@@ -67,20 +67,20 @@ export class VoltFormComponent implements OnInit {
 
   onSubmit() {
     if(this.isSubmitted){
-      this.updateVolt(Object.assign(this.volt, this.voltForm.value));
+      this.updateVault(Object.assign(this.vault, this.vaultForm.value));
     }
     else{
-      this.createVolt(this.voltForm.value);
+      this.createVault(this.vaultForm.value);
     }
   }
 
-  private createVolt(volt: Volt){
-    const apiUrl = "api/volt";
-    volt.agentId = this.authService.getAgentId();
+  private createVault(vault: Vault){
+    const apiUrl = "api/vault";
+    vault.agentId = this.authService.getAgentId();
 
-    this.repository.create(apiUrl, volt)
+    this.repository.create(apiUrl, vault)
       .subscribe(res => {
-        this.volt = res as Volt;
+        this.vault = res as Vault;
         this.isSubmitted = true;
         this.toastr.success('Submit successful', '');
       },
@@ -89,11 +89,11 @@ export class VoltFormComponent implements OnInit {
       });
   }
 
-  private updateVolt(volt: Volt){
-    const apiUrl = "api/volt/";
-    volt.agentId = this.authService.getAgentId();
+  private updateVault(vault: Vault){
+    const apiUrl = "api/vault/";
+    vault.agentId = this.authService.getAgentId();
 
-    this.repository.update(apiUrl, volt)
+    this.repository.update(apiUrl, vault)
       .subscribe(res => {
         this.toastr.success('Update successful', 'Success');
       },
