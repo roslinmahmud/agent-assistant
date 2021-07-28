@@ -12,9 +12,6 @@ import { ReactiveFormsModule } from '@angular/forms';
     VoltFormComponent,
     VoltListComponent
   ],
-  exports: [
-    VoltFormComponent
-  ],
   imports: [
     CommonModule,
     ReactiveFormsModule,

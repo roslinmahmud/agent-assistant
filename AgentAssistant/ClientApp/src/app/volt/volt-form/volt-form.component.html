@@ -1,11 +1,9 @@
 <div class="card mt-2 mb-2">
-    <div class="card-header">
-      <span class="font-weight-bold">Volt</span>
-    </div>
+    <h5 class="card-header">Volt</h5>
     <div class="card-body">
 
       <form [formGroup]="voltForm" (ngSubmit)="onSubmit()">
-          <div class="form-row">
+          <div class="row">
             <div class="form-group col-md-6">
               <label for="openingLiquidMoney" class="form-label">Opening Liquid Money</label>
               <div class="input-group mb-2">
@@ -25,7 +23,7 @@
               </div>
             </div>
           </div>
-          <div class="form-row">
+          <div class="row">
             <div class="form-group col-md-6">
               <label for="closingLiquidMoney" class="form-label">Closing Liquid Money</label>
               <div class="input-group mb-2">
@@ -45,7 +43,7 @@
               </div>
             </div>
           </div>
-          <div class="form-row">
+          <div class="row">
             <div class="form-group col-md-6">
               <label for="date" class="form-label">Date</label>
               <input type="date" [value]="date | date:'yyyy-MM-dd'" id="date" class="form-control" (change)="onChange()" formControlName="date">
@@ -89,3 +87,5 @@
     </div>
   </div>
 </ng-container>
+
+<app-volt-list></app-volt-list>
