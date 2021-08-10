@@ -87,8 +87,8 @@ namespace AgentAssistant.Controllers
 
             var summary = new SummaryResponseDto
             {
-                CurrentDayIncome = Math.Round(float.Parse(await GetCurrentDayIncome()), 2).ToString(),
-                CurrentMonthIncome = Math.Round(float.Parse(await GetCurrentMonthIncome()), 2).ToString()
+                CurrentDayIncome = await GetCurrentDayIncome(),
+                CurrentMonthIncome = await GetCurrentMonthIncome()
             };
 
             return Ok(summary);
@@ -103,24 +103,22 @@ namespace AgentAssistant.Controllers
 
             var html = new HtmlDocument();
             html.LoadHtml(content);
+            var h3 = html.DocumentNode.SelectNodes("//h3");
 
-            var body = html.DocumentNode.SelectSingleNode("//body");
-            var h3 = body.SelectNodes("//h3");
+            if (h3[0].InnerHtml == "No Transaction!")
+                return "0.00";
 
-            return h3[1].InnerHtml.Split(" ")[2];
+            return Math.Round(float.Parse(h3[1].InnerHtml.Split(" ")[2]), 2).ToString();
         }
 
         private async Task<string> GetCurrentMonthIncome()
         {
-            var date = DateTime.Now;
-
             var form = new FormUrlEncodedContent(new[]
             {
-                new KeyValuePair<string, string>("fromDate", new DateTime(date.Year, date.Month, 1).Date.ToString("yyyy-MM-dd")),
-                new KeyValuePair<string, string>("toDate", date.Date.ToString("yyyy-MM-dd"))
+                new KeyValuePair<string, string>("fromDate", DateTime.Now.AddDays(1-DateTime.Now.Day).Date.ToString("yyyy-MM-dd")),
+                new KeyValuePair<string, string>("toDate", DateTime.Now.Date.ToString("yyyy-MM-dd"))
             });
 
-            var d  = new DateTime(date.Year, date.Month, 1).Date.ToShortDateString();
             var response = await httpClient.PostAsync("reports/commission02.do", form);
             response.EnsureSuccessStatusCode();
 
@@ -128,11 +126,9 @@ namespace AgentAssistant.Controllers
 
             var html = new HtmlDocument();
             html.LoadHtml(content);
+            var h3 = html.DocumentNode.SelectNodes("//h3");
 
-            var body = html.DocumentNode.SelectSingleNode("//body");
-            var h3 = body.SelectNodes("//h3");
-
-            return h3[1].InnerHtml.Split(" ")[2];
+            return Math.Round(float.Parse(h3[1].InnerHtml.Split(" ")[2]), 2).ToString();
         }
 
 
