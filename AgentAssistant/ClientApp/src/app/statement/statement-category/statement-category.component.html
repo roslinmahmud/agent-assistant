@@ -1,0 +1,58 @@
+<!-- Modal -->
+<div class="modal fade" id="categoryModal" tabindex="-1" aria-labelledby="categoryModalLabel" aria-hidden="true">
+  <div class="modal-dialog modal-lg">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="categoryModalLabel">Statement Category</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <div class="modal-body">
+        <div class="card shadow-sm mb-2">
+            <h5 class="card-header">Create</h5>
+            <div class="card-body">
+                <form [formGroup]="statementCategoryForm" (ngSubmit)="onSubmit()">
+                    <div class="form-row">
+                      <div class="form-group col-md-6">
+                        <label for="categoryName" class="form-label">Category Name</label>
+                        <div class="input-group mb-2">
+                          <input type="text" id="categoryName" class="form-control" [ngClass]="{'is-invalid': isSubmitted && statementCategoryForm.controls.categoryName.errors?.required, 'is-valid': statementCategoryForm.controls.categoryName.valid }" formControlName="categoryName">
+                          <div class="invalid-feedback">
+                            Please enter a category name.
+                          </div>             
+                        </div>
+                      </div>
+                    </div>
+                    <div class="form-row">
+                        <div class="form-group col-md-6">
+                          <div class="form-check align-middle">
+                              <input type="checkbox" class="form-check-input" id="isIncome" formControlName="isIncome">
+                              <label class="form-check-label" for="isIncome">Is Income</label>
+                          </div>
+                        </div>
+                        <div class="form-group col-md-6">
+                            <button type="submit" class="btn btn-primary">Submit</button>
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>
+        <div class="table-responsive">
+            <table class="table table-bordered shadow-sm">
+              <thead class="table-light">
+                <tr>
+                  <th scope="col">Category Name</th>
+                  <th scope="col">Is Income</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr *ngFor="let statementCategory of statementCategories">
+                  <td>{{ statementCategory.categoryName }}</td>
+                  <td>{{ statementCategory.isIncome }}</td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+      </div>
+    </div>
+  </div>
+</div>

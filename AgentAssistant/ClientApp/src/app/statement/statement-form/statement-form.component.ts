@@ -71,7 +71,7 @@ export class StatementFormComponent implements OnInit {
     this.getStatements(this.date);
   }
 
-  private getStatementCategories(){
+  getStatementCategories(){
     let agentId:string = this.authService.getAgentId();
     this.repository.get('api/statement/category/'+agentId)
     .subscribe(
