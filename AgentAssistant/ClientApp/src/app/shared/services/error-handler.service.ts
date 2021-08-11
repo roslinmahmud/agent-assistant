@@ -23,7 +23,7 @@ export class ErrorHandlerService implements HttpInterceptor {
     )
   }
 
-  private handleError = (error: HttpErrorResponse): string => {
+  private handleError = (error: HttpErrorResponse): string | HttpErrorResponse => {
     if(error.status === 404){
       return this.handleNotFound(error);
     }
@@ -32,6 +32,9 @@ export class ErrorHandlerService implements HttpInterceptor {
     }
     else if(error.status == 401){
       return this.handleUnauthorized(error);
+    }
+    else{
+      return error;
     }
   }
 

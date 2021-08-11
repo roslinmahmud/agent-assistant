@@ -7,7 +7,7 @@ import { RepositoryService } from '../repository.service';
   templateUrl: './home.component.html',
 })
 export class HomeComponent implements OnInit{
-  public summary: Summary
+  public summary: Summary;
 
   constructor(private repository: RepositoryService){}
 
@@ -21,6 +21,9 @@ export class HomeComponent implements OnInit{
     .subscribe(
       res => {
         this.summary = res as Summary;
+      },
+      error => {
+        console.log(error);
       }
     );
   }
