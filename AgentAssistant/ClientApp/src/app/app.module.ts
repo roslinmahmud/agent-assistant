@@ -15,6 +15,7 @@ import { VaultModule } from './vault/vault.module';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { ToastrModule } from 'ngx-toastr';
 import { LoadingBarHttpClientModule } from '@ngx-loading-bar/http-client';
+import { AppRoutingModule } from './app-routing.module';
 
 export function tokenGetter() {
   return localStorage.getItem("token");
@@ -29,29 +30,18 @@ export function tokenGetter() {
   imports: [
     BrowserModule.withServerTransition({ appId: 'ng-cli-universal' }),
     BrowserAnimationsModule,
-    ToastrModule.forRoot(),
     HttpClientModule,
     FormsModule,
-    VaultModule, 
-    RouterModule.forRoot(
-      [
-        { path: '', redirectTo: 'home', pathMatch: 'full' },
-        { path: 'home', component: HomeComponent,  canActivate: [AuthGuard] },
-        { path: 'authentication', loadChildren: () => import('./authentication/authentication.module').then(m => m.AuthenticationModule) },
-        { path: 'vault', loadChildren: () => import('./vault/vault.module').then(m => m.VaultModule), canActivate:[AuthGuard] },
-        { path: 'statement', loadChildren: () => import('./statement/statement.module').then(m => m.StatementModule), canActivate: [AuthGuard] },
-        { path: 'user', loadChildren: () => import('./user/user.module').then(m => m.UserModule), canActivate: [AuthGuard] }
-      ],
-      { preloadingStrategy: PreloadAllModules, relativeLinkResolution: 'legacy' }
-    ),
+    AppRoutingModule,
+    LoadingBarHttpClientModule,
+    ToastrModule.forRoot(),
     JwtModule.forRoot({
       config:{
         tokenGetter: tokenGetter,
         allowedDomains: ["localhost:5001", "ibbl.azurewebsites.net"],
         disallowedRoutes:[]
       }
-    }),
-    LoadingBarHttpClientModule
+    })
   ],
   providers: 
   [

@@ -16,9 +16,7 @@ import { ReactiveFormsModule } from '@angular/forms';
     CommonModule,
     ReactiveFormsModule,
     RouterModule.forChild([
-      //{path: 'vault', redirectTo: 'vault/list'},
-      {path: 'form', component: VaultFormComponent},
-      {path: 'list', component: VaultListComponent}
+      {path: '', component: VaultFormComponent}
     ])
   ]
 })

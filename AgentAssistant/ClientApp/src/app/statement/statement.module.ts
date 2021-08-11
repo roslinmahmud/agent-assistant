@@ -12,7 +12,7 @@ import { ReactiveFormsModule } from '@angular/forms';
     CommonModule,
     ReactiveFormsModule,
     RouterModule.forChild([
-      {path: 'form', component: StatementFormComponent}
+      {path: "", component: StatementFormComponent}
     ])
   ]
 })

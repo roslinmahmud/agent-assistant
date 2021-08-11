@@ -1,6 +1,6 @@
 <div class="row justify-content-center">
     <div class="col-md-4">
-        <div class="card shadow bg-body rounded p-3 mb-3" style="max-width: 18rem;">
+        <div class="card shadow bg-white rounded p-3 mb-3" style="max-width: 18rem;">
             <div class="card-body text-success">
               <h5 class="card-title">Today's Income</h5>
               <p class="card-text">{{ summary?.currentDayIncome | currency: "BDT":"symbol": '': 'bn' }}</p>
@@ -8,7 +8,7 @@
         </div>
     </div>
     <div class="col-md-4">
-        <div class="card shadow bg-body rounded p-3 mb-3" style="max-width: 18rem;">
+        <div class="card shadow bg-white rounded p-3 mb-3" style="max-width: 18rem;">
             <div class="card-body text-success">
               <h5 class="card-title">This Month Income</h5>
               <p class="card-text">{{ summary?.currentMonthIncome | currency: "BDT":"symbol": '': 'bn'}}</p>

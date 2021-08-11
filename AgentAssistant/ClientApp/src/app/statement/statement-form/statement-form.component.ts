@@ -40,7 +40,6 @@ export class StatementFormComponent implements OnInit {
 
   ngOnInit(): void {
     this.getStatementCategories();
-    this.getStatements(this.date);
   }
 
   public openPDF():void {
@@ -72,6 +71,19 @@ export class StatementFormComponent implements OnInit {
     this.getStatements(this.date);
   }
 
+  private getStatementCategories(){
+    let agentId:string = this.authService.getAgentId();
+    this.repository.get('api/statement/category/'+agentId)
+    .subscribe(
+      (res: StatementCategory[]) => {this.statementCategories = res;},
+      (error) => {},
+      () => {
+        this.statementCategories.map( sc => this.statementCategoryMap.set(sc.id, sc));
+        this.getStatements(this.date);
+      }
+    );
+  }
+
   private getStatements(date: string){
     const apiUrl = 'api/statement/';
     let agentId:string = this.authService.getAgentId();
@@ -84,16 +96,6 @@ export class StatementFormComponent implements OnInit {
         this.netIncome = 0;
         this.statements.map(st => this.statementCategoryMap.get(st.categoryId).isIncome ? this.netIncome+=st.amount : this.netIncome-=st.amount )
       }
-    );
-  }
-
-  private getStatementCategories(){
-    let agentId:string = this.authService.getAgentId();
-    this.repository.get('api/statement/category/'+agentId)
-    .subscribe(
-      (res: StatementCategory[]) => {this.statementCategories = res;},
-      (error) => {},
-      () => {this.statementCategories.map( sc => this.statementCategoryMap.set(sc.id, sc));}
     );
   }
 
