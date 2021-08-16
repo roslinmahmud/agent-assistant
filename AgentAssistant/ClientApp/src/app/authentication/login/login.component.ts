@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormControl, Validators } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
 import { ToastrService } from 'ngx-toastr';
+import { RepositoryService } from 'src/app/repository.service';
 import { AuthenticationService } from 'src/app/shared/services/authentication.service';
 
 @Component({
@@ -11,6 +12,7 @@ import { AuthenticationService } from 'src/app/shared/services/authentication.se
 })
 export class LoginComponent implements OnInit {
   private returnUrl: string;
+  private userId: string;
   isSubmitted: boolean = false;
 
   loginForm = this.formBuilder.group({
@@ -22,10 +24,12 @@ export class LoginComponent implements OnInit {
     private authService: AuthenticationService,
     private router: Router,
     private route: ActivatedRoute,
-    private toastr: ToastrService) { }
+    private toastr: ToastrService,
+    private repository: RepositoryService) { }
 
   ngOnInit() {
     this.returnUrl = this.route.snapshot.queryParams['returnUrl'] || '/';
+    this.userId = this.route.snapshot.queryParams['userId'];
   }
 
   public validateControl = (controlName: string) => {
@@ -53,11 +57,26 @@ export class LoginComponent implements OnInit {
       localStorage.setItem("token", res.token);
       this.authService.sendAuthStateChangeNotification(res.isAuthSuccessful);
       this.isSubmitted = false;
-      this.router.navigate([this.returnUrl]);
+      this.userId ? this.registerAgent(this.userId) : this.router.navigate([this.returnUrl]);
     },
     (error) => {
       this.toastr.error(error, "Signin failed");
     });
+  }
+
+  public registerAgent = (userId: string) => {
+    const apiUrl = "api/agent/" + userId;
+
+    this.repository.create(apiUrl, { Name: "IBBL Agent" })
+      .subscribe(
+        (res) => {
+          this.router.navigate(["/home"]);
+        },
+        (error) => {
+          console.error(error);
+        },
+        () => { }
+      );
   }
 
 }

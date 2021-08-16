@@ -9,7 +9,8 @@ const routes : Routes = [
   { path: 'authentication', loadChildren: () => import('./authentication/authentication.module').then(m => m.AuthenticationModule) },
   { path: 'vault', loadChildren: () => import('./vault/vault.module').then(m => m.VaultModule), canActivate:[AuthGuard] },
   { path: 'statement', loadChildren: () => import('./statement/statement.module').then(m => m.StatementModule), canActivate: [AuthGuard] },
-  { path: 'user', loadChildren: () => import('./user/user.module').then(m => m.UserModule), canActivate: [AuthGuard] }
+  { path: 'user', loadChildren: () => import('./user/user.module').then(m => m.UserModule), canActivate: [AuthGuard] },
+  { path: '**', redirectTo: 'home' }
 ]
 
 @NgModule({

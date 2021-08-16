@@ -1,7 +1,6 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { JwtHelperService } from '@auth0/angular-jwt';
-import { decode } from 'punycode';
 import { Subject } from 'rxjs';
 import { AuthResponse } from 'src/app/interfaces/authResponse';
 import { RegistrationResponse } from 'src/app/interfaces/registrationResponse';

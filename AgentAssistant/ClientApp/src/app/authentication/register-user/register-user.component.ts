@@ -60,7 +60,7 @@ export class RegisterUserComponent implements OnInit {
     .subscribe(res => {
       if (res.isSuccessfulRegistration) {
         this.isSubmitted = false;
-        this.registerAgent(res.userId);
+        this.router.navigate(["/authentication/login"], {queryParams:{userId: res.userId} });
       }
         
     },
@@ -71,19 +71,6 @@ export class RegisterUserComponent implements OnInit {
     })
   }
 
-  public registerAgent = (userId: string) => {
-    const apiUrl = "api/agent/" + userId;
-
-    this.repository.create(apiUrl, { Name: "IBBL Agent" })
-      .subscribe(
-        (res) => {
-          this.router.navigate(["/authentication/login"]);
-        },
-        (error) => {
-          console.error(error);
-        },
-        () => { }
-      );
-  }
+  
 
 }

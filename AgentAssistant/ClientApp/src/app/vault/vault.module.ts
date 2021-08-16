@@ -9,8 +9,7 @@ import { ReactiveFormsModule } from '@angular/forms';
 
 @NgModule({
   declarations: [
-    VaultFormComponent,
-    VaultListComponent
+    VaultFormComponent, VaultListComponent
   ],
   imports: [
     CommonModule,
