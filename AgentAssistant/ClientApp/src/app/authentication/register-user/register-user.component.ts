@@ -4,7 +4,6 @@ import { Router } from '@angular/router';
 import { ToastrService } from 'ngx-toastr';
 import { PasswordConfirmationValidatorsService } from 'src/app/shared/custom-validators/password-confirmation-validators.service';
 import { AuthenticationService } from 'src/app/shared/services/authentication.service';
-import { RepositoryService } from '../../repository.service';
 
 @Component({
   selector: 'app-register-user',
@@ -13,15 +12,12 @@ import { RepositoryService } from '../../repository.service';
 })
 export class RegisterUserComponent implements OnInit {
   public registerForm: FormGroup
-  public errorMessage: string = '';
-  public showError: boolean;
   public isSubmitted: boolean;
 
 
   constructor(private authService: AuthenticationService,
     private passConfValidator: PasswordConfirmationValidatorsService,
     private router: Router,
-    private repository: RepositoryService,
     private toastr: ToastrService) { }
 
   ngOnInit() {
@@ -55,19 +51,18 @@ export class RegisterUserComponent implements OnInit {
   }
 
   public registerUser = () => {
-    this.showError = false;
     this.authService.registerUser('api/user/register', this.registerForm.value)
     .subscribe(res => {
       if (res.isSuccessfulRegistration) {
         this.isSubmitted = false;
         this.router.navigate(["/authentication/login"], {queryParams:{userId: res.userId} });
       }
-        
+      else{
+        console.error(res.errros);
+      }  
     },
     error => {
-      console.log(error);
-      this.errorMessage = error;
-      this.showError = true;
+      this.toastr.error(error, "Registration failed");
     })
   }
 

@@ -60,7 +60,7 @@ export class LoginComponent implements OnInit {
       this.userId ? this.registerAgent(this.userId) : this.router.navigate([this.returnUrl]);
     },
     (error) => {
-      this.toastr.error(error, "Signin failed");
+      this.toastr.error(error, "Login failed");
     });
   }
 

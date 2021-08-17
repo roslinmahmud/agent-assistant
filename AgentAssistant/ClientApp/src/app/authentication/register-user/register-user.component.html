@@ -1,9 +1,5 @@
 <div class="container text-center col-md-4">
-    <h1 class="h3 mb-3 font-weight-normal">Sign up</h1>
-
-        <div *ngIf="showError" class="alert alert-danger" role="alert">
-            <span [innerHTML]="errorMessage"></span>
-        </div>
+    <h1 class="h3 mb-3 font-weight-normal">Sign Up</h1>
 
         <form [formGroup]="registerForm" autocomplete="off" novalidate (ngSubmit)="onSubmit()">
             <div class="form-floating mb-1">
