@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { Summary } from '../interfaces/summary';
-import { RepositoryService } from '../repository.service';
+import { RepositoryService } from '../shared/services/repository.service';
 
 @Component({
   selector: 'app-home',
@@ -17,7 +17,7 @@ export class HomeComponent implements OnInit{
 
   private getSummary(){
     
-    this.repository.get('api/agent/summary/')
+    this.repository.get('/api/agent/summary/')
     .subscribe(
       res => {
         this.summary = res as Summary;

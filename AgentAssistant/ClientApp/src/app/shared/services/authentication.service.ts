@@ -6,14 +6,11 @@ import { AuthResponse } from 'src/app/interfaces/authResponse';
 import { RegistrationResponse } from 'src/app/interfaces/registrationResponse';
 import { UserForAuthentication } from 'src/app/interfaces/userForAuthentication';
 import { UserForRegistration } from 'src/app/interfaces/userForRegistration';
-import { environment } from 'src/environments/environment';
 
 @Injectable({
   providedIn: 'root'
 })
 export class AuthenticationService {
-  
-  baseURL:string = environment.API_URL;
 
   private authChangeSub = new Subject<boolean>();
   public authChanged = this.authChangeSub.asObservable();
@@ -22,11 +19,11 @@ export class AuthenticationService {
     private jwtHelper:JwtHelperService) { }
 
   public registerUser = (route:string, body: UserForRegistration) => {
-    return this.http.post<RegistrationResponse>(this.baseURL+route, body);
+    return this.http.post<RegistrationResponse>(route, body);
   }
 
   public loginUser = (route:string, body: UserForAuthentication) => {
-    return this.http.post<AuthResponse>(this.baseURL+route, body);
+    return this.http.post<AuthResponse>(route, body);
   }
 
   public sendAuthStateChangeNotification = (isAuthenticated: boolean) => {

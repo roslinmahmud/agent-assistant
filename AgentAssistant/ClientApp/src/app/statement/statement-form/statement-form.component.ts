@@ -6,7 +6,7 @@ import html2canvas from 'html2canvas';
 import jsPDF from 'jspdf';
 import { ToastrService } from 'ngx-toastr';
 import { Statement, StatementCategory } from 'src/app/interfaces/statement';
-import { RepositoryService } from 'src/app/repository.service';
+import { RepositoryService } from 'src/app/shared/services/repository.service';
 import { AuthenticationService } from 'src/app/shared/services/authentication.service';
 
 
@@ -73,7 +73,7 @@ export class StatementFormComponent implements OnInit {
 
   getStatementCategories(){
     let agentId:string = this.authService.getAgentId();
-    this.repository.get('api/statement/category/'+agentId)
+    this.repository.get('/api/statement/category/'+agentId)
     .subscribe(
       (res: StatementCategory[]) => {this.statementCategories = res;},
       (error) => {},
@@ -85,7 +85,7 @@ export class StatementFormComponent implements OnInit {
   }
 
   private getStatements(date: string){
-    const apiUrl = 'api/statement/';
+    const apiUrl = '/api/statement/';
     let agentId:string = this.authService.getAgentId();
 
     this.repository.get(apiUrl+agentId+'/'+date)
@@ -100,7 +100,7 @@ export class StatementFormComponent implements OnInit {
   }
 
   private createStatement(Statement: Statement){
-    const apiUrl = "api/statement";
+    const apiUrl = "/api/statement";
     Statement.agentId = this.authService.getAgentId();
 
     this.repository.create(apiUrl, Statement)

@@ -51,7 +51,7 @@ export class RegisterUserComponent implements OnInit {
   }
 
   public registerUser = () => {
-    this.authService.registerUser('api/user/register', this.registerForm.value)
+    this.authService.registerUser('/api/user/register', this.registerForm.value)
     .subscribe(res => {
       if (res.isSuccessfulRegistration) {
         this.isSubmitted = false;

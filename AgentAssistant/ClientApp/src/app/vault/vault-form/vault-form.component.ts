@@ -1,10 +1,10 @@
 import { DatePipe } from '@angular/common';
 import { HttpClient } from '@angular/common/http';
-import { Component, OnInit, Output } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { FormBuilder, Validators } from '@angular/forms';
 import { ToastrService } from 'ngx-toastr';
 import { Vault } from '../../interfaces/vault';
-import { RepositoryService } from '../../repository.service';
+import { RepositoryService } from '../../shared/services/repository.service';
 import { AuthenticationService } from '../../shared/services/authentication.service';
 
 
@@ -43,7 +43,7 @@ export class VaultFormComponent implements OnInit {
   }
 
   private getVault(date:string) {
-    const apiUrl = "api/vault/" + this.authService.getAgentId() + "/"+this.datePipe.transform(date, "yyyy-MM-dd");
+    const apiUrl = "/api/vault/" + this.authService.getAgentId() + "/"+this.datePipe.transform(date, "yyyy-MM-dd");
 
     this.repository.get(apiUrl)
       .subscribe(res => {
@@ -75,7 +75,7 @@ export class VaultFormComponent implements OnInit {
   }
 
   private createVault(vault: Vault){
-    const apiUrl = "api/vault";
+    const apiUrl = "/api/vault";
     vault.agentId = this.authService.getAgentId();
 
     this.repository.create(apiUrl, vault)
@@ -90,7 +90,7 @@ export class VaultFormComponent implements OnInit {
   }
 
   private updateVault(vault: Vault){
-    const apiUrl = "api/vault/";
+    const apiUrl = "/api/vault/";
     vault.agentId = this.authService.getAgentId();
 
     this.repository.update(apiUrl, vault)

@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { Vault } from '../../interfaces/vault';
-import { RepositoryService } from '../../repository.service';
+import { RepositoryService } from '../../shared/services/repository.service';
 
 import { DatePipe, registerLocaleData } from '@angular/common';
 import  localeBn from '@angular/common/locales/bn';
@@ -32,7 +32,7 @@ export class VaultListComponent implements OnInit {
 
   private getVaults(date: string){
     let agentId:string = this.authService.getAgentId();
-    this.repository.get('api/vault/list/'+agentId+'/'+date)
+    this.repository.get('/api/vault/list/'+agentId+'/'+date)
     .subscribe(res =>
       this.vaults = res as Vault[]);
   }

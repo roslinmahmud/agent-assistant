@@ -2,7 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { FormBuilder, Validators } from '@angular/forms';
 import { ToastrService } from 'ngx-toastr';
 import { StatementCategory } from 'src/app/interfaces/statement';
-import { RepositoryService } from 'src/app/repository.service';
+import { RepositoryService } from 'src/app/shared/services/repository.service';
 import { AuthenticationService } from 'src/app/shared/services/authentication.service';
 
 @Component({

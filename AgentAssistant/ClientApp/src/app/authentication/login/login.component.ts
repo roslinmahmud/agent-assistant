@@ -2,7 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormControl, Validators } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
 import { ToastrService } from 'ngx-toastr';
-import { RepositoryService } from 'src/app/repository.service';
+import { RepositoryService } from 'src/app/shared/services/repository.service';
 import { AuthenticationService } from 'src/app/shared/services/authentication.service';
 
 @Component({
@@ -52,7 +52,7 @@ export class LoginComponent implements OnInit {
 
   public loginUser = () => {
  
-    this.authService.loginUser('api/user/login', this.loginForm.value)
+    this.authService.loginUser('/api/user/login', this.loginForm.value)
     .subscribe(res => {
       localStorage.setItem("token", res.token);
       this.authService.sendAuthStateChangeNotification(res.isAuthSuccessful);

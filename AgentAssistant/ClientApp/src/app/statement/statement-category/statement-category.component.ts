@@ -2,7 +2,7 @@ import { Component, EventEmitter, OnInit, Output } from '@angular/core';
 import { FormBuilder, Validators } from '@angular/forms';
 import { ToastrService } from 'ngx-toastr';
 import { StatementCategory } from 'src/app/interfaces/statement';
-import { RepositoryService } from 'src/app/repository.service';
+import { RepositoryService } from 'src/app/shared/services/repository.service';
 import { AuthenticationService } from 'src/app/shared/services/authentication.service';
 
 @Component({
@@ -40,13 +40,13 @@ export class StatementCategoryComponent implements OnInit {
 
   private getStatementCategories(){
     let agentId:string = this.authService.getAgentId();
-    this.repository.get('api/statement/category/'+agentId)
+    this.repository.get('/api/statement/category/'+agentId)
     .subscribe(res =>
       this.statementCategories = res as StatementCategory[]);
   }
 
   private createStatementCategory(StatementCategory: StatementCategory){
-    const apiUrl = "api/statement/category";
+    const apiUrl = "/api/statement/category";
     StatementCategory.agentId = this.authService.getAgentId();
 
     this.repository.create(apiUrl, StatementCategory)
