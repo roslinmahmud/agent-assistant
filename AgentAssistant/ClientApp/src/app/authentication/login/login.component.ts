@@ -70,7 +70,7 @@ export class LoginComponent implements OnInit {
     this.repository.create(apiUrl, { Name: "IBBL Agent" })
       .subscribe(
         (res) => {
-          this.router.navigate(["/home"]);
+          this.router.navigate(["/dashboard"]);
         },
         (error) => {
           console.error(error);

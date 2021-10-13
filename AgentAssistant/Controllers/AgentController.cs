@@ -1,10 +1,12 @@
-﻿using Entities.DTO;
+﻿using AgentAssistant.HubConfig;
+using Entities.DTO;
 using Entities.Models;
 using Entities.Repository;
 using HtmlAgilityPack;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.SignalR;
 using System;
 using System.Collections.Generic;
 using System.Net;
@@ -20,14 +22,19 @@ namespace AgentAssistant.Controllers
     {
         private readonly IAgentRepository agentRepository;
         private readonly UserManager<ApplicationUser> userManager;
+        private readonly IHubContext<DashboardHub> hubContext;
         private readonly HttpClient httpClient;
+        private readonly TimerManager timerManager;
 
         public AgentController(IAgentRepository agentRepository,
-            UserManager<ApplicationUser> userManager)
+            UserManager<ApplicationUser> userManager,
+            IHubContext<DashboardHub> hubContext,
+            TimerManager timerManager)
         {
             this.agentRepository = agentRepository;
             this.userManager = userManager;
-
+            this.hubContext = hubContext;
+            this.timerManager = timerManager;
             HttpClientHandler httpClientHandler = new() { CookieContainer = new CookieContainer()};
             HttpClient httpClient = new(httpClientHandler)
             {
@@ -35,6 +42,7 @@ namespace AgentAssistant.Controllers
                 Timeout = new TimeSpan(0, 0, 30)
             };
             this.httpClient = httpClient;
+
         }
 
         [HttpGet]
@@ -67,7 +75,36 @@ namespace AgentAssistant.Controllers
 
             return Created("api/Agent/", agent);
         }
-        
+
+        [HttpGet("summary")]
+        public IActionResult GetSummary()
+        {
+            timerManager.Action = async () => await hubContext.Clients.All.SendAsync("transferSummaryData", await GetDataFromServer());
+            timerManager.Timer.Change(0, 60000);
+
+            return Ok(new { Message = "Request Completed" }); ;
+        }
+
+        private async Task<IActionResult> GetDataFromServer()
+        {
+            var summary = new SummaryResponseDto();
+            try
+            {
+                await Login();
+
+                summary.CurrentDayIncome = await GetCurrentDayIncome();
+                summary.CurrentMonthIncome = await GetCurrentMonthIncome();
+
+            }
+            catch (Exception e)
+            {
+                return BadRequest(e.Message);
+            }
+
+            return Ok(summary);
+
+        }
+
         private async Task Login()
         {
             var form = new FormUrlEncodedContent(new[]
@@ -80,19 +117,7 @@ namespace AgentAssistant.Controllers
             response.EnsureSuccessStatusCode();
         }
 
-        [HttpGet("summary")]
-        public async Task<IActionResult> GetSummary()
-        {
-            await Login();
-
-            var summary = new SummaryResponseDto
-            {
-                CurrentDayIncome = await GetCurrentDayIncome(),
-                CurrentMonthIncome = await GetCurrentMonthIncome()
-            };
-
-            return Ok(summary);
-        }
+        
 
         private async Task<string> GetCurrentDayIncome()
         {

@@ -15,6 +15,7 @@ using Microsoft.IdentityModel.Tokens;
 using System.Text;
 using AgentAssistant.JwtFeatures;
 using AgentAssistant.Extensions;
+using AgentAssistant.HubConfig;
 
 namespace AgentAssistant
 {
@@ -75,10 +76,13 @@ namespace AgentAssistant
             services.AddScoped<IStatementCategoryRepository, StatementCategoryRepository>();
             services.AddScoped(typeof(JwtHandler<>));
 
+            services.AddSingleton(typeof(TimerManager));
+
             services.AddAutoMapper(typeof(MappingProfile));
-                
+            services.AddSignalR();
+
             services.AddControllersWithViews()
-                .AddNewtonsoftJson( o=> o.SerializerSettings.ReferenceLoopHandling = Newtonsoft.Json.ReferenceLoopHandling.Ignore);
+                .AddNewtonsoftJson(options => options.SerializerSettings.ReferenceLoopHandling = Newtonsoft.Json.ReferenceLoopHandling.Ignore);
             
             // In production, the Angular files will be served from this directory
             services.AddSpaStaticFiles(configuration =>
@@ -120,6 +124,7 @@ namespace AgentAssistant
                 endpoints.MapControllerRoute(
                     name: "default",
                     pattern: "{controller}/{action=Index}/{id?}");
+                endpoints.MapHub<DashboardHub>("/summary");
             });
 
             app.UseSpa(spa =>
