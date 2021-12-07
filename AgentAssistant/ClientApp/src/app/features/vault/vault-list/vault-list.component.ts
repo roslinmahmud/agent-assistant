@@ -1,10 +1,10 @@
 import { Component, OnInit } from '@angular/core';
-import { Vault } from '../../interfaces/vault';
-import { RepositoryService } from '../../shared/services/repository.service';
+import { Vault } from '../../../interfaces/vault';
+import { RepositoryService } from '../../../shared/services/repository.service';
 
 import { DatePipe, registerLocaleData } from '@angular/common';
 import  localeBn from '@angular/common/locales/bn';
-import { AuthenticationService } from 'src/app/shared/services/authentication.service';
+import { AuthenticationService } from '../../authentication/services/authentication.service';
 
 registerLocaleData(localeBn, 'bn');
 

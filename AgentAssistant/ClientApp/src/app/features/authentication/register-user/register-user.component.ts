@@ -3,7 +3,8 @@ import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
 import { ToastrService } from 'ngx-toastr';
 import { PasswordConfirmationValidatorsService } from 'src/app/shared/custom-validators/password-confirmation-validators.service';
-import { AuthenticationService } from 'src/app/shared/services/authentication.service';
+import { AuthenticationService } from '../services/authentication.service';
+
 
 @Component({
   selector: 'app-register-user',

@@ -3,9 +3,10 @@ import { HttpClient } from '@angular/common/http';
 import { Component, OnInit } from '@angular/core';
 import { FormBuilder, Validators } from '@angular/forms';
 import { ToastrService } from 'ngx-toastr';
-import { Vault } from '../../interfaces/vault';
-import { RepositoryService } from '../../shared/services/repository.service';
-import { AuthenticationService } from '../../shared/services/authentication.service';
+import { Vault } from '../../../interfaces/vault';
+import { RepositoryService } from '../../../shared/services/repository.service';
+import { AuthenticationService } from '../../authentication/services/authentication.service';
+
 
 
 @Component({

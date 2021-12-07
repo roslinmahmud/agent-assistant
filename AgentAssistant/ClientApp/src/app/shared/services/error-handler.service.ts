@@ -3,7 +3,7 @@ import { Injectable, Injector } from '@angular/core';
 import { Router } from '@angular/router';
 import { Observable, throwError } from 'rxjs';
 import { catchError } from 'rxjs/operators';
-import { AuthenticationService } from './authentication.service';
+import { AuthenticationService } from '../../features/authentication/services/authentication.service';
 
 @Injectable({
   providedIn: 'root'

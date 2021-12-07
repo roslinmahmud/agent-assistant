@@ -6,8 +6,8 @@ import html2canvas from 'html2canvas';
 import jsPDF from 'jspdf';
 import { ToastrService } from 'ngx-toastr';
 import { Statement, StatementCategory } from 'src/app/interfaces/statement';
-import { RepositoryService } from 'src/app/shared/services/repository.service';
-import { AuthenticationService } from 'src/app/shared/services/authentication.service';
+import { RepositoryService } from '../../../shared/services/repository.service';
+import { AuthenticationService } from '../../authentication/services/authentication.service';
 
 
 @Component({
