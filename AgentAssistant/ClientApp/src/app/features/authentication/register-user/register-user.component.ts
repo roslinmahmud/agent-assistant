@@ -12,7 +12,7 @@ import { AuthenticationService } from '../services/authentication.service';
   styleUrls: ['./register-user.component.css']
 })
 export class RegisterUserComponent implements OnInit {
-  public registerForm: FormGroup
+  public registerForm: FormGroup;
   public isSubmitted: boolean;
 
 

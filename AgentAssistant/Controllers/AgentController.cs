@@ -1,4 +1,5 @@
 ﻿using AgentAssistant.HubConfig;
+using AutoMapper;
 using Entities.DTO;
 using Entities.Models;
 using Entities.Repository;
@@ -25,16 +26,19 @@ namespace AgentAssistant.Controllers
         private readonly IHubContext<DashboardHub> hubContext;
         private readonly HttpClient httpClient;
         private readonly TimerManager timerManager;
+        private readonly IMapper mapper;
 
         public AgentController(IAgentRepository agentRepository,
             UserManager<ApplicationUser> userManager,
             IHubContext<DashboardHub> hubContext,
-            TimerManager timerManager)
+            TimerManager timerManager,
+            IMapper mapper)
         {
             this.agentRepository = agentRepository;
             this.userManager = userManager;
             this.hubContext = hubContext;
             this.timerManager = timerManager;
+            this.mapper = mapper;
             HttpClientHandler httpClientHandler = new() { CookieContainer = new CookieContainer()};
             HttpClient httpClient = new(httpClientHandler)
             {
@@ -53,9 +57,14 @@ namespace AgentAssistant.Controllers
         }
 
         [HttpGet("{id}")]
-        public string GetAgent(string id)
+        public async Task<IActionResult> GetAgent(int id)
         {
-            return "value";
+            var agent = await agentRepository.GetAgent(id);
+
+            if (agent is null)
+                return BadRequest("Agent not found");
+
+            return Ok(agent);
         }
 
         [HttpPost("{userId}")]
@@ -74,6 +83,21 @@ namespace AgentAssistant.Controllers
             await agentRepository.SaveChangesAsync();
 
             return Created("api/Agent/", agent);
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> UpdateAgent([FromBody] Agent agent)
+        {
+            var entity = await agentRepository.GetAgent(agent.Id);
+            if(entity == null)
+                return BadRequest("Agent not found");
+
+            entity = mapper.Map(agent, entity);
+
+            agentRepository.UpdateAgent(entity);
+            await agentRepository.SaveChangesAsync();
+
+            return Created("api/Agent/", entity);
         }
 
         [HttpGet("summary")]

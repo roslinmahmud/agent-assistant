@@ -1,0 +1,41 @@
+<div class="card mt-2 mb-2">
+    <h5 class="card-header">Agent Credentials</h5>
+    <div class="card-body">
+        <form *ngIf="agentForm" [formGroup]="agentForm" (ngSubmit)="onSubmit()">
+            <div class="row">
+                <div class="form-group col-md-6">
+                    <label for="name">Agent Name</label>
+                    <input type="text" id="name" formControlName="name" class="form-control"
+                        placeholder="Agent Name" />
+                </div>
+            </div>
+
+            <div class="row">
+                <div class="form-group col-md-6">
+                    <label for="email">Agent Email address</label>
+                    <input type="email" formControlName="email" class="form-control" id="email"
+                        placeholder="name@example.com"
+                        [ngClass]="{'is-valid': isSubmitted && validateControl('email'), 'is-invalid': isSubmitted && !validateControl('email') }">
+                    <div class="invalid-feedback">
+                        Please enter a email.
+                    </div>
+                </div>
+                <div class="form-group col-md-6">
+                    <label for="password">Agent Password</label>
+                    <input type="password" formControlName="password" class="form-control" id="password"
+                        placeholder="Password"
+                        [ngClass]="{'is-valid': isSubmitted && validateControl('password'), 'is-invalid': isSubmitted && !validateControl('password') }">
+                    <div class="invalid-feedback">
+                        Password is required.
+                    </div>
+                </div>
+            </div>
+            <br>
+            <div class="row">
+                <div class="form-group col-md-6">
+                    <button type="submit" class="btn btn-primary">Submit</button>
+                </div>
+            </div>
+        </form>
+    </div>
+</div>

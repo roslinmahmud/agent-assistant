@@ -17,6 +17,17 @@ namespace Entities.Repository
             Create(agent);
         }
 
+        public void UpdateAgent(Agent agent)
+        {
+            Update(agent);
+        }
+
+        public async Task<Agent> GetAgent(int Id)
+        {
+            return await FindByCondition(a => a.Id == Id)
+                .FirstOrDefaultAsync();
+        }
+
         public async Task<IEnumerable<Agent>> GetAllAgents()
         {
             return await FindAll()
