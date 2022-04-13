@@ -100,49 +100,49 @@ namespace AgentAssistant.Controllers
             return Created("api/Agent/", entity);
         }
 
-        [HttpGet("summary")]
-        public IActionResult GetSummary()
+        [HttpGet("summary/{agentId}")]
+        public async Task<IActionResult> GetSummary(int agentId)
         {
-            timerManager.Action = async () => await hubContext.Clients.All.SendAsync("transferSummaryData", await GetDataFromServer());
+            var agent = await agentRepository.GetAgent(agentId);
+
+            if (agent is null)
+                return BadRequest("Agent not found");
+
+            if (agent.Email is null || agent.Password is null)
+                return BadRequest("Agent credentials not found");
+
+            timerManager.Action = async () => await hubContext.Clients.All.SendAsync("transferSummaryData", await GetDataFromServer(agent));
             timerManager.Timer.Change(0, 60000);
 
             return Ok(new { Message = "Request Completed" }); ;
         }
 
-        private async Task<IActionResult> GetDataFromServer()
+        private async Task<IActionResult> GetDataFromServer(Agent agent)
         {
-            var summary = new SummaryResponseDto();
-            try
-            {
-                await Login();
+            await AuthenticateAgent(agent);
 
-                summary.CurrentDayIncome = await GetCurrentDayIncome();
-                summary.CurrentMonthIncome = await GetCurrentMonthIncome();
-
-            }
-            catch (Exception e)
+            var summary = new SummaryResponseDto
             {
-                return BadRequest(e.Message);
-            }
+                CurrentDayIncome = await GetCurrentDayIncome(),
+                CurrentMonthIncome = await GetCurrentMonthIncome()
+            };
 
             return Ok(summary);
 
         }
 
-        private async Task Login()
+        private async Task AuthenticateAgent(Agent agent)
         {
             var form = new FormUrlEncodedContent(new[]
             {
-                new KeyValuePair<string, string>("username", "nasrinnaharhena@gmail.com"),
-                new KeyValuePair<string, string>("password", "Unlock1971")
+                new KeyValuePair<string, string>("username", agent.Email),
+                new KeyValuePair<string, string>("password", agent.Password)
             });
 
             var response = await httpClient.PostAsync("login01.do", form);
             response.EnsureSuccessStatusCode();
         }
-
         
-
         private async Task<string> GetCurrentDayIncome()
         {
             var response = await httpClient.GetAsync("reports/commission02.do");
