@@ -1,18 +1,11 @@
 using Entities;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
-using Microsoft.AspNetCore.HttpsPolicy;
 using Microsoft.AspNetCore.SpaServices.AngularCli;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
-using Microsoft.AspNetCore.Mvc.NewtonsoftJson;
 using Entities.Repository;
-using Entities.Models;
-using Microsoft.AspNetCore.Identity;
-using Microsoft.AspNetCore.Authentication.JwtBearer;
-using Microsoft.IdentityModel.Tokens;
-using System.Text;
 using AgentAssistant.JwtFeatures;
 using AgentAssistant.Extensions;
 using AgentAssistant.HubConfig;
@@ -42,33 +35,9 @@ namespace AgentAssistant
                 services.ConfigureMySQLInAppContext(Configuration);         
             }
 
-            services.AddIdentityCore<ApplicationUser>(opt => {
-                opt.User.RequireUniqueEmail = true;
-                opt.Password.RequireNonAlphanumeric = false;
-            })
-            .AddRoles<IdentityRole>()
-            .AddEntityFrameworkStores<AgentContext>()
-            .AddDefaultTokenProviders();
+            services.ConfigureIdentity(Configuration);
 
-
-            services.AddAuthentication(opt =>
-            {
-                opt.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
-                opt.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
-            }).AddJwtBearer(options =>
-            {
-                options.TokenValidationParameters = new TokenValidationParameters
-                {
-                    ValidateIssuer = true,
-                    ValidateAudience = true,
-                    ValidateLifetime = true,
-                    ValidateIssuerSigningKey = true,
-
-                    ValidIssuer = Configuration["JwtSettings:validIssuer"],
-                    ValidAudience = Configuration["JwtSettings:validAudience"],
-                    IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(Configuration["JwtSettings:securityKey"]))
-                };
-            });
+            services.ConfigureJwtBearerAuthentication(Configuration);
 
             services.AddScoped<IAgentRepository, AgentRepository>();
             services.AddScoped<IVaultRepository, VaultRepository>();
@@ -79,6 +48,7 @@ namespace AgentAssistant
             services.AddSingleton(typeof(TimerManager));
 
             services.AddAutoMapper(typeof(MappingProfile));
+
             services.AddSignalR();
 
             services.AddControllersWithViews()
