@@ -1,14 +1,14 @@
-﻿using Entities.Configuration;
-using Entities.Models;
+﻿using Domain.Configuration;
+using Domain.Entities;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
 
-namespace Entities
+namespace Domain
 {
-    public class AgentContext: IdentityDbContext<ApplicationUser>
+    public class ApplicationContext : IdentityDbContext<ApplicationUser>
     {
-        public AgentContext(DbContextOptions<AgentContext> options):base(options)
+        public ApplicationContext(DbContextOptions<ApplicationContext> options) : base(options)
         {
 
         }

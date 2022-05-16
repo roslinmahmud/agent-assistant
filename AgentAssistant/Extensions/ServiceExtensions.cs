@@ -1,5 +1,5 @@
-﻿using Entities;
-using Entities.Models;
+﻿using Domain;
+using Domain.Entities;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
@@ -19,21 +19,21 @@ namespace AgentAssistant.Extensions
         public static void ConfigureMySQLContext(this IServiceCollection services, IConfiguration configuration)
         {
             var connectionString = configuration.GetConnectionString("MySqlConnection");
-            services.AddDbContext<AgentContext>(opts =>
+            services.AddDbContext<ApplicationContext>(opts =>
                 opts.UseMySql(connectionString, ServerVersion.AutoDetect(connectionString), options => options.MigrationsAssembly("AgentAssistant")));
         }
 
         public static void ConfigureSqliteContext(this IServiceCollection services, IConfiguration configuration)
         {
             var connectionString = configuration.GetConnectionString("SqliteConnection");
-            services.AddDbContext<AgentContext>(opts =>
+            services.AddDbContext<ApplicationContext>(opts =>
                 opts.UseSqlite(connectionString, options => options.MigrationsAssembly("AgentAssistant")));
         }
 
         public static void ConfigureMySQLInAppContext(this IServiceCollection services, IConfiguration configuration)
         {
             var connectionString = configuration.GetConnectionString("localdb");
-            services.AddDbContext<AgentContext>(opts =>
+            services.AddDbContext<ApplicationContext>(opts =>
                 opts.UseMySql(NormalizeAzureInAppConnectionString(connectionString), ServerVersion.AutoDetect(connectionString), options => options.MigrationsAssembly("AgentAssistant")));
         }
 
@@ -66,7 +66,7 @@ namespace AgentAssistant.Extensions
                 opt.Password.RequireNonAlphanumeric = false;
             })
             .AddRoles<IdentityRole>()
-            .AddEntityFrameworkStores<AgentContext>()
+            .AddEntityFrameworkStores<ApplicationContext>()
             .AddDefaultTokenProviders();
         }
 

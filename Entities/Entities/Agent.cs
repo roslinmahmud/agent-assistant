@@ -1,9 +1,10 @@
-﻿using System.Collections.Generic;
+﻿using Domain;
+using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 
-namespace Entities.Models
+namespace Domain.Entities
 {
-    public class Agent: Entity
+    public class Agent : Entity
     {
         [Required]
         public string Name { get; set; }

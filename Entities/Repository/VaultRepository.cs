@@ -1,14 +1,15 @@
-﻿using Entities.Models;
+﻿using Domain;
+using Domain.Entities;
 using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 
-namespace Entities.Repository
+namespace Domain.Repository
 {
     public class VaultRepository : BaseRepository<Vault>, IVaultRepository
     {
-        public VaultRepository(AgentContext agentContext) : base(agentContext)
+        public VaultRepository(ApplicationContext applicationContext) : base(applicationContext)
         {
 
         }

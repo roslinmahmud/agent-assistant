@@ -3,15 +3,15 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using System;
 
-namespace Entities
+namespace Domain
 {
-    public  static class MigrationManager
+    public static class MigrationManager
     {
         public static IHost MigrateDatabase(this IHost host)
         {
-            using(var scope = host.Services.CreateScope())
+            using (var scope = host.Services.CreateScope())
             {
-                using var agentContext = scope.ServiceProvider.GetRequiredService<AgentContext>();
+                using var agentContext = scope.ServiceProvider.GetRequiredService<ApplicationContext>();
                 try
                 {
                     agentContext.Database.Migrate();

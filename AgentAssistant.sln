@@ -1,11 +1,11 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
-# Visual Studio Version 16
-VisualStudioVersion = 16.0.31313.79
+# Visual Studio Version 17
+VisualStudioVersion = 17.1.32421.90
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "AgentAssistant", "AgentAssistant\AgentAssistant.csproj", "{FE2861D8-047D-4EDF-B8CA-97CA73614F1E}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Entities", "Entities\Entities.csproj", "{F1DDBB41-ADC2-4A02-B45A-0DC807756054}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Domain", "Entities\Domain.csproj", "{F1DDBB41-ADC2-4A02-B45A-0DC807756054}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

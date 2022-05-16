@@ -4,9 +4,9 @@ using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Threading.Tasks;
 
-namespace Entities.Models
+namespace Domain.Entities
 {
-    public class Vault: Entity
+    public class Vault : Entity
     {
         [Required]
         public DateTime Date { get; set; }

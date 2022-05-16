@@ -1,13 +1,13 @@
-﻿using Entities.Models;
+﻿using Domain.Entities;
 using Microsoft.EntityFrameworkCore;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 
-namespace Entities.Repository
+namespace Domain.Repository
 {
     public class StatementCategoryRepository : BaseRepository<StatementCategory>, IStatementCategoryRepository
     {
-        public StatementCategoryRepository(AgentContext agentContext) : base(agentContext)
+        public StatementCategoryRepository(ApplicationContext applicationContext) : base(applicationContext)
         {
 
         }

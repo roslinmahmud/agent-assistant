@@ -1,8 +1,8 @@
 ﻿using System.ComponentModel.DataAnnotations;
 
-namespace Entities.Models
+namespace Domain.Entities
 {
-    public class StatementCategory: Entity
+    public class StatementCategory : Entity
     {
         [Required]
         public string CategoryName { get; set; }

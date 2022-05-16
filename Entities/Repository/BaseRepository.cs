@@ -6,44 +6,44 @@ using System.Linq.Expressions;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Entities.Repository
+namespace Domain.Repository
 {
-    public class BaseRepository<T> : IBaseRepository<T> where T: class
+    public class BaseRepository<T> : IBaseRepository<T> where T : class
     {
-        private readonly AgentContext agentContext;
+        private readonly ApplicationContext applicationContext;
 
-        public BaseRepository(AgentContext agentContext)
+        public BaseRepository(ApplicationContext applicationContext)
         {
-            this.agentContext = agentContext;
+            this.applicationContext = applicationContext;
         }
         public void Create(T entity)
         {
-            agentContext.Set<T>().Add(entity);
+            applicationContext.Set<T>().Add(entity);
         }
 
         public void Delete(T entity)
         {
-            agentContext.Set<T>().Remove(entity);
+            applicationContext.Set<T>().Remove(entity);
         }
 
         public IQueryable<T> FindAll()
         {
-            return agentContext.Set<T>().AsNoTracking();
+            return applicationContext.Set<T>().AsNoTracking();
         }
 
         public IQueryable<T> FindByCondition(Expression<Func<T, bool>> expression)
         {
-            return agentContext.Set<T>().Where(expression).AsNoTracking();
+            return applicationContext.Set<T>().Where(expression).AsNoTracking();
         }
 
         public void Update(T entity)
         {
-            agentContext.Set<T>().Update(entity);
+            applicationContext.Set<T>().Update(entity);
         }
 
         public async Task<int> SaveChangesAsync()
         {
-            return await agentContext.SaveChangesAsync();
+            return await applicationContext.SaveChangesAsync();
         }
     }
 }

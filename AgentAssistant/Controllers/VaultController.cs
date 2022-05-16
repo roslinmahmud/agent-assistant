@@ -1,5 +1,5 @@
-﻿using Entities.Models;
-using Entities.Repository;
+﻿using Domain.Entities;
+using Domain.Repository;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using System;

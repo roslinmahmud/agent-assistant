@@ -1,13 +1,13 @@
-﻿using Entities.Models;
+﻿using Domain.Entities;
 using Microsoft.EntityFrameworkCore;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 
-namespace Entities.Repository
+namespace Domain.Repository
 {
     public class AgentRepository : BaseRepository<Agent>, IAgentRepository
     {
-        public AgentRepository(AgentContext agentContext) : base(agentContext)
+        public AgentRepository(ApplicationContext applicationContext) : base(applicationContext)
         {
 
         }

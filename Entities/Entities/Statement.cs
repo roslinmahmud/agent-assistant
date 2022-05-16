@@ -5,9 +5,9 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Entities.Models
+namespace Domain.Entities
 {
-    public class Statement: Entity
+    public class Statement : Entity
     {
         [Required]
         public DateTime Date { get; set; }

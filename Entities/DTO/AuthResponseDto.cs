@@ -1,4 +1,4 @@
-﻿namespace Entities.DTO
+﻿namespace Domain.DTO
 {
     public class AuthResponseDto
     {

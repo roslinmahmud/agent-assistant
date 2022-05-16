@@ -1,8 +1,5 @@
 ﻿using AgentAssistant.HubConfig;
 using AutoMapper;
-using Entities.DTO;
-using Entities.Models;
-using Entities.Repository;
 using HtmlAgilityPack;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
@@ -13,6 +10,12 @@ using System.Collections.Generic;
 using System.Net;
 using System.Net.Http;
 using System.Threading.Tasks;
+using System.Security.Cryptography;
+using System.Text;
+using System.Text.Json;
+using Domain.Repository;
+using Domain.Entities;
+using Domain.DTO;
 
 namespace AgentAssistant.Controllers
 {
@@ -94,6 +97,8 @@ namespace AgentAssistant.Controllers
 
             entity = mapper.Map(agent, entity);
 
+            await AuthenticateAgentCredentials(agent);
+
             agentRepository.UpdateAgent(entity);
             await agentRepository.SaveChangesAsync();
 
@@ -114,7 +119,7 @@ namespace AgentAssistant.Controllers
             timerManager.Action = async () => await hubContext.Clients.All.SendAsync("transferSummaryData", await GetDataFromServer(agent));
             timerManager.Timer.Change(0, 60000);
 
-            return Ok(new { Message = "Request Completed" }); ;
+            return Ok(new { Message = "Request Completed" });
         }
 
         private async Task<IActionResult> GetDataFromServer(Agent agent)
@@ -180,6 +185,33 @@ namespace AgentAssistant.Controllers
             return Math.Round(float.Parse(h3[1].InnerHtml.Split(" ")[2]), 2).ToString();
         }
 
+        private async Task AuthenticateAgentCredentials(Agent agent)
+        {
+            var agentRequest = JsonSerializer.Serialize(new
+            {
+                userName = agent.Email,
+                password = ComputeSHA256Hash(agent.Password).ToLower(),
+                deviceMAC = ""
+            });
 
+            var content = new StringContent(
+                agentRequest,
+                Encoding.UTF8, 
+                "application/json"
+            );
+            
+            var response = await httpClient.PostAsync("inf/login.do", content);
+            response.EnsureSuccessStatusCode();
+
+            var contents = response.Content.ReadAsStringAsync();
+        }
+
+        public static string ComputeSHA256Hash(string text)
+        {
+            using (var sha256 = SHA256.Create())
+            {
+                return BitConverter.ToString(sha256.ComputeHash(Encoding.UTF8.GetBytes(text))).Replace("-", "");
+            }
+        }
     }
 }

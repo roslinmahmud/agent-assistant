@@ -1,20 +1,20 @@
 ﻿using AutoMapper;
-using Entities.DTO;
-using Entities.Models;
+using Domain.DTO;
+using Domain.Entities;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Entities
+namespace Domain
 {
-    public class MappingProfile: Profile
+    public class MappingProfile : Profile
     {
         public MappingProfile()
         {
             CreateMap<UserForRegistrationDto, ApplicationUser>()
-                .ForMember(u => u.UserName, opt=> opt.MapFrom(src => src.Email));
+                .ForMember(u => u.UserName, opt => opt.MapFrom(src => src.Email));
         }
     }
 }
