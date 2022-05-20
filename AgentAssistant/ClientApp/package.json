@@ -28,7 +28,6 @@
     "@popperjs/core": "^2.9.3",
     "bootstrap": "^5.1.0",
     "core-js": "^3.16.1",
-    "html2canvas": "^1.2.2",
     "jquery": "^3.6.0",
     "jspdf": "^2.3.1",
     "ngx-toastr": "^14.1.0",
