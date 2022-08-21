@@ -2,10 +2,10 @@ import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { JwtHelperService } from '@auth0/angular-jwt';
 import { Subject } from 'rxjs';
-import { AuthResponse } from 'src/app/interfaces/authResponse';
-import { RegistrationResponse } from 'src/app/interfaces/registrationResponse';
-import { UserForAuthentication } from 'src/app/interfaces/userForAuthentication';
-import { UserForRegistration } from 'src/app/interfaces/userForRegistration';
+import { AuthResponse } from 'src/app/features/authentication/models/authResponse';
+import { RegistrationResponse } from 'src/app/features/authentication/models/registrationResponse';
+import { UserForAuthentication } from 'src/app/features/authentication/models/userForAuthentication';
+import { UserForRegistration } from 'src/app/features/authentication/models/userForRegistration';
 
 @Injectable({
   providedIn: 'root'
