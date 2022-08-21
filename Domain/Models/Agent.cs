@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 
-namespace Domain.Entities
+namespace Domain.Models
 {
     public class Agent : Entity
     {

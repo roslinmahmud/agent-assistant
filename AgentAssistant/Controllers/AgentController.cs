@@ -14,7 +14,7 @@ using System.Security.Cryptography;
 using System.Text;
 using System.Text.Json;
 using Domain.Repository;
-using Domain.Entities;
+using Domain.Models;
 using Domain.DTO;
 
 namespace AgentAssistant.Controllers
@@ -105,10 +105,10 @@ namespace AgentAssistant.Controllers
             return Created("api/Agent/", entity);
         }
 
-        [HttpGet("summary/{agentId}")]
-        public async Task<IActionResult> GetSummary(int agentId)
+        [HttpGet("summary/{id}")]
+        public async Task<IActionResult> GetSummary(int id)
         {
-            var agent = await agentRepository.GetAgent(agentId);
+            var agent = await agentRepository.GetAgent(id);
 
             if (agent is null)
                 return BadRequest("Agent not found");
@@ -132,8 +132,9 @@ namespace AgentAssistant.Controllers
                 CurrentMonthIncome = await GetCurrentMonthIncome()
             };
 
-            return Ok(summary);
+            await GetCurrentDayStatement();
 
+            return Ok(summary);
         }
 
         private async Task AuthenticateAgent(Agent agent)
@@ -212,6 +213,30 @@ namespace AgentAssistant.Controllers
             {
                 return BitConverter.ToString(sha256.ComputeHash(Encoding.UTF8.GetBytes(text))).Replace("-", "");
             }
+        }
+
+        private async Task<string> GetCurrentDayStatement()
+        {
+            var form = new FormUrlEncodedContent(new[]
+            {
+                new KeyValuePair<string, string>("format", "html"),
+                new KeyValuePair<string, string>("fileName", "rangeWiseAccountStatement")
+            });
+
+            var response = await httpClient.PostAsync("reports/customer/general02.do", form);
+            response.EnsureSuccessStatusCode();
+
+            var content = await response.Content.ReadAsStringAsync();
+
+            var html = new HtmlDocument();
+            html.LoadHtml(content);
+            var tr = html.DocumentNode.SelectNodes("//tr");
+
+            var text = tr[20].InnerText;
+
+            string[] lines = text.Split("\n");
+
+            return tr[0].ToString();
         }
     }
 }

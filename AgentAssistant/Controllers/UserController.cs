@@ -1,7 +1,7 @@
 ﻿using AgentAssistant.JwtFeatures;
 using AutoMapper;
 using Domain.DTO;
-using Domain.Entities;
+using Domain.Models;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using System.IdentityModel.Tokens.Jwt;

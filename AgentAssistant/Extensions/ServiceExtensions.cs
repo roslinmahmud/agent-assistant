@@ -1,5 +1,5 @@
 ﻿using Domain;
-using Domain.Entities;
+using Domain.Models;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
