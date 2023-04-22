@@ -5,8 +5,11 @@ using Microsoft.IdentityModel.Tokens;
 using System;
 using System.Collections.Generic;
 using System.IdentityModel.Tokens.Jwt;
+using System.Net.Http;
 using System.Security.Claims;
 using System.Text;
+using System.Text.Json;
+using System.Text.Json.Serialization;
 using System.Threading.Tasks;
 
 namespace AgentAssistant.JwtFeatures
@@ -57,5 +60,39 @@ namespace AgentAssistant.JwtFeatures
 
             return securityToken;
         }
+
+        public async Task<string> GetJwtAccessTokenAsync(List<Claim> claims)
+        {
+            var client = new HttpClient();
+            client.BaseAddress = new Uri("https://dev-roslin.us.auth0.com/oauth/");
+
+            var form = new FormUrlEncodedContent(new[]
+            {
+                new KeyValuePair<string, string>("grant_type", "client_credentials"),
+                new KeyValuePair<string, string>("client_id", "AsfpzIm51U3LujDAIS0Fe2Wnw64rckTG"),
+                new KeyValuePair<string, string>("client_secret", "iAk7TKwUjzgLaJA_mXQ0Zgk0ipiOSuj1fOp7Fry2K2x5RnKNtfu6ZIQW1f1GX7rq"),
+                new KeyValuePair<string, string>("audience", "https://agentassistant.com")
+            });
+
+            var request = await client.PostAsync("token", form);
+
+            request.EnsureSuccessStatusCode();
+
+            var response = JsonSerializer.Deserialize<Token>(await request.Content.ReadAsStringAsync(), new JsonSerializerOptions());
+
+            return response.AccessToken;
+        }
+    }
+
+    class Token
+    {
+        [JsonPropertyName("access_token")]
+        public string AccessToken { get; set; }
+
+        [JsonPropertyName("token_type")]
+        public string TokenType { get; set; }
+
+        [JsonPropertyName("expires_in")]
+        public int ExpiresIn { get; set; }
     }
 }

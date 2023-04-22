@@ -56,13 +56,13 @@ namespace AgentAssistant.Controllers
                 return Unauthorized(new AuthResponseDto { ErrorMessage = "Authentication failed. Wrong Username or Password" });
 
 
-            var signingCredentials = jwtHandler.GetSigningCredentials();
             var claims = await jwtHandler.GetClaims(user);
-            var securityToken = jwtHandler.GetJwtSecurityToken(signingCredentials, claims);
-            var token = new JwtSecurityTokenHandler().WriteToken(securityToken);
+            var accessToken = await jwtHandler.GetJwtAccessTokenAsync(claims);
+
+            var JwtToken = new JwtSecurityToken(accessToken);
 
 
-            return Ok(new AuthResponseDto { IsAuthSuccessful = true, Token = token });
+            return Ok(new AuthResponseDto { IsAuthSuccessful = true, Token = accessToken });
         }
 
     }
