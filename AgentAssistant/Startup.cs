@@ -9,6 +9,8 @@ using AgentAssistant.Extensions;
 using AgentAssistant.HubConfig;
 using Domain.Repository;
 using Domain;
+using Microsoft.OpenApi.Models;
+using AgentAssistant.Configuration;
 
 namespace AgentAssistant
 {
@@ -53,6 +55,22 @@ namespace AgentAssistant
 
             services.AddControllersWithViews()
                 .AddNewtonsoftJson(options => options.SerializerSettings.ReferenceLoopHandling = Newtonsoft.Json.ReferenceLoopHandling.Ignore);
+
+            services.AddSwaggerGen(c =>
+            {
+                // Swagger JWT Token support
+                c.AddSecurityDefinition("Bearer", new OpenApiSecurityScheme
+                {
+                    In = ParameterLocation.Header,
+                    Description = "Please enter a valid token",
+                    Name = "Authorization",
+                    Type = SecuritySchemeType.Http,
+                    BearerFormat = "JWT",
+                    Scheme = "Bearer"
+                });
+
+                c.OperationFilter<AuthorizationOperationFilter>();
+            });
             
             // In production, the Angular files will be served from this directory
             services.AddSpaStaticFiles(configuration =>
@@ -69,6 +87,12 @@ namespace AgentAssistant
                 app.UseExceptionHandler("/Error");
                 // The default HSTS value is 30 days. You may want to change this for production scenarios, see https://aka.ms/aspnetcore-hsts.
                 app.UseHsts();
+            }
+
+            if (env.IsDevelopment())
+            {
+                app.UseSwagger();
+                app.UseSwaggerUI();
             }
 
             app.ConfigureExceptionHandler();
