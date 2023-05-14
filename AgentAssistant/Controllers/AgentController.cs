@@ -1,21 +1,17 @@
 ﻿using AgentAssistant.HubConfig;
 using AutoMapper;
+using Domain.DTO;
+using Domain.Models;
+using Domain.Repository;
 using HtmlAgilityPack;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.SignalR;
-using System;
-using System.Collections.Generic;
 using System.Net;
-using System.Net.Http;
-using System.Threading.Tasks;
 using System.Security.Cryptography;
 using System.Text;
 using System.Text.Json;
-using Domain.Repository;
-using Domain.Models;
-using Domain.DTO;
 
 namespace AgentAssistant.Controllers
 {
@@ -105,6 +101,38 @@ namespace AgentAssistant.Controllers
             return Created("api/Agent/", entity);
         }
 
+        [HttpGet("agentStatement/{agentId}")]
+        public async Task<IActionResult> GetAgentStatement(int agentId)
+        {
+            var agent = await agentRepository.GetAgent(agentId);
+
+            if (agent is null)
+                return BadRequest("Agent not found");
+
+            await AuthenticateAgent(agent);
+
+            var form = new FormUrlEncodedContent(new[]
+            {
+                new KeyValuePair<string, string>("format", "html"),
+                new KeyValuePair<string, string>("fileName", "rangeWiseAccountStatement")
+            });
+
+            var response = await httpClient.PostAsync("reports/customer/general02.do", form);
+            response.EnsureSuccessStatusCode();
+
+            var content = await response.Content.ReadAsStringAsync();
+
+            var html = new HtmlDocument();
+            html.LoadHtml(content);
+            var tr = html.DocumentNode.SelectNodes("//tr");
+
+            var lines = tr
+                .Skip(25)
+                .Select(l => l.InnerText.Split('\n'));
+
+            return Ok(lines);
+        }
+
         [HttpGet("summary/{id}")]
         public async Task<IActionResult> GetSummary(int id)
         {
@@ -131,8 +159,6 @@ namespace AgentAssistant.Controllers
                 CurrentDayIncome = await GetCurrentDayIncome(),
                 CurrentMonthIncome = await GetCurrentMonthIncome()
             };
-
-            await GetCurrentDayStatement();
 
             return Ok(summary);
         }
@@ -215,28 +241,5 @@ namespace AgentAssistant.Controllers
             }
         }
 
-        private async Task<string> GetCurrentDayStatement()
-        {
-            var form = new FormUrlEncodedContent(new[]
-            {
-                new KeyValuePair<string, string>("format", "html"),
-                new KeyValuePair<string, string>("fileName", "rangeWiseAccountStatement")
-            });
-
-            var response = await httpClient.PostAsync("reports/customer/general02.do", form);
-            response.EnsureSuccessStatusCode();
-
-            var content = await response.Content.ReadAsStringAsync();
-
-            var html = new HtmlDocument();
-            html.LoadHtml(content);
-            var tr = html.DocumentNode.SelectNodes("//tr");
-
-            var text = tr[20].InnerText;
-
-            string[] lines = text.Split("\n");
-
-            return tr[0].ToString();
-        }
     }
 }
